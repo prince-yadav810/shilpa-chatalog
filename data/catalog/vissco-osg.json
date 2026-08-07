@@ -1,0 +1,460 @@
+{
+  "source": "Vissco OSG Catalogue with MRP",
+  "sourceDate": "2026-08-07",
+  "notes": "Orthopaedic support range. SKU is Vissco's PC code. Price is the printed MRP — a chemist sells these at MRP, so `mrp` is left unset rather than inventing a discount. `variant` lists the sizes the same MRP covers; the customer states their size in the WhatsApp chat.",
+  "products": [
+    {
+      "sku": "PC-1107",
+      "name": "Vissco Therapeutic Headband for Headache",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Head & Neck Supports",
+      "brand": "Vissco",
+      "price": 140,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0301A",
+      "name": "Vissco Cervical Collar Regular with Chin Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Head & Neck Supports",
+      "brand": "Vissco",
+      "price": 415,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0301B",
+      "name": "Vissco Cervical Collar Regular without Chin Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Head & Neck Supports",
+      "brand": "Vissco",
+      "price": 415,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0304",
+      "name": "Vissco Cervical Collar (Soft)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Head & Neck Supports",
+      "brand": "Vissco",
+      "price": 345,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0309",
+      "name": "Vissco Firm Cervical Collar (Adjustable Height)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Head & Neck Supports",
+      "brand": "Vissco",
+      "price": 525,
+      "variant": "Sizes XS, S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0310",
+      "name": "Vissco Firm Cervical Collar with Chin Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Head & Neck Supports",
+      "brand": "Vissco",
+      "price": 860,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0314",
+      "name": "Vissco Philadelphia Collar",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Head & Neck Supports",
+      "brand": "Vissco",
+      "price": 1130,
+      "variant": "Sizes S, M, L"
+    },
+
+    {
+      "sku": "PC-0604",
+      "name": "Vissco Wrist Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 250,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0603",
+      "name": "Vissco Wrist Binder with Double Lock",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 215,
+      "variant": "Standard or Special"
+    },
+    {
+      "sku": "PC-1402",
+      "name": "Vissco Wrist Brace (Neoprene)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 450,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0613",
+      "name": "Vissco Wrist Band Cotton",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 150,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0627",
+      "name": "Vissco Elastic Pullover Wrist Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 290,
+      "variant": "Sizes S, M, L"
+    },
+    {
+      "sku": "PC-0612",
+      "name": "Vissco Wrist Band Tubular - Small",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 90,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0628",
+      "name": "Vissco Carpal Wrist Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 1000,
+      "variant": "Sizes S, M, L, XL"
+    },
+    {
+      "sku": "PC-0648",
+      "name": "Vissco Boxer's Support Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 500,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0650",
+      "name": "Vissco Wrist Brace with Thumb Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 525,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0646",
+      "name": "Vissco Forearm Brace (Long)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 695,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0647",
+      "name": "Vissco Forearm Brace (Short)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 590,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0641",
+      "name": "Vissco Universal Cock-up Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 425,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0642",
+      "name": "Vissco Universal Elastic Wrist Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 375,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0644",
+      "name": "Vissco Elastic Wrist Support 21 cm",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 495,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0645",
+      "name": "Vissco Dynamic Cock-up",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 680,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0822",
+      "name": "Vissco Emergency Splint Arm (Short)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 380,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0821",
+      "name": "Vissco Emergency Splint Arm (Long)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 590,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0649",
+      "name": "Vissco Dynamic Cock-up with Finger Extension",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 1700,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0620",
+      "name": "Vissco Elbow Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 240,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2617",
+      "name": "Vissco Tennis Elbow Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 310,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-2620",
+      "name": "Vissco Elbow Support with Strap",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 270,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0605",
+      "name": "Vissco Tennis Elbow Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 295,
+      "variant": "Sizes S, M, L"
+    },
+    {
+      "sku": "PC-0618",
+      "name": "Vissco Silicone Finger Ring Regular",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 115,
+      "variant": "Regular or Medium"
+    },
+    {
+      "sku": "PC-0643",
+      "name": "Vissco Thumb Spica Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 345,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0631",
+      "name": "Vissco Finger Splint Long",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 300,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0610",
+      "name": "Vissco Finger Splint Baseball",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 240,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0615",
+      "name": "Vissco Finger Splint Universal",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 190,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0623",
+      "name": "Vissco Cot Finger Splint",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 190,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0622",
+      "name": "Vissco Swan Finger Splint",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 310,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0611",
+      "name": "Vissco Finger Splint All Sides",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 225,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0825",
+      "name": "Vissco Cast Cover Arm (Up to Wrist)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 490,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0826",
+      "name": "Vissco Cast Cover Arm (Wrist to Elbow)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 490,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0827",
+      "name": "Vissco Cast Cover Arm (Wrist to Upper Arm)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Wrist, Elbow & Finger Supports",
+      "brand": "Vissco",
+      "price": 490,
+      "variant": "Universal"
+    },
+
+    {
+      "sku": "PC-0810",
+      "name": "Vissco Ash Brace (Hyper-Extension Brace)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Chest, Rib & Sternal Supports",
+      "brand": "Vissco",
+      "price": 1950,
+      "variant": "Sizes S, M, L, XL"
+    },
+    {
+      "sku": "PC-0801",
+      "name": "Vissco Rib Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Chest, Rib & Sternal Supports",
+      "brand": "Vissco",
+      "price": 750,
+      "variant": "Standard or Special"
+    },
+    {
+      "sku": "PC-0626",
+      "name": "Vissco Sternal Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Chest, Rib & Sternal Supports",
+      "brand": "Vissco",
+      "price": 1065,
+      "variant": "Standard or Special"
+    },
+
+    {
+      "sku": "PC-0805",
+      "name": "Vissco Arm Pouch Sling",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 475,
+      "variant": "Sizes XS, S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0812",
+      "name": "Vissco Shoulder Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 1100,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0820",
+      "name": "Vissco Tropical Arm Sling",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 410,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2805",
+      "name": "Vissco Arm Sling",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 495,
+      "variant": "Sizes XS, S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0815",
+      "name": "Vissco Shoulder Abduction Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 2700,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0802-0803",
+      "name": "Vissco Meek Clavicle Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 575,
+      "variant": "Adult or Child/Infant"
+    },
+    {
+      "sku": "PC-0807",
+      "name": "Vissco Posture Aid",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 950,
+      "variant": "Sizes XS, S, M, L, XL, XXL"
+    }
+  ]
+}
