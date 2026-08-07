@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# distributor source PDFs — client data, kept out of git.
+# The extracted JSON in data/catalog/ IS committed.
+/data/source-pdfs/*
+!/data/source-pdfs/.gitkeep

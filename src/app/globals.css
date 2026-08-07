@@ -2,20 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Tokens are the contract described in DESIGN_SYSTEM.md.
+ * `brand` says "this is Shilpa"; `whatsapp` says "this button orders".
+ * Don't reuse the green anywhere else — its meaning has to stay unambiguous.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #fafaf8;
+  --surface: #ffffff;
+  --ink: #1c1f1d;
+  --ink-muted: #5b615c;
+  --brand: #1f3d3a;
+  --accent: #b8863b;
+  --whatsapp: #25d366;
+  --border: #e4e1da;
 }
 
 body {
-  color: var(--foreground);
+  color: var(--ink);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading), Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /*
+   * The signature element: every price renders monospace and right-aligned,
+   * like a till receipt. Used on cards, detail pages, cart and admin tables.
+   */
+  .price {
+    @apply font-mono tabular-nums text-right tracking-tight;
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 bg-whatsapp px-4 py-2.5
+           text-sm font-medium text-white transition-opacity hover:opacity-90
+           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+           focus-visible:outline-whatsapp disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-brand px-4 py-2.5
+           text-sm font-medium text-white transition-opacity hover:opacity-90
+           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+           focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 border border-border
+           bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors
+           hover:bg-background focus-visible:outline focus-visible:outline-2
+           focus-visible:outline-offset-2 focus-visible:outline-brand
+           disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .field {
+    @apply w-full border border-border bg-surface px-3 py-2 text-body text-ink
+           placeholder:text-ink-muted focus:border-brand focus:outline-none;
+  }
+
+  .label {
+    @apply mb-1.5 block text-caption font-medium text-ink;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }

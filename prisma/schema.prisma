@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// Two levels only, via a self-relation. A top-level category holds child
+/// categories and no products; a child (subcategory) holds the products.
+/// Depth is enforced in validation — Prisma can't express it.
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  sortOrder Int        @default(0)
+  imageUrl  String?
+  isActive  Boolean    @default(true)
+  parentId  String?
+  parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: Restrict)
+  children  Category[] @relation("CategoryTree")
+  products  Product[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([parentId, sortOrder])
+}
+
+/// Brand is a separate dimension from category, not a node in the tree.
+/// "Ice cream" and "Amul" are different questions a customer asks, and one
+/// product row has to serve the ice-cream page, the Amul page, and the
+/// Amul-ice-cream page at once.
+model Brand {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  logoUrl   String?
+  isActive  Boolean   @default(true)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([name])
+}
+
+model Product {
+  id          String  @id @default(cuid())
+  name        String
+  /// Generated once at create and never regenerated — the URL is what gets
+  /// pasted into WhatsApp chats, so an edit must not break it.
+  slug        String  @unique
+  /// Stable key for import upserts. Set by the catalog import script.
+  sku         String? @unique
+  price       Float
+  /// Real printed MRP only — left null unless the source states one.
+  mrp         Float?
+  variant     String?
+  description String?
+  imageUrl    String?
+  inStock     Boolean @default(true)
+
+  isFeatured    Boolean @default(false)
+  featuredOrder Int     @default(0)
+
+  /// Always a leaf/subcategory, never a top-level parent.
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  /// Optional — loose general goods often have no brand.
+  brandId String?
+  brand   Brand?  @relation(fields: [brandId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([brandId, categoryId])
+  @@index([isFeatured, featuredOrder])
+  @@index([name])
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+/// Single row, id = "default". The WhatsApp number lives here rather than in a
+/// NEXT_PUBLIC_ env var so the shop can change it without a redeploy.
+model SiteSettings {
+  id              String   @id @default("default")
+  storeName       String   @default("Shilpa")
+  whatsappNumber  String
+  promoBannerText String?
+  promoBannerLink String?
+  updatedAt       DateTime @updatedAt
+}
