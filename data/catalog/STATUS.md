@@ -11,6 +11,14 @@ Who is doing what, so the same pages don't get extracted twice.
 | `LAKME_BOOKLET_TBF_Consolidated_2024.pdf` | 120 | `lakme-booklet.json` | **Gemini** | not started |
 | `Pro NON Colors MOC 8'26.pdf` | 48 | `lakme-pro-non-colors.json` | **Gemini** | **done** (4 products) |
 | `SKIN FOLDER-2024.pdf` | 46 | — | — | **skip** — feature grid, no codes or prices |
+
+**Imported: 425 products.** 34 rows were removed as duplicates — the Pond's PRO
+and Lakme PRO Skin PDFs list the same products. 28 of those 34 pairs agreed
+exactly on price, which is good evidence both extractions are sound; the 6 that
+disagree are listed in the handover notes.
+
+**Images: 313 of 425.** See [docs/IMAGES.md](../../docs/IMAGES.md) for why the
+rest are blank and how to fill them.
 | `Pond's PRO TBF-2024.pdf` | 11 | `ponds-pro.json` | **Gemini** | **done** (33 products) |
 | `Lakme Skin Grid April 24.pdf` | 18 | — | — | **skip** — feature grid, no codes or prices |
 | `Lakme Color Grid   MARCH 24.pdf` | 17 | — | — | **skip** — feature grid, no codes or prices |
