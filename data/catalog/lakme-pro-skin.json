@@ -84,7 +84,8 @@
       "price": 149,
       "variant": "7ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786208362/shilpa/products/lakme-lakme-vitamin-c-pro-brilliance-serum-with-10-vitamin-c-complex-lkm-27863.jpg",
+      "imageSource": "amazon.in",
       "inStock": true
     },
     {
@@ -156,7 +157,8 @@
       "price": 249,
       "variant": "15ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199397/shilpa/products/lakme-lakme-lumi-smooth-aha-serum-lkm-27764.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -732,7 +734,8 @@
       "price": 110,
       "variant": "18ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199399/shilpa/products/lakme-lakme-sun-expert-spf-50-sunscreen-lkm-27000.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -840,7 +843,8 @@
       "price": 125,
       "variant": "18ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199401/shilpa/products/lakme-lakme-sun-expert-tinted-spf-50-sunscreen-lkm-27502.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -936,7 +940,8 @@
       "price": 899,
       "variant": "50ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199404/shilpa/products/lakme-lakme-absolute-argan-oil-radiance-oil-in-creme-lkm-24003.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -948,7 +953,8 @@
       "price": 849,
       "variant": "50ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199406/shilpa/products/lakme-lakme-absolute-argan-oil-radiance-oil-in-gel-lkm-12979.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1104,7 +1110,8 @@
       "price": 59,
       "variant": "25g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199408/shilpa/products/lakme-lakme-peach-milk-soft-creme-lkm-27031.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1116,7 +1123,8 @@
       "price": 20,
       "variant": "12g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199409/shilpa/products/lakme-lakme-peach-milk-soft-creme-lkm-27841.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1128,7 +1136,6 @@
       "price": 260,
       "variant": "98g",
       "description": null,
-      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786178482/shilpa/products/lakme-lakme-peach-milk-ultra-light-gel-lkm-27309.webp",
       "inStock": true
     },
     {
@@ -1140,7 +1147,6 @@
       "price": 130,
       "variant": "50g",
       "description": null,
-      "imageUrl": null,
       "inStock": true
     },
     {
@@ -1152,7 +1158,6 @@
       "price": 65,
       "variant": "25g",
       "description": null,
-      "imageUrl": null,
       "inStock": true
     },
     {
@@ -1274,7 +1279,8 @@
       "price": 275,
       "variant": "90g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199415/shilpa/products/ponds-ponds-pure-detox-clay-mask-lkm-27415.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1382,7 +1388,8 @@
       "price": 280,
       "variant": "100ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199417/shilpa/products/lakme-lakme-makeup-remover-lkm-27706.webp",
+      "imageSource": "www.lakmeindia.com",
       "inStock": true
     },
     {
@@ -1394,7 +1401,8 @@
       "price": 299,
       "variant": "100g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199418/shilpa/products/lakme-lakme-micellar-facewash-lkm-27776.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1406,7 +1414,8 @@
       "price": 149,
       "variant": "50g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199420/shilpa/products/lakme-lakme-micellar-facewash-lkm-27775.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1418,7 +1427,8 @@
       "price": 450,
       "variant": "200ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199422/shilpa/products/lakme-lakme-micellar-water-lkm-27705.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1454,7 +1464,8 @@
       "price": 130,
       "variant": "50g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199424/shilpa/products/lakme-lakme-strawberry-cream-facewash-lkm-12825.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1466,7 +1477,8 @@
       "price": 199,
       "variant": "50g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199426/shilpa/products/dove-dove-beauty-moisture-face-wash-lkm-12645.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1531,6 +1543,7 @@
       "variant": "20ml",
       "description": null,
       "imageUrl": null,
+      "imageSource": null,
       "inStock": true
     },
     {
@@ -1555,7 +1568,8 @@
       "price": 100,
       "variant": "100g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199429/shilpa/products/lakme-lakme-blush-and-glow-watermelon-sheet-mask-lkm-27140.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1628,7 +1642,8 @@
       "price": 75,
       "variant": "25ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199430/shilpa/products/ponds-ponds-sheet-mask-detoxing-charcoal-lkm-27429.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1676,7 +1691,8 @@
       "price": 199,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199435/shilpa/products/lakme-lakme-lip-love-gelato-berry-mint-lkm-24622.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1688,7 +1704,8 @@
       "price": 199,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199444/shilpa/products/lakme-lakme-lip-love-gelato-raspberry-lkm-24623.jpg",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1701,6 +1718,7 @@
       "variant": "4.5g",
       "description": null,
       "imageUrl": null,
+      "imageSource": null,
       "inStock": true
     },
     {
@@ -1712,7 +1730,8 @@
       "price": 199,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199467/shilpa/products/lakme-lakme-lip-love-gelato-fresh-orange-lkm-24625.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1724,7 +1743,8 @@
       "price": 175,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199470/shilpa/products/lakme-lakme-lip-love-chapstick-cherry-lkm-27047.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1736,7 +1756,8 @@
       "price": 175,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199472/shilpa/products/lakme-lakme-lip-love-chapstick-strawberry-lkm-27048.jpg",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1748,7 +1769,8 @@
       "price": 175,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199475/shilpa/products/lakme-lakme-lip-love-chapstick-mango-lkm-27049.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1760,7 +1782,8 @@
       "price": 175,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199477/shilpa/products/lakme-lakme-lip-love-chapstick-apricot-lkm-27050.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1772,7 +1795,8 @@
       "price": 175,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199478/shilpa/products/lakme-lakme-lip-love-chapstick-caramel-lkm-27051.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1784,7 +1808,8 @@
       "price": 175,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199483/shilpa/products/lakme-lakme-lip-love-chapstick-insta-pink-lkm-27052.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1796,7 +1821,8 @@
       "price": 175,
       "variant": "4.5g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199487/shilpa/products/lakme-lakme-lip-love-chapstick-purlipcare-lkm-27053.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1942,7 +1968,8 @@
       "price": 325,
       "variant": "200ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199491/shilpa/products/vaseline-vaseline-gluta-hya-flawless-glow-lkm-27753.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1954,7 +1981,8 @@
       "price": 325,
       "variant": "200ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199494/shilpa/products/vaseline-vaseline-gluta-hya-radiance-glow-lkm-27754.avif",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -1990,7 +2018,8 @@
       "price": 110,
       "variant": "100ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199496/shilpa/products/dove-dove-nourished-radiance-lotion-lkm-12688.webp",
+      "imageSource": "www.dove-india.com",
       "inStock": true
     },
     {
@@ -2028,7 +2057,8 @@
       "price": 475,
       "variant": "400ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199498/shilpa/products/dove-dove-light-hydration-lotion-lkm-27407.webp",
+      "imageSource": "www.dove-india.com",
       "inStock": true
     },
     {
@@ -2040,7 +2070,8 @@
       "price": 110,
       "variant": "100ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199499/shilpa/products/dove-dove-light-hydration-lotion-lkm-27408.webp",
+      "imageSource": "www.dove-india.com",
       "inStock": true
     },
     {
@@ -2089,7 +2120,8 @@
       "price": 850,
       "variant": "30ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199502/shilpa/products/novology-novology-anti-acne-serum-lkm-27685.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -2114,7 +2146,8 @@
       "price": 750,
       "variant": "30ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786208363/shilpa/products/novology-novology-ha-dry-skin-serum-lkm-27688.jpg",
+      "imageSource": "amazon.in",
       "inStock": true
     },
     {
@@ -2126,7 +2159,8 @@
       "price": 650,
       "variant": "150g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199510/shilpa/products/novology-novology-anti-acne-cleanser-lkm-27679.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -2151,7 +2185,6 @@
       "price": 125,
       "variant": "30g",
       "description": null,
-      "imageUrl": null,
       "inStock": true
     },
     {
@@ -2163,7 +2196,8 @@
       "price": 125,
       "variant": "30g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786208365/shilpa/products/ponds-ponds-natural-beige-bb-lkm-27318.jpg",
+      "imageSource": "amazon.com",
       "inStock": true
     }
   ]

@@ -12,7 +12,8 @@
       "price": 899,
       "variant": "50g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199519/shilpa/products/ponds-ponds-youthful-miracle-day-cream-50g-12205.webp",
+      "imageSource": "ponds.in",
       "inStock": true
     },
     {
@@ -48,7 +49,8 @@
       "price": 135,
       "variant": "10g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199535/shilpa/products/ponds-ponds-youthful-miracle-day-cream-10g-12571.jpg",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -72,7 +74,8 @@
       "price": 305,
       "variant": "20g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199538/shilpa/products/ponds-ponds-youthful-miracle-night-cream-20g-27876.jpg",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -144,7 +147,8 @@
       "price": 84,
       "variant": "9g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199541/shilpa/products/ponds-ponds-bb-cream-light-9g-12731.webp",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {
@@ -156,7 +160,8 @@
       "price": 165,
       "variant": "18g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199542/shilpa/products/ponds-ponds-bb-cream-light-18g-12732.png",
+      "imageSource": "ecommerce",
       "inStock": true
     },
     {

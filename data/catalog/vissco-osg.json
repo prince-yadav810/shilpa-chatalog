@@ -618,7 +618,9 @@
       "subcategory": "Abdomen & Pelvic Supports",
       "brand": "Vissco",
       "price": 790,
-      "variant": "Sizes S, M, L, XL, XXL"
+      "variant": "Sizes S, M, L, XL, XXL",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199553/shilpa/products/vissco-vissco-pelvic-binder-pc-0218.webp",
+      "imageSource": "ecommerce"
     },
     {
       "sku": "PC-0508",
@@ -1151,7 +1153,9 @@
       "subcategory": "Knee & Calf Supports",
       "brand": "Vissco",
       "price": 2650,
-      "variant": "Universal"
+      "variant": "Universal",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199555/shilpa/products/vissco-vissco-rom-knee-brace-fixed-height-pc-0755.webp",
+      "imageSource": "ecommerce"
     },
     {
       "sku": "PC-0708",
@@ -1200,7 +1204,9 @@
       "subcategory": "Ankle & Foot Supports",
       "brand": "Vissco",
       "price": 625,
-      "variant": "Sizes S, M, L, XL, XXL"
+      "variant": "Sizes S, M, L, XL, XXL",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786199557/shilpa/products/vissco-vissco-3d-ankle-support-with-gel-padding-pc-2710.webp",
+      "imageSource": "ecommerce"
     },
     {
       "sku": "PC-5713",
