@@ -52,15 +52,24 @@ OCR pipeline in production to maintain. The flow:
 
 1. Drop the PDF in `data/source-pdfs/` (gitignored — it's client data).
 2. Extract it into `data/catalog/<supplier>.json` (see `EXAMPLE.json` for the shape,
-   and `src/lib/catalog-file.ts` for the schema).
-3. Source product images — the brand's own webshop first, then a marketplace
+   and `src/lib/catalog-file.ts` for the schema). Extraction is done with Gemini via
+   Antigravity — paste [`docs/EXTRACTION_PROMPT.md`](docs/EXTRACTION_PROMPT.md) with
+   the PDF attached, one file per session.
+3. `npm run validate-catalog` — **do this before anything else touches the data.**
+   Catches duplicate product codes, prices misread by a factor of ten, and category
+   or brand names spelled two ways (which would split one section into two on the
+   site). Errors block the import; notes are for a quick human look.
+4. Source product images — the brand's own webshop first, then a marketplace
    listing, general search last.
-4. `npm run upload-images -- data/catalog/<supplier>.json`
+5. `npm run upload-images -- data/catalog/<supplier>.json`
    Downloads each image onto our own Cloudinary and rewrites the file. We never
    hotlink someone else's server.
-5. `npm run import-catalog -- data/catalog/<supplier>.json --dry-run`
+6. `npm run import-catalog -- data/catalog/<supplier>.json --dry-run`
    Prints exactly what would be created and changed, with a per-field diff.
-6. Drop `--dry-run` to apply.
+7. Drop `--dry-run` to apply.
+
+[`data/catalog/STATUS.md`](data/catalog/STATUS.md) tracks which PDFs are done, who
+owns each one, and the naming conventions every new file has to match.
 
 Rows match on `sku`, so **re-importing the same supplier updates rather than
 duplicates**. When a distributor sends a revised price list, send the whole new

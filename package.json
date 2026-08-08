@@ -14,7 +14,8 @@
     "db:studio": "prisma studio",
     "create-admin": "tsx scripts/create-admin.ts",
     "import-catalog": "tsx scripts/import-catalog.ts",
-    "upload-images": "tsx scripts/upload-images.ts"
+    "upload-images": "tsx scripts/upload-images.ts",
+    "validate-catalog": "tsx scripts/validate-catalog.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
