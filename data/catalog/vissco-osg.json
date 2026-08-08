@@ -455,6 +455,721 @@
       "brand": "Vissco",
       "price": 950,
       "variant": "Sizes XS, S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0816",
+      "name": "Vissco Clavicle Brace with Shoulder Sleeve",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 595,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0806",
+      "name": "Vissco Shoulder Immobilizer",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 820,
+      "variant": "Sizes XS, S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0813",
+      "name": "Vissco Elastic Shoulder Immobiliser with Cap",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Shoulder Supports",
+      "brand": "Vissco",
+      "price": 1060,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+
+    {
+      "sku": "PC-0501",
+      "name": "Vissco 8\" Abdominal Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 970,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0510",
+      "name": "Vissco Colostomy Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 740,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0514",
+      "name": "Vissco Abdominal Maternity Binder",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 810,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-2501",
+      "name": "Vissco Abdoset Abdominal Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 975,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0512",
+      "name": "Vissco 10\" Abdominal Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 1300,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-3501",
+      "name": "Vissco Lite Abdominal Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 635,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1436",
+      "name": "Vissco 8\" Abdominal Belt (Neoprene)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 1200,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0218",
+      "name": "Vissco Pelvic Binder",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 790,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0508",
+      "name": "Vissco Hernia Belt with Double Pad",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 715,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0516",
+      "name": "Vissco Scrotal Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Abdomen & Pelvic Supports",
+      "brand": "Vissco",
+      "price": 495,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+
+    {
+      "sku": "PC-0101",
+      "name": "Vissco Sacro Lumbar Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1100,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0102",
+      "name": "Vissco Lumbocare Lumbo Sacral Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1100,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0111",
+      "name": "Vissco Sacro Lumbar Belt 10\"",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1190,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1405",
+      "name": "Vissco Neoprene Lumbar Belt 9\"",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 2475,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1406",
+      "name": "Vissco Neoprene Lumbar Belt 6\"",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 2225,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-3101",
+      "name": "Vissco Lumbo Sacral Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 820,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2103",
+      "name": "Vissco Lumboset Advance",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1350,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2101",
+      "name": "Vissco Lumboset Basic",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1215,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-5104",
+      "name": "Vissco Lumbo Sacral Corset with Double Straps",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 3600,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0125",
+      "name": "Vissco Flexi Lacepull LS Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1850,
+      "variant": "Regular, Standard or Special"
+    },
+    {
+      "sku": "PC-0127",
+      "name": "Vissco Sacroiliac Lacepull Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1650,
+      "variant": "Regular, Standard or Special"
+    },
+    {
+      "sku": "PC-0105",
+      "name": "Vissco Eco Frame Back Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1290,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-3103",
+      "name": "Vissco Contoured LS Belt",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 885,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0114",
+      "name": "Vissco Industrial Back Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1700,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0120",
+      "name": "Vissco Dorso Lumbar Spinal Brace (Taylor Brace)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 2700,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0126",
+      "name": "Vissco Flexi Lacepull LS Belt with Moulding",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 2575,
+      "variant": "Regular, Standard or Special"
+    },
+    {
+      "sku": "PC-1118",
+      "name": "Vissco Round Ring Pillow",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 1760,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-1123",
+      "name": "Vissco Coccyx Seat Cushion (Tail Bone Cushion)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Back Supports",
+      "brand": "Vissco",
+      "price": 2200,
+      "variant": "Universal"
+    },
+
+    {
+      "sku": "PC-0705",
+      "name": "Vissco Knee Caps",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 425,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0714",
+      "name": "Vissco Knee Cap with Open Patella",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 530,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0715",
+      "name": "Vissco Hinged Functional Knee Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1520,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0704",
+      "name": "Vissco Knee Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 545,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0732",
+      "name": "Vissco Functional Knee Wrap",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 660,
+      "variant": "Standard or Special"
+    },
+    {
+      "sku": "PC-0717",
+      "name": "Vissco Patella Ribbed Elasticated Knee Cap",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 600,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1403",
+      "name": "Vissco Neoprene Knee Brace with Patella Opening",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1085,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1421",
+      "name": "Vissco Neoprene Knee Support with Velcro",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1315,
+      "variant": "Standard or Special"
+    },
+    {
+      "sku": "PC-0703",
+      "name": "Vissco Loop Elastic Calf Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 450,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0727",
+      "name": "Vissco Loop Elastic Thigh Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 350,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2700",
+      "name": "Vissco Spro Knee Cap Plus",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 460,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2703",
+      "name": "Vissco 2D Knee Cap",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 565,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2704",
+      "name": "Vissco 3D Knee Cap",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 410,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2705",
+      "name": "Vissco 3D Knee Cap with Donut Padding",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 585,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2711",
+      "name": "Vissco Patellar Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 270,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0701",
+      "name": "Vissco Knee Brace Long (19\" Brace)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1290,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0702",
+      "name": "Vissco Knee Brace Short (14\" Brace)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1000,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0733",
+      "name": "Vissco Functional Knee Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 875,
+      "variant": "Standard or Special"
+    },
+    {
+      "sku": "PC-0723",
+      "name": "Vissco Universal Knee Immobilizer",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1425,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-2701",
+      "name": "Vissco Knee Stabler Long (19\" Brace)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1590,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2702",
+      "name": "Vissco Knee Stabler Short (14\" Brace)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 980,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2706",
+      "name": "Vissco Knee Stabler Long (22\" Brace)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1650,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2438",
+      "name": "Vissco OA Knee Brace Open Type (Right/Left)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1775,
+      "variant": "Sizes S, M, L, XL, XXL — specify left or right"
+    },
+    {
+      "sku": "PC-0823",
+      "name": "Vissco Emergency Splint Leg (Long)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 950,
+      "variant": "Long"
+    },
+    {
+      "sku": "PC-0824",
+      "name": "Vissco Emergency Splint Leg (Short)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 660,
+      "variant": "Short"
+    },
+    {
+      "sku": "PC-0706",
+      "name": "Vissco Hinged Knee Caps",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 695,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0718A",
+      "name": "Vissco Hinged Elastic Knee Support with Open Patella (Back Closure)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1500,
+      "variant": "Sizes XS, S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0718B",
+      "name": "Vissco Hinged Elastic Knee Support with Open Patella (Front Closure)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1500,
+      "variant": "Sizes XS, S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1404A",
+      "name": "Vissco Neoprene Hinged Patella Knee Brace (Closed Type)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1750,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1404B",
+      "name": "Vissco Neoprene Hinged Patella Knee Brace (Open Type)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 1750,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1431",
+      "name": "Vissco Neoprene Hinged Knee Stabilizer",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 2250,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-5712",
+      "name": "Vissco Patella & Ligament Assisted Knee Support with Silicone Pressure Pad",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 2200,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0755",
+      "name": "Vissco ROM Knee Brace (Fixed Height)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Knee & Calf Supports",
+      "brand": "Vissco",
+      "price": 2650,
+      "variant": "Universal"
+    },
+
+    {
+      "sku": "PC-0708",
+      "name": "Vissco Ankle Binder",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 365,
+      "variant": "Standard or Special"
+    },
+    {
+      "sku": "PC-2707",
+      "name": "Vissco 2D Ankle Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 450,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-1401",
+      "name": "Vissco Neoprene Ankle Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 710,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2709",
+      "name": "Vissco 3D Ankle Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 420,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2710",
+      "name": "Vissco 3D Ankle Support with Gel Padding",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 625,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-5713",
+      "name": "Vissco Ankle Support with Silicone Pressure Pad",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 2100,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-2708",
+      "name": "Vissco Ankler Ankle Support",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 360,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0709",
+      "name": "Vissco Anklet",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 385,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0740",
+      "name": "Vissco Ankle Foot Orthosis (AFO)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 1150,
+      "variant": "Sizes XS, S, M, L"
+    },
+    {
+      "sku": "PC-0743",
+      "name": "Vissco Foot Drop Support with Padding",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 1360,
+      "variant": "Sizes XS, S, M, L"
+    },
+    {
+      "sku": "PC-0720",
+      "name": "Vissco Ankle Stirrup Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 975,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0721",
+      "name": "Vissco Air Ankle Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 1250,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-2720",
+      "name": "Vissco Rigid Ankle Brace",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 850,
+      "variant": "Sizes S, M, L, XL, XXL"
+    },
+    {
+      "sku": "PC-0744",
+      "name": "Vissco Foot Raiser",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 600,
+      "variant": "Universal"
+    },
+    {
+      "sku": "PC-0828",
+      "name": "Vissco Cast Cover Leg (Up to Ankle)",
+      "category": "Orthopaedic Supports",
+      "subcategory": "Ankle & Foot Supports",
+      "brand": "Vissco",
+      "price": 490,
+      "variant": "Universal"
     }
   ]
 }
