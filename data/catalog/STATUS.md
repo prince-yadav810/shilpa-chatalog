@@ -10,21 +10,26 @@ Who is doing what, so the same pages don't get extracted twice.
 | `Lakme PRO Skin TBF_Consolidated_03-10-2024_Lowres.pdf` | 86 | `lakme-pro-skin.json` | **Gemini** | **done** (210 products) |
 | `LAKME_BOOKLET_TBF_Consolidated_2024.pdf` | 120 | `lakme-booklet.json` | **Gemini** | **next** — one product per page, MRP/Margin/TUR. Many pages print no BP code: omit those rows rather than inventing a SKU |
 | `Pro NON Colors MOC 8'26.pdf` | 48 | `lakme-pro-non-colors.json` | **Gemini** | **done** (4 products) |
-| `SKIN FOLDER-2024.pdf` | 46 | — | — | **skip** — feature grid, no codes or prices |
-
-**Imported: 425 products.** 34 rows were removed as duplicates — the Pond's PRO
-and Lakme PRO Skin PDFs list the same products. 28 of those 34 pairs agreed
-exactly on price, which is good evidence both extractions are sound; the 6 that
-disagree are listed in the handover notes.
-
-**Images: 313 of 425.** See [docs/IMAGES.md](../../docs/IMAGES.md) for why the
-rest are blank and how to fill them.
 | `Pond's PRO TBF-2024.pdf` | 11 | `ponds-pro.json` | **Gemini** | **done** (33 products) |
+| `SKIN FOLDER-2024.pdf` | 46 | — | — | **skip** — marketing slide deck, no codes or prices |
 | `Lakme Skin Grid April 24.pdf` | 18 | — | — | **skip** — feature grid, no codes or prices |
 | `Lakme Color Grid   MARCH 24.pdf` | 17 | — | — | **skip** — feature grid, no codes or prices |
 
 Claude keeps `vissco-osg.json` to avoid two people editing one file. Gemini takes
 whole untouched PDFs, one per session, writing a new file each time.
+
+## Where things stand
+
+**Live at https://shilpa-catalog.vercel.app** — 425 products, 355 with images,
+on Supabase. Every later import updates the live site.
+
+34 rows were removed as duplicates: the Pond's PRO and Lakme PRO Skin PDFs list
+the same products. 28 of those 34 pairs agreed exactly on price, which is good
+evidence both extractions are sound; the 6 that disagree are in the handover
+notes for the shop to confirm.
+
+Images: see [docs/IMAGES.md](../../docs/IMAGES.md) for how the remaining 70 break
+down and why they're deliberately blank rather than guessed at.
 
 ## Conventions already set
 

@@ -4,6 +4,14 @@ A product catalog for Shilpa Medical & General Stores. Customers browse the shop
 range and send their order to the shop on WhatsApp — there is no checkout, no
 payment, and no customer account. Staff manage the catalog through an admin panel.
 
+## Live
+
+**https://shilpa-catalog.vercel.app** — admin at `/admin/login`.
+
+Hosted on Vercel, database on Supabase (`ap-northeast-1`), images on Cloudinary.
+Deploys on push to `main`; a catalog re-import updates the live site with no
+redeploy needed.
+
 ## Stack
 
 Next.js 15 (App Router) · TypeScript · Tailwind · Prisma · PostgreSQL · Cloudinary · Vercel
