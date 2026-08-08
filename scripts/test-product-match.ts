@@ -15,6 +15,7 @@ type Case = {
   ourBrand?: string;
   ourSku?: string;
   ourVariant?: string;
+  codeMatched?: boolean;
   theirName: string;
   theirBrand?: string;
   expect: "accept" | "reject";
@@ -107,6 +108,38 @@ const CASES: Case[] = [
     expect: "reject",
   },
 
+  // --- code hit on the manufacturer's own store: spelling must not block ---
+  {
+    label: "code hit, British vs American spelling",
+    ourName: "Vissco Avanti Plus - T Shape Aluminium Quadripod Stick",
+    ourBrand: "Vissco",
+    ourSku: "PC-2909",
+    codeMatched: true,
+    theirName: "Avanti Plus - T Shape Aluminum Quadripod Stick | Lightweight Walking Stick",
+    theirBrand: "Vissco",
+    expect: "accept",
+  },
+  {
+    label: "code hit, singular vs plural (Orthosis/Orthoses)",
+    ourName: "Vissco Ankle Foot Orthosis (AFO)",
+    ourBrand: "Vissco",
+    ourSku: "PC-0740",
+    codeMatched: true,
+    theirName: "Ankle Foot Orthoses (AFO) | Maintains and Supports Foot to prevent Foot Drop",
+    theirBrand: "Vissco",
+    expect: "accept",
+  },
+  {
+    label: "code hit still rejects a different version (Astra vs Astra Max)",
+    ourName: "Vissco Astra Elbow Crutch",
+    ourBrand: "Vissco",
+    ourSku: "PC-0904BP",
+    codeMatched: true,
+    theirName: "Astra Max Elbow Crutches, With Adjustable Height & Movable Elbow Support",
+    theirBrand: "Vissco",
+    expect: "reject",
+  },
+
   // --- correct matches that must keep working ---
   {
     label: "exact product, verbose marketplace title",
@@ -150,6 +183,7 @@ for (const c of CASES) {
     ourBrand: c.ourBrand,
     ourSku: c.ourSku,
     ourVariant: c.ourVariant,
+    codeMatched: c.codeMatched,
     theirName: c.theirName,
     theirBrand: c.theirBrand,
   });

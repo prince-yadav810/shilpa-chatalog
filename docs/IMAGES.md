@@ -1,6 +1,6 @@
 # Product images
 
-313 of 425 products have an image (74%). All are stored on our own Cloudinary
+355 of 425 products have an image (84%). All are stored on our own Cloudinary
 account — nothing is hotlinked. That matters: the demo linked directly to
 `visscocore.com`, and that domain no longer resolves at all, so every one of
 those images would be a broken box today.
@@ -9,11 +9,11 @@ those images would be a broken box today.
 
 | Brand | With image | Source |
 |---|---|---|
-| Vissco | 173 / 212 | `www.vissco.com` WooCommerce Store API |
-| Lakme | 113 / 148 | `www.lakmeindia.com` Shopify feed |
+| Vissco | 200 / 212 | `www.vissco.com` WooCommerce API + `vissconext.com` Shopify feed |
+| Lakme | 118 / 148 | `www.lakmeindia.com` Shopify feed, 1mg fallback |
 | Pond's | 27 / 41 | `www.ponds.in` Shopify feed |
-| Simple | 0 / 4 | `simpleskincare.in` feed harvested, no code matches |
-| Dove, Vaseline, Novology | 0 / 20 | no public feed found |
+| Simple | 3 / 4 | `simpleskincare.in` feed, 1mg fallback |
+| Dove, Vaseline, Novology | 7 / 20 | no public feed; found via 1mg where verifiable |
 
 Matching is by article code wherever possible — Lakme's Shopify variant SKU
 `27309` is the same `BP CODE 27309` printed in the distributor PDF, so it's an

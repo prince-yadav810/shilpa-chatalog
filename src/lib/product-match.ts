@@ -64,11 +64,25 @@ export function packSizes(text: string): string[] {
  * Plus Elbow Crutch" are two products, as are the tinted and untinted
  * sunscreens.
  */
-const QUALIFIERS = new Set([
-  "plus", "pro", "max", "mini", "lite", "light", "advance", "advanced",
-  "premium", "tinted", "matte", "sensitive", "intense", "extra", "ultra",
-  "junior", "child", "adult", "kid", "baby",
+/**
+ * Model tiers and formulation markers. Checked in BOTH directions: if either
+ * side says "Max" or "Tinted" and the other doesn't, they are different
+ * products. "Astra" and "Astra Max" are separate SKUs at separate prices.
+ */
+const TIER_QUALIFIERS = new Set([
+  "plus", "pro", "max", "mini", "lite", "advance", "advanced", "premium",
+  "tinted", "matte", "intense", "ultra",
+]);
+
+/**
+ * Descriptive words. Only checked when *we* use them, because marketplace
+ * titles pad with marketing copy — "Light Weight & Height Adjustable" would
+ * otherwise read as a "light" variant, and a title mentioning "Left/Right"
+ * as a left-only product.
+ */
+const DESCRIPTIVE_QUALIFIERS = new Set([
   "left", "right", "long", "short", "open", "closed", "hinged",
+  "sensitive", "extra", "junior", "child", "adult", "kid", "baby",
 ]);
 
 /**
@@ -92,6 +106,18 @@ export type MatchInput = {
   theirName: string;
   /** The marketplace's brand/manufacturer fields, if it exposes them. */
   theirBrand?: string | null;
+  /**
+   * Set when the candidate was found by an exact article-code lookup on the
+   * manufacturer's own store, rather than by searching on name.
+   *
+   * A code hit is stronger evidence than word overlap, so the
+   * "every word must appear" rule is skipped — it otherwise rejects the same
+   * product over spelling ("Aluminium"/"Aluminum") or inflection
+   * ("Orthosis"/"Orthoses"). The brand, version-qualifier and pack-size checks
+   * still apply, because those distinguish real product variants: "Astra" and
+   * "Astra Max" share neither a product nor a photo.
+   */
+  codeMatched?: boolean;
 };
 
 export type MatchResult =
@@ -120,17 +146,25 @@ export function isSameProduct(input: MatchInput): MatchResult {
 
   // 2. Every distinguishing word of our name must appear.
   //    "Soft Creme" is not satisfied by "Vit E Creme".
-  const ourTokens = tokenise(input.ourName);
-  const missing = ourTokens.filter((t) => !GENERIC.has(t) && !theirTokens.has(t));
-  if (missing.length > 0) {
-    return { ok: false, reason: `missing "${missing.join('", "')}"` };
+  //
+  //    Brand words are excluded — step 1 already settled the brand, and a
+  //    single-brand store omits it from titles ("Boxer's Support Brace" on
+  //    vissconext.com is obviously a Vissco product).
+  const brandTokenSet = new Set(tokenise(input.ourBrand ?? ""));
+  const ourTokens = tokenise(input.ourName).filter((t) => !brandTokenSet.has(t));
+
+  if (!input.codeMatched) {
+    const missing = ourTokens.filter((t) => !GENERIC.has(t) && !theirTokens.has(t));
+    if (missing.length > 0) {
+      return { ok: false, reason: `missing "${missing.join('", "')}"` };
+    }
   }
 
   // 3. Version qualifiers must be symmetric. Checked in both directions,
   //    because the marketplace title is usually the more specific one:
   //    "Astra Elbow Crutch" must not match "Astra *Plus* Elbow Crutch".
   const ourSet = new Set(ourTokens);
-  for (const q of QUALIFIERS) {
+  for (const q of TIER_QUALIFIERS) {
     const ourHas = ourSet.has(q);
     const theirHas = theirTokens.has(q);
     if (ourHas !== theirHas) {
@@ -138,6 +172,11 @@ export function isSameProduct(input: MatchInput): MatchResult {
         ok: false,
         reason: `"${q}" is on ${ourHas ? "ours" : "theirs"} only`,
       };
+    }
+  }
+  for (const q of DESCRIPTIVE_QUALIFIERS) {
+    if (ourSet.has(q) && !theirTokens.has(q)) {
+      return { ok: false, reason: `we specify "${q}", they don't` };
     }
   }
 
