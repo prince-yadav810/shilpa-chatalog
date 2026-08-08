@@ -72,6 +72,22 @@ function checkFile(file: string, seenGlobally: Map<string, string>): Finding[] {
       });
     }
     seenGlobally.set(sku, file);
+
+    /*
+     * Also compare the bare article code, ignoring the brand prefix. Two
+     * suppliers' PDFs can list the same product, and "LKM-27714" vs
+     * "SMP-27714" are different strings but the same tube on the shelf —
+     * which would ship as two separate products on the storefront.
+     */
+    const bare = sku.replace(/^[A-Z]+-/i, "").toUpperCase();
+    const bareOwner = seenGlobally.get(`bare:${bare}`);
+    if (bareOwner && bareOwner !== file) {
+      findings.push({
+        level: "error",
+        message: `product code ${bare} ("${sku}") also appears in ${bareOwner} — same product listed twice`,
+      });
+    }
+    seenGlobally.set(`bare:${bare}`, file);
   }
 
   // --- category tree consistency ---

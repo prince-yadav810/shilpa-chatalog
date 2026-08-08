@@ -17,7 +17,9 @@
     "upload-images": "tsx scripts/upload-images.ts",
     "validate-catalog": "tsx scripts/validate-catalog.ts",
     "fetch-vissco-index": "tsx scripts/fetch-vissco-index.ts",
-    "match-vissco-images": "tsx scripts/match-vissco-images.ts"
+    "match-vissco-images": "tsx scripts/match-vissco-images.ts",
+    "fetch-shopify-index": "tsx scripts/fetch-shopify-index.ts",
+    "match-shopify-images": "tsx scripts/match-shopify-images.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
