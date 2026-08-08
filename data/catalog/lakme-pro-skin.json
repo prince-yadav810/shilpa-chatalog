@@ -1248,7 +1248,8 @@
       "price": 299,
       "variant": "120ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184476/shilpa/products/lakme-lakme-deep-cleanser-lkm-19991.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1260,7 +1261,8 @@
       "price": 150,
       "variant": "60ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184477/shilpa/products/lakme-lakme-deep-cleanser-lkm-19336.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1476,7 +1478,8 @@
       "price": 259,
       "variant": "100ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184478/shilpa/products/simple-simple-skin-to-skin-refreshing-facial-wash-lkm-27714.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1488,7 +1491,8 @@
       "price": 259,
       "variant": "100ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184480/shilpa/products/simple-simple-to-kind-moisturising-facial-wash-lkm-46014.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1500,7 +1504,8 @@
       "price": 259,
       "variant": "100ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184481/shilpa/products/simple-simple-protect-n-glow-vitamin-c-glow-facial-wash-lkm-27829.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1512,7 +1517,8 @@
       "price": 100,
       "variant": "20ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184484/shilpa/products/lakme-lakme-blush-and-glow-lemon-sheet-mask-lkm-27141.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1536,7 +1542,8 @@
       "price": 100,
       "variant": "20ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184486/shilpa/products/lakme-lakme-blush-and-glow-strawberry-sheet-mask-lkm-27148.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1560,7 +1567,8 @@
       "price": 100,
       "variant": "20ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184488/shilpa/products/lakme-lakme-blush-and-glow-pomegranate-sheet-mask-lkm-27139.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1908,7 +1916,8 @@
       "price": 499,
       "variant": "200g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184489/shilpa/products/vaseline-vaseline-deep-moisture-body-cream-lkm-27842.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1920,7 +1929,8 @@
       "price": 499,
       "variant": "180g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184491/shilpa/products/vaseline-vaseline-light-hydrate-lotion-lkm-27847.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -1992,7 +2002,8 @@
       "price": 499,
       "variant": "400ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184493/shilpa/products/dove-dove-supple-bounce-lotion-lkm-27403.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -2004,7 +2015,8 @@
       "price": 130,
       "variant": "100ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184494/shilpa/products/dove-dove-supple-bounce-lotion-lkm-27404.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -2040,7 +2052,8 @@
       "price": 700,
       "variant": "30g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184495/shilpa/products/novology-novology-acne-spot-corrector-gel-lkm-27680.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -2088,7 +2101,8 @@
       "price": 850,
       "variant": "30ml",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184497/shilpa/products/novology-novology-pigmentation-serum-lkm-27687.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {
@@ -2124,7 +2138,8 @@
       "price": 450,
       "variant": "180g",
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184498/shilpa/products/novology-novology-sensitive-skin-cleanser-lkm-27683.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {

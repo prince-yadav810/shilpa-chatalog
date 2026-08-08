@@ -33,6 +33,18 @@ export const catalogRowSchema = z.object({
    * URL, and only Cloudinary URLs should be imported.
    */
   imageUrl: z.string().trim().url().optional().nullable(),
+  /**
+   * Where the image came from — "vissco.com", "lakmeindia.com", "1mg".
+   * Provenance matters when a photo later turns out to be wrong, or when a
+   * source has to be re-checked.
+   */
+  imageSource: z.string().trim().optional().nullable(),
+  /**
+   * True when the price was looked up online rather than read from the
+   * distributor PDF. These are a marketplace's selling price, not Shilpa's,
+   * and need confirming in the admin panel before the shop relies on them.
+   */
+  priceProvisional: z.boolean().optional(),
   inStock: z.boolean().optional(),
 });
 

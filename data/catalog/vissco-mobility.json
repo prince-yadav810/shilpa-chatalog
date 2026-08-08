@@ -900,7 +900,8 @@
       "price": 5650,
       "variant": null,
       "description": null,
-      "imageUrl": null,
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184473/shilpa/products/vissco-vissco-comfort-shower-chair-pc-0980.avif",
+      "imageSource": "1mg",
       "inStock": true
     },
     {

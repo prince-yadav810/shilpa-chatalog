@@ -60,7 +60,9 @@
       "subcategory": "Head & Neck Supports",
       "brand": "Vissco",
       "price": 860,
-      "variant": "Sizes S, M, L, XL, XXL"
+      "variant": "Sizes S, M, L, XL, XXL",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184463/shilpa/products/vissco-vissco-firm-cervical-collar-with-chin-support-pc-0310.avif",
+      "imageSource": "1mg"
     },
     {
       "sku": "PC-0314",
@@ -355,7 +357,9 @@
       "subcategory": "Wrist, Elbow & Finger Supports",
       "brand": "Vissco",
       "price": 310,
-      "variant": "Universal"
+      "variant": "Universal",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184464/shilpa/products/vissco-vissco-swan-finger-splint-pc-0622.avif",
+      "imageSource": "1mg"
     },
     {
       "sku": "PC-0611",
@@ -761,7 +765,9 @@
       "subcategory": "Back Supports",
       "brand": "Vissco",
       "price": 1700,
-      "variant": "Sizes S, M, L, XL, XXL"
+      "variant": "Sizes S, M, L, XL, XXL",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184466/shilpa/products/vissco-vissco-industrial-back-support-pc-0114.avif",
+      "imageSource": "1mg"
     },
     {
       "sku": "PC-0120",
@@ -937,7 +943,9 @@
       "subcategory": "Knee & Calf Supports",
       "brand": "Vissco",
       "price": 585,
-      "variant": "Sizes S, M, L, XL, XXL"
+      "variant": "Sizes S, M, L, XL, XXL",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786184468/shilpa/products/vissco-vissco-3d-knee-cap-with-donut-padding-pc-2705.avif",
+      "imageSource": "1mg"
     },
     {
       "sku": "PC-2711",
