@@ -159,19 +159,25 @@ function checkFile(file: string, seenGlobally: Map<string, string>): Finding[] {
   for (const row of products) {
     const where = `${row.sku} (${row.name})`;
 
-    if (row.price < MIN_SENSIBLE_PRICE) {
+    // A row may legitimately have no price yet (see catalog-file.ts).
+    if (row.price == null) {
+      findings.push({
+        level: "warn",
+        message: `${where}: no price yet — will not import until one is set`,
+      });
+    } else if (row.price < MIN_SENSIBLE_PRICE) {
       findings.push({
         level: "error",
         message: `${where}: ₹${row.price} looks like a misread — check the printed MRP`,
       });
     }
-    if (row.price > MAX_SENSIBLE_PRICE) {
+    if (row.price != null && row.price > MAX_SENSIBLE_PRICE) {
       findings.push({
         level: "error",
         message: `${where}: ₹${row.price} looks like a misread — check for a stray digit`,
       });
     }
-    if (row.mrp != null && row.mrp <= row.price) {
+    if (row.mrp != null && row.price != null && row.mrp <= row.price) {
       findings.push({
         level: "error",
         message: `${where}: mrp ₹${row.mrp} is not above price ₹${row.price} — omit mrp instead`,
@@ -208,9 +214,13 @@ function checkFile(file: string, seenGlobally: Map<string, string>): Finding[] {
   }
   for (const [sub, rows] of bySub) {
     if (rows.length < 5) continue;
-    const sorted = [...rows].sort((a, b) => a.price - b.price);
+    const withPrice = rows.filter(
+      (r): r is typeof r & { price: number } => r.price != null,
+    );
+    if (withPrice.length < 5) continue;
+    const sorted = [...withPrice].sort((a, b) => a.price - b.price);
     const median = sorted[Math.floor(sorted.length / 2)].price;
-    for (const row of rows) {
+    for (const row of withPrice) {
       if (row.price < median / 10 || row.price > median * 10) {
         findings.push({
           level: "warn",

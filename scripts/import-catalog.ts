@@ -25,9 +25,12 @@ const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
 const filePath = args.find((a) => !a.startsWith("--"));
 
+/** Only rows that carry a price reach the write phase — see `priced` below. */
+type PricedRow = CatalogRow & { price: number };
+
 type Plan = {
-  creates: CatalogRow[];
-  updates: { row: CatalogRow; changes: string[] }[];
+  creates: PricedRow[];
+  updates: { row: PricedRow; changes: string[] }[];
   unchanged: number;
   newCategories: string[];
   newBrands: string[];
@@ -118,7 +121,17 @@ async function main() {
     warnings: [],
   };
 
-  for (const row of file.products) {
+  /*
+   * Product.price is not nullable in the database, so a row without a price
+   * cannot be created. Rather than invent a figure, hold it back and name it —
+   * the next import picks it up once a price is filled in.
+   */
+  const priceless = file.products.filter((r) => r.price == null);
+  const priced = file.products.filter(
+    (r): r is typeof r & { price: number } => r.price != null,
+  );
+
+  for (const row of priced) {
     if (row.imageUrl && !row.imageUrl.includes("res.cloudinary.com")) {
       plan.warnings.push(
         `${row.sku}: image is not on Cloudinary yet — run "npm run upload-images -- ${filePath}" first`,
@@ -157,7 +170,7 @@ async function main() {
   }
 
   // Which categories/brands the file needs that don't exist yet.
-  for (const row of file.products) {
+  for (const row of priced) {
     const parentKey = `root::${row.category.toLowerCase()}`;
     if (!catByKey.has(parentKey) && !plan.newCategories.includes(row.category)) {
       plan.newCategories.push(row.category);
@@ -192,6 +205,14 @@ async function main() {
     }
     if (plan.updates.length > 40)
       console.log(`    …and ${plan.updates.length - 40} more`);
+  }
+
+  if (priceless.length > 0) {
+    console.log(
+      `\n  held back — no price yet (${priceless.length}); they import once priced:`,
+    );
+    for (const r of priceless.slice(0, 15)) console.log(`    ${r.sku}  ${r.name}`);
+    if (priceless.length > 15) console.log(`    …and ${priceless.length - 15} more`);
   }
 
   if (plan.warnings.length > 0) {

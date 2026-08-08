@@ -24,7 +24,8 @@
     "marketplace-images": "tsx scripts/fetch-marketplace-images.ts",
     "fetch-ecommerce-images": "tsx scripts/fetch-ecommerce-images.ts",
     "set-db-url": "tsx scripts/set-db-url.ts",
-    "search-missing": "tsx scripts/search-missing-images.ts"
+    "search-missing": "tsx scripts/search-missing-images.ts",
+    "amul-prices": "tsx scripts/fetch-amul-prices.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

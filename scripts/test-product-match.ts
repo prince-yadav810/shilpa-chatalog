@@ -140,6 +140,43 @@ const CASES: Case[] = [
     expect: "reject",
   },
 
+  // --- Amul: flavour names sit very close together ---
+  {
+    label: "Vanilla Royale is not Vanilla Magic",
+    ourName: "Amul Vanilla Royale",
+    ourBrand: "Amul",
+    ourVariant: "500 mL",
+    theirName: "Amul Vanilla Magic Ice Cream 500 ml",
+    theirBrand: "Amul",
+    expect: "reject",
+  },
+  {
+    label: "plain Chocobar is not Dark Chocolate Chocobar",
+    ourName: "Amul Chocobar",
+    ourBrand: "Amul",
+    ourVariant: "60 mL",
+    theirName: "Amul Dark Chocolate Chocobar Ice Cream Stick 60 ml",
+    theirBrand: "Amul",
+    expect: "reject",
+  },
+  {
+    label: "750 mL is not 500 mL",
+    ourName: "Amul Kesar Pista Royale",
+    ourBrand: "Amul",
+    ourVariant: "750 mL",
+    theirName: "Amul Kesar Pista Royale Ice Cream 500 ml",
+    theirBrand: "Amul",
+    expect: "reject",
+  },
+  {
+    label: "a competitor's tub is rejected on brand",
+    ourName: "Amul Butterscotch Bliss",
+    ourBrand: "Amul",
+    theirName: "Kwality Wall's Butterscotch Bliss Ice Cream Tub",
+    theirBrand: "Kwality Wall's",
+    expect: "reject",
+  },
+
   // --- correct matches that must keep working ---
   {
     label: "exact product, verbose marketplace title",

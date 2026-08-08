@@ -72,6 +72,10 @@ export function packSizes(text: string): string[] {
 const TIER_QUALIFIERS = new Set([
   "plus", "pro", "max", "mini", "lite", "advance", "advanced", "premium",
   "tinted", "matte", "intense", "ultra",
+  // Confectionery formulations. "Chocobar" and "Dark Chocolate Chocobar" are
+  // two products at two prices; "chocolate" alone is too generic to carry this,
+  // so the qualifier has to.
+  "dark", "white",
 ]);
 
 /**

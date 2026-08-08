@@ -27,8 +27,8 @@ const OUT =
 
 /** Domains we trust, best first. Index position becomes the tier. */
 const TIERS: { label: string; hosts: string[] }[] = [
-  { label: "official", hosts: ["vissco.com", "vissconext.com", "connect.vissco.com", "lakmeindia.com", "ponds.in", "simpleskincare.in", "unilever.com"] },
-  { label: "marketplace", hosts: ["1mg.com", "amazon.in", "flipkart.com", "blinkit.com", "zeptonow.com", "netmeds.com", "pharmeasy.in", "apollopharmacy.in", "wheelchairindia.com", "medineeds.in", "surginatal.com", "nykaa.com", "purplle.com"] },
+  { label: "official", hosts: ["vissco.com", "vissconext.com", "connect.vissco.com", "lakmeindia.com", "ponds.in", "simpleskincare.in", "unilever.com", "amul.com", "amulicecream.in"] },
+  { label: "marketplace", hosts: ["1mg.com", "amazon.in", "flipkart.com", "blinkit.com", "zeptonow.com", "netmeds.com", "pharmeasy.in", "apollopharmacy.in", "wheelchairindia.com", "medineeds.in", "surginatal.com", "nykaa.com", "purplle.com", "bigbasket.com", "jiomart.com", "swiggy.com", "dmart.in", "licious.in"] },
 ];
 
 function tierOf(url: string): { tier: number; label: string } {
