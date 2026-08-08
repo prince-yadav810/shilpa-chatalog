@@ -5,10 +5,10 @@ Who is doing what, so the same pages don't get extracted twice.
 
 | PDF (`data/source-pdfs/`) | Pages | Output file | Owner | Status |
 |---|---|---|---|---|
-| `Vissco OSG Catalogue with MRP (1).pdf` | 16 | `vissco-osg.json` | Claude | pages 4–8 done (129 products); 9–16 left |
+| `Vissco OSG Catalogue with MRP (1).pdf` **pages 9–16 only** | 8 | `vissco-osg-2.json` | **Gemini** | **next** — pages 1–8 already done in `vissco-osg.json` |
 | `Vissco Mobility MRP.pdf` | 12 | `vissco-mobility.json` | **Gemini** | **done** (83 products) |
 | `Lakme PRO Skin TBF_Consolidated_03-10-2024_Lowres.pdf` | 86 | `lakme-pro-skin.json` | **Gemini** | **done** (210 products) |
-| `LAKME_BOOKLET_TBF_Consolidated_2024.pdf` | 120 | `lakme-booklet.json` | **Gemini** | not started |
+| `LAKME_BOOKLET_TBF_Consolidated_2024.pdf` | 120 | `lakme-booklet.json` | **Gemini** | **next** — one product per page, MRP/Margin/TUR. Many pages print no BP code: omit those rows rather than inventing a SKU |
 | `Pro NON Colors MOC 8'26.pdf` | 48 | `lakme-pro-non-colors.json` | **Gemini** | **done** (4 products) |
 | `SKIN FOLDER-2024.pdf` | 46 | — | — | **skip** — feature grid, no codes or prices |
 

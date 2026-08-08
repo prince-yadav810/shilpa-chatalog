@@ -7,6 +7,18 @@ quality drops when several are mixed together.
 Replace `<PDF FILENAME>` and `<OUTPUT FILENAME>` before sending. Both are listed
 for each file in [`data/catalog/STATUS.md`](../data/catalog/STATUS.md).
 
+**If STATUS.md gives a page range for the file, add this line to the prompt:**
+
+> Only extract pages `<FROM>`–`<TO>`. The earlier pages are already done and
+> live in another file. For categories and subcategories, reuse the exact names
+> listed below rather than inventing new ones — a spelling difference creates a
+> second, duplicate-looking section on the website.
+>
+> Existing subcategories under **Orthopaedic Supports**: Head & Neck Supports ·
+> Wrist, Elbow & Finger Supports · Chest, Rib & Sternal Supports · Shoulder
+> Supports · Abdomen & Pelvic Supports · Back Supports · Knee & Calf Supports ·
+> Ankle & Foot Supports
+
 ---
 
 You are extracting a distributor product catalog into structured JSON for a
@@ -46,8 +58,12 @@ wrong product code goes live in front of customers and gets ordered.
 Lakme calls it a BP CODE), with spaces replaced by hyphens: `PC 0301A` →
 `PC-0301A`, `27850` → `LKM-27850`. This is the key that makes next month's
 re-import an update rather than a duplicate, so it must be exact and it must be
-unique within the file. **Never invent one.** If a product genuinely has no
-printed code, skip the row and list it under `notes`.
+unique within the file.
+
+**Never invent a code.** If a product has no printed code, leave the row out
+entirely and list it under `notes` instead. A made-up code looks fine today and
+silently becomes a duplicate product on the next import, because nothing will
+match it. Products without codes get added by hand in the admin panel.
 
 **`name`** — start with the brand, then the product name as printed. Expand
 obvious abbreviations (`W/o` → `without`, `Adj.` → `Adjustable`) and fix clear
