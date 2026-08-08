@@ -15,7 +15,9 @@
     "create-admin": "tsx scripts/create-admin.ts",
     "import-catalog": "tsx scripts/import-catalog.ts",
     "upload-images": "tsx scripts/upload-images.ts",
-    "validate-catalog": "tsx scripts/validate-catalog.ts"
+    "validate-catalog": "tsx scripts/validate-catalog.ts",
+    "fetch-vissco-index": "tsx scripts/fetch-vissco-index.ts",
+    "match-vissco-images": "tsx scripts/match-vissco-images.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
