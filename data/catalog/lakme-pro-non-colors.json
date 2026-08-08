@@ -1,0 +1,55 @@
+{
+  "source": "Pro NON-COLORS MOC 8-2026",
+  "sourceDate": "2026-08-01",
+  "notes": "This is an internal sales/trade presentation, not a standard catalog. Almost no product codes were printed. Extracted the 4 'Simple' brand facewashes by cross-referencing SKUs from the 'Repeat Rate' table (pg 16) with the MRPs from the 'Ops' tables (pg 28-29). Skipped all other items (Sunscreen, Sheet Masks, etc.) because they had no printed SKUs. SKUs prefixed SMP- and pack size removed from names for consistency with the other files; Face Wash merged into Face Cleansing.",
+  "products": [
+    {
+      "sku": "SMP-27714",
+      "name": "Simple Refreshing Facewash",
+      "category": "Skin Care",
+      "subcategory": "Face Cleansing",
+      "brand": "Simple",
+      "price": 275,
+      "variant": "100ml",
+      "description": null,
+      "imageUrl": null,
+      "inStock": true
+    },
+    {
+      "sku": "SMP-46014",
+      "name": "Simple Moisturising Facewash",
+      "category": "Skin Care",
+      "subcategory": "Face Cleansing",
+      "brand": "Simple",
+      "price": 275,
+      "variant": "100ml",
+      "description": null,
+      "imageUrl": null,
+      "inStock": true
+    },
+    {
+      "sku": "SMP-27829",
+      "name": "Simple Vit-C Facewash",
+      "category": "Skin Care",
+      "subcategory": "Face Cleansing",
+      "brand": "Simple",
+      "price": 275,
+      "variant": "100ml",
+      "description": null,
+      "imageUrl": null,
+      "inStock": true
+    },
+    {
+      "sku": "SMP-27661",
+      "name": "Simple Refreshing Facewash",
+      "category": "Skin Care",
+      "subcategory": "Face Cleansing",
+      "brand": "Simple",
+      "price": 149,
+      "variant": "50ml",
+      "description": null,
+      "imageUrl": null,
+      "inStock": true
+    }
+  ]
+}

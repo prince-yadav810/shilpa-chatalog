@@ -22,7 +22,7 @@ type Finding = { level: "error" | "warn"; message: string };
 
 /** Prices outside this range are almost always a decimal or OCR slip. */
 const MIN_SENSIBLE_PRICE = 10;
-const MAX_SENSIBLE_PRICE = 100_000;
+const MAX_SENSIBLE_PRICE = 200_000;
 
 function checkFile(file: string, seenGlobally: Map<string, string>): Finding[] {
   const findings: Finding[] = [];
