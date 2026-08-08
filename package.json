@@ -21,7 +21,8 @@
     "fetch-shopify-index": "tsx scripts/fetch-shopify-index.ts",
     "match-shopify-images": "tsx scripts/match-shopify-images.ts",
     "test-match": "tsx scripts/test-product-match.ts",
-    "marketplace-images": "tsx scripts/fetch-marketplace-images.ts"
+    "marketplace-images": "tsx scripts/fetch-marketplace-images.ts",
+    "set-db-url": "tsx scripts/set-db-url.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

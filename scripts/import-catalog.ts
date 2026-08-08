@@ -220,65 +220,71 @@ async function main() {
     (await prisma.brand.findMany({ select: { slug: true } })).map((b) => b.slug),
   );
 
-  await prisma.$transaction(async (tx) => {
-    const catCache = new Map(catByKey);
-    const brandCache = new Map(brandByName);
+  /*
+   * Categories and brands are resolved first, outside any transaction. There
+   * are only a handful of them and creating one is idempotent in effect — a
+   * re-run finds the existing row.
+   */
+  const catCache = new Map(catByKey);
+  const brandCache = new Map(brandByName);
 
-    async function ensureCategory(name: string, parentId: string | null) {
-      const key = `${parentId ?? "root"}::${name.toLowerCase()}`;
-      const hit = catCache.get(key);
-      if (hit) return hit;
+  async function ensureCategory(name: string, parentId: string | null) {
+    const key = `${parentId ?? "root"}::${name.toLowerCase()}`;
+    const hit = catCache.get(key);
+    if (hit) return hit;
 
-      const created = await tx.category.create({
-        data: {
-          name,
-          slug: uniqueAgainst(slugify(name), takenCatSlugs),
-          parentId,
-          sortOrder: catCache.size,
-        },
-      });
-      catCache.set(key, created);
-      return created;
-    }
+    const created = await prisma.category.create({
+      data: {
+        name,
+        slug: uniqueAgainst(slugify(name), takenCatSlugs),
+        parentId,
+        sortOrder: catCache.size,
+      },
+    });
+    catCache.set(key, created);
+    return created;
+  }
 
-    async function ensureBrand(name: string) {
-      const hit = brandCache.get(name.toLowerCase());
-      if (hit) return hit;
-      const created = await tx.brand.create({
-        data: { name, slug: uniqueAgainst(slugify(name), takenBrandSlugs) },
-      });
-      brandCache.set(name.toLowerCase(), created);
-      return created;
-    }
+  async function ensureBrand(name: string) {
+    const hit = brandCache.get(name.toLowerCase());
+    if (hit) return hit;
+    const created = await prisma.brand.create({
+      data: { name, slug: uniqueAgainst(slugify(name), takenBrandSlugs) },
+    });
+    brandCache.set(name.toLowerCase(), created);
+    return created;
+  }
 
-    async function resolve(row: CatalogRow) {
-      const parent = await ensureCategory(row.category, null);
-      const child = await ensureCategory(row.subcategory, parent.id);
-      const brand = row.brand ? await ensureBrand(row.brand) : null;
-      return { categoryId: child.id, brandId: brand?.id ?? null };
-    }
+  async function resolve(row: CatalogRow) {
+    const parent = await ensureCategory(row.category, null);
+    const child = await ensureCategory(row.subcategory, parent.id);
+    const brand = row.brand ? await ensureBrand(row.brand) : null;
+    return { categoryId: child.id, brandId: brand?.id ?? null };
+  }
 
-    for (const row of plan.creates) {
-      const { categoryId, brandId } = await resolve(row);
-      const data: Prisma.ProductCreateInput = {
-        name: row.name,
-        slug: uniqueAgainst(slugify(row.name), takenProductSlugs),
-        sku: row.sku,
-        price: row.price,
-        mrp: row.mrp ?? null,
-        variant: row.variant ?? null,
-        description: row.description ?? null,
-        imageUrl: row.imageUrl ?? null,
-        inStock: row.inStock ?? true,
-        category: { connect: { id: categoryId } },
-        ...(brandId ? { brand: { connect: { id: brandId } } } : {}),
-      };
-      await tx.product.create({ data });
-    }
+  const createData: Prisma.ProductCreateManyInput[] = [];
+  for (const row of plan.creates) {
+    const { categoryId, brandId } = await resolve(row);
+    createData.push({
+      name: row.name,
+      slug: uniqueAgainst(slugify(row.name), takenProductSlugs),
+      sku: row.sku,
+      price: row.price,
+      mrp: row.mrp ?? null,
+      variant: row.variant ?? null,
+      description: row.description ?? null,
+      imageUrl: row.imageUrl ?? null,
+      inStock: row.inStock ?? true,
+      categoryId,
+      brandId,
+    });
+  }
 
-    for (const { row } of plan.updates) {
-      const { categoryId, brandId } = await resolve(row);
-      await tx.product.update({
+  const updateOps = [];
+  for (const { row } of plan.updates) {
+    const { categoryId, brandId } = await resolve(row);
+    updateOps.push(
+      prisma.product.update({
         where: { sku: row.sku },
         data: {
           name: row.name,
@@ -293,9 +299,24 @@ async function main() {
           brandId,
           // slug is deliberately untouched — the product URL must survive edits.
         },
-      });
-    }
-  });
+      }),
+    );
+  }
+
+  /*
+   * One batched transaction rather than a row-at-a-time interactive one.
+   *
+   * The interactive version issued a separate round trip per product, which is
+   * fine locally but timed out against a hosted database in another region:
+   * 129 inserts took over three minutes. `createMany` sends them as a single
+   * statement, and the array form of `$transaction` pipelines the updates.
+   */
+  await prisma.$transaction([
+    ...(createData.length > 0
+      ? [prisma.product.createMany({ data: createData })]
+      : []),
+    ...updateOps,
+  ]);
 
   console.log(
     `\nDone. ${plan.creates.length} created, ${plan.updates.length} updated.\n`,
