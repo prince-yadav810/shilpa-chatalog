@@ -69,13 +69,6 @@ export default async function HomePage() {
         </p>
       </section>
 
-      {/* Quick-Commerce Horizontal Category 3D Logo Bar */}
-      {categories.length > 0 && (
-        <section className="my-4 border-b border-border/60 pb-3">
-          <CategoryBar categories={categories} />
-        </section>
-      )}
-
       {isEmpty && (
         <div className="mt-8">
           <EmptyState

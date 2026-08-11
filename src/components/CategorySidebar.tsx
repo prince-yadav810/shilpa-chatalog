@@ -24,7 +24,7 @@ export function CategorySidebar({
   const isAllActive = !activeSubcategorySlug;
 
   return (
-    <aside className="sticky top-16 z-20 flex h-[calc(100vh-4rem)] w-20 shrink-0 flex-col border-r border-border/80 bg-surface/95 backdrop-blur sm:w-24 md:w-56">
+    <aside className="sticky top-[135px] sm:top-[125px] z-20 flex h-[calc(100vh-8.5rem)] w-20 shrink-0 flex-col border-r border-border/80 bg-surface/95 backdrop-blur sm:w-24 md:w-56">
       {/* Header Label for Desktop */}
       <div className="hidden border-b border-border/60 p-3.5 md:block">
         <h2 className="font-heading text-sm font-semibold text-ink line-clamp-1">
