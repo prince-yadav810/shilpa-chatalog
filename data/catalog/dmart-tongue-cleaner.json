@@ -1,0 +1,52 @@
+{
+  "source": "DMart Online Tongue Cleaner Category Listing",
+  "sourceDate": "2026-08-11",
+  "notes": "Scraped from DMart category: Personal Care & Beauty -> Oral Care -> Tongue Cleaner. 3 products extracted.",
+  "products": [
+    {
+      "sku": "DMT-TC-APR140005583",
+      "skuGenerated": true,
+      "name": "Lexiis LXCH-006 Copper Tongue Cleaner - Round Handle",
+      "category": "Personal Care & Beauty",
+      "subcategory": "Tongue Cleaner",
+      "brand": "Lexiis",
+      "price": 99,
+      "mrp": 275,
+      "variant": "1 U",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786389627/shilpa/products/lexiis-lexiis-lxch-006-copper-tongue-cleaner-round-handle-dmt-tc-apr140005583.jpg",
+      "imageSource": "dmart.in",
+      "priceProvisional": true,
+      "inStock": true
+    },
+    {
+      "sku": "DMT-TC-APR140005589",
+      "skuGenerated": true,
+      "name": "Lexiis LXCH-004 Copper Tongue Cleaner",
+      "category": "Personal Care & Beauty",
+      "subcategory": "Tongue Cleaner",
+      "brand": "Lexiis",
+      "price": 59,
+      "mrp": 129,
+      "variant": "1 U",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786389628/shilpa/products/lexiis-lexiis-lxch-004-copper-tongue-cleaner-dmt-tc-apr140005589.jpg",
+      "imageSource": "dmart.in",
+      "priceProvisional": true,
+      "inStock": true
+    },
+    {
+      "sku": "DMT-TC-APR140005588",
+      "skuGenerated": true,
+      "name": "Lexiis LXCH-007 Stainless Steel Tongue Cleaner - Round Handle",
+      "category": "Personal Care & Beauty",
+      "subcategory": "Tongue Cleaner",
+      "brand": "Lexiis",
+      "price": 49,
+      "mrp": 150,
+      "variant": "1 U",
+      "imageUrl": "https://res.cloudinary.com/glviggky/image/upload/v1786389629/shilpa/products/lexiis-lexiis-lxch-007-stainless-steel-tongue-cleaner-round-handle-dmt-tc-apr140005588.jpg",
+      "imageSource": "dmart.in",
+      "priceProvisional": true,
+      "inStock": true
+    }
+  ]
+}
