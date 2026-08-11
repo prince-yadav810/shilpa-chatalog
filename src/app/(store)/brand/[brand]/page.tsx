@@ -23,6 +23,7 @@ export async function generateStaticParams() {
   const brands = await prisma.brand.findMany({
     where: { isActive: true, products: { some: {} } },
     select: { slug: true },
+    take: 25,
   });
   return brands.map((b) => ({ brand: b.slug }));
 }

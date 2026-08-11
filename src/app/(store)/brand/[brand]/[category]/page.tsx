@@ -55,6 +55,7 @@ export async function generateStaticParams() {
         select: { slug: true, parent: { select: { slug: true } } },
       },
     },
+    take: 50,
   });
 
   const seen = new Set<string>();
