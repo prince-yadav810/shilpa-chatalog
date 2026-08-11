@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { productCardSelect } from "@/lib/queries";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
+import { CategoryBar } from "@/components/CategoryBar";
 
 export const revalidate = 300;
 
@@ -46,9 +47,9 @@ export default async function HomePage() {
   return (
     <>
       {settings.promoBannerText && (
-        <div className="mb-6 border border-accent/40 bg-accent/5 px-4 py-3 text-center text-caption text-ink">
+        <div className="mb-4 border border-accent/40 bg-accent/5 px-4 py-2.5 text-center text-caption text-ink rounded-xl">
           {settings.promoBannerLink ? (
-            <Link href={settings.promoBannerLink} className="hover:text-brand">
+            <Link href={settings.promoBannerLink} className="hover:text-brand font-medium">
               {settings.promoBannerText}
             </Link>
           ) : (
@@ -57,20 +58,23 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/*
-        The hero states plainly what the site does and how ordering works, then
-        gets out of the way — its job is to get someone browsing within a few
-        seconds (DESIGN_SYSTEM.md §Layout).
-      */}
-      <section className="border-b border-border pb-8">
+      {/* Hero Section */}
+      <section className="border-b border-border pb-6">
         <h1 className="max-w-2xl text-balance font-heading text-hero text-brand">
           Everything {settings.storeName} stocks, a message away.
         </h1>
-        <p className="mt-3 max-w-xl text-body text-ink-muted">
+        <p className="mt-2 max-w-xl text-body text-ink-muted">
           Browse the shelves, add what you need, and send the whole list to the
           shop on WhatsApp. No app to install, no account to create.
         </p>
       </section>
+
+      {/* Quick-Commerce Horizontal Category 3D Logo Bar */}
+      {categories.length > 0 && (
+        <section className="my-4 border-b border-border/60 pb-3">
+          <CategoryBar categories={categories} />
+        </section>
+      )}
 
       {isEmpty && (
         <div className="mt-8">
@@ -81,44 +85,36 @@ export default async function HomePage() {
         </div>
       )}
 
-      {featured.length > 0 && (
-        <section className="mt-10">
-          <h2 className="mb-4 font-heading text-section text-ink">In the shop now</h2>
-          <ProductGrid
-            products={featured}
-            whatsappNumber={settings.whatsappNumber}
-            storeName={settings.storeName}
-          />
-        </section>
-      )}
-
+      {/* Top 3D Category Logos Grid */}
       {categories.length > 0 && (
-        <section className="mt-10 sm:mt-12">
-          <h2 className="mb-4 font-heading text-lg sm:text-xl font-bold text-ink">Shop by category</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+        <section className="mt-6 sm:mt-8">
+          <h2 className="mb-4 font-heading text-lg sm:text-xl font-bold text-ink">
+            Shop by Category
+          </h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/c/${category.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-surface shadow-xs transition-all hover:border-brand/40 hover:shadow-md"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-surface p-3 shadow-xs transition-all hover:border-brand/40 hover:shadow-md"
               >
-                <div className="relative flex aspect-[4/3] items-center justify-center bg-background/60 p-3">
+                <div className="relative flex aspect-square w-full items-center justify-center rounded-xl bg-background/50 p-2">
                   {category.imageUrl ? (
                     <Image
                       src={category.imageUrl}
                       alt={category.name}
                       fill
-                      className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
-                      sizes="(max-width: 640px) 50vw, 25vw"
+                      className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 640px) 45vw, 25vw"
                     />
                   ) : (
-                    <Package size={28} className="text-border" aria-hidden="true" />
+                    <Package size={36} className="text-border" aria-hidden="true" />
                   )}
                 </div>
-                <div className="p-3">
-                  <h3 className="text-xs font-semibold text-ink sm:text-sm">{category.name}</h3>
+                <div className="mt-3 text-center">
+                  <h3 className="text-xs font-bold text-ink sm:text-sm">{category.name}</h3>
                   {category.children.length > 0 && (
-                    <p className="mt-0.5 line-clamp-2 text-[11px] text-ink-muted">
+                    <p className="mt-1 line-clamp-2 text-[10px] text-ink-muted sm:text-[11px]">
                       {category.children.map((c) => c.name).join(" · ")}
                     </p>
                   )}
@@ -129,12 +125,27 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Featured Products */}
+      {featured.length > 0 && (
+        <section className="mt-10 sm:mt-12">
+          <h2 className="mb-4 font-heading text-lg sm:text-xl font-bold text-ink">
+            In the shop now
+          </h2>
+          <ProductGrid
+            products={featured}
+            whatsappNumber={settings.whatsappNumber}
+            storeName={settings.storeName}
+          />
+        </section>
+      )}
+
+      {/* Brands Carry Section */}
       {brands.length > 0 && (
-        <section className="mt-12">
+        <section className="mt-10 sm:mt-12">
           <div className="mb-4 flex items-baseline justify-between">
-            <h2 className="font-heading text-section text-ink">Brands we carry</h2>
-            <Link href="/brands" className="text-caption text-ink-muted hover:text-brand">
-              All brands
+            <h2 className="font-heading text-lg sm:text-xl font-bold text-ink">Brands we carry</h2>
+            <Link href="/brands" className="text-xs font-semibold text-brand hover:underline">
+              All brands &rarr;
             </Link>
           </div>
           <ul className="flex flex-wrap gap-2">
@@ -142,7 +153,7 @@ export default async function HomePage() {
               <li key={brand.slug}>
                 <Link
                   href={`/brand/${brand.slug}`}
-                  className="block border border-border bg-surface px-3 py-2 text-caption text-ink hover:border-brand/40 hover:text-brand"
+                  className="block rounded-xl border border-border/80 bg-surface px-3 py-2 text-xs font-semibold text-ink transition-colors hover:border-brand/40 hover:text-brand"
                 >
                   {brand.name}
                 </Link>
