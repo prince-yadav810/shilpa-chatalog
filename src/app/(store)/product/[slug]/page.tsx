@@ -19,8 +19,8 @@ export const revalidate = 300;
 type Props = { params: Promise<{ slug: string }> };
 
 async function loadProduct(slug: string) {
-  return prisma.product.findUnique({
-    where: { slug },
+  return prisma.product.findFirst({
+    where: { slug, isArchived: false },
     select: {
       id: true,
       name: true,
@@ -46,7 +46,11 @@ async function loadProduct(slug: string) {
 }
 
 export async function generateStaticParams() {
-  const products = await prisma.product.findMany({ select: { slug: true }, take: 1000 });
+  const products = await prisma.product.findMany({
+    where: { isArchived: false },
+    select: { slug: true },
+    take: 30,
+  });
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -81,7 +85,7 @@ export default async function ProductPage({ params }: Props) {
   const settings = await getSettings();
 
   const related = await prisma.product.findMany({
-    where: { categoryId: product.category.id, NOT: { id: product.id } },
+    where: { categoryId: product.category.id, NOT: { id: product.id }, isArchived: false },
     select: productCardSelect,
     orderBy: [{ inStock: "desc" }, { name: "asc" }],
     take: 4,

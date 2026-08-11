@@ -52,7 +52,7 @@ export default async function BrandPage({ params }: Props) {
   const settings = await getSettings();
 
   const products = await prisma.product.findMany({
-    where: { brandId: brand.id },
+    where: { brandId: brand.id, isArchived: false },
     select: {
       ...productCardSelect,
       category: {

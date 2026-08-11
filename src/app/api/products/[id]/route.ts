@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { badRequest, notFound, parseBody } from "@/lib/api";
 import { productInputSchema } from "@/lib/validation";
+import { deleteCloudinaryImage } from "@/lib/cloudinary";
 
 export const runtime = "nodejs";
 
@@ -54,19 +55,31 @@ export async function PUT(req: Request, { params }: Params) {
     where: { id },
     data: {
       ...input,
-      /*
-       * An empty SKU never clears an existing one. The SKU is what the monthly
-       * catalog import matches on, so silently dropping it would turn the next
-       * import into a duplicate rather than an update. Overwriting it with a
-       * corrected value still works.
-       */
       sku: input.sku ?? existing.sku,
-      // slug is deliberately absent: the product URL gets shared into WhatsApp
-      // chats, so renaming or repricing must not break links already sent.
     },
   });
 
   return NextResponse.json(product);
+}
+
+export async function PATCH(req: Request, { params }: Params) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
+  const { id } = await params;
+
+  const existing = await prisma.product.findUnique({ where: { id } });
+  if (!existing) return notFound("Product not found");
+
+  const body = await req.json().catch(() => ({}));
+  const isArchived = typeof body.isArchived === "boolean" ? body.isArchived : !existing.isArchived;
+
+  const product = await prisma.product.update({
+    where: { id },
+    data: { isArchived },
+  });
+
+  return NextResponse.json({ ok: true, product });
 }
 
 export async function DELETE(_req: Request, { params }: Params) {
@@ -78,6 +91,19 @@ export async function DELETE(_req: Request, { params }: Params) {
   const existing = await prisma.product.findUnique({ where: { id } });
   if (!existing) return notFound("Product not found");
 
+  // 1. Delete image from Cloudinary CDN if no other product uses the same image URL
+  let deletedFromCloudinary = false;
+  if (existing.imageUrl) {
+    const countOther = await prisma.product.count({
+      where: { imageUrl: existing.imageUrl, id: { not: id } },
+    });
+    if (countOther === 0) {
+      deletedFromCloudinary = await deleteCloudinaryImage(existing.imageUrl);
+    }
+  }
+
+  // 2. Delete product record from PostgreSQL database
   await prisma.product.delete({ where: { id } });
-  return NextResponse.json({ ok: true });
+
+  return NextResponse.json({ ok: true, deletedFromCloudinary });
 }

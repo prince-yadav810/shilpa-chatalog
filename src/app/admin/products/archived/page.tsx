@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Prisma } from "@prisma/client";
-import { Package, Archive } from "lucide-react";
+import { Package, ArrowLeft, ArchiveRestore } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { parsePage } from "@/lib/queries";
 import { formatPrice } from "@/lib/pricing";
@@ -21,13 +21,13 @@ type Props = {
   }>;
 };
 
-export default async function AdminProductsPage({ searchParams }: Props) {
+export default async function AdminArchivedProductsPage({ searchParams }: Props) {
   const { q, category, stock, page: pageParam } = await searchParams;
   const page = parsePage(pageParam);
   const query = (q ?? "").trim();
 
   const where: Prisma.ProductWhereInput = {
-    isArchived: false,
+    isArchived: true,
     ...(query
       ? {
           OR: [
@@ -42,7 +42,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
     ...(stock === "in" ? { inStock: true } : {}),
   };
 
-  const [products, total, categories, archivedCount] = await Promise.all([
+  const [products, total, categories, activeCount] = await Promise.all([
     prisma.product.findMany({
       where,
       select: {
@@ -70,7 +70,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
       select: { id: true, name: true, parent: { select: { name: true } } },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
     }),
-    prisma.product.count({ where: { isArchived: true } }),
+    prisma.product.count({ where: { isArchived: false } }),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -78,36 +78,45 @@ export default async function AdminProductsPage({ searchParams }: Props) {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-heading text-section text-ink">
-          Products <span className="price text-body text-ink-muted">{total}</span>
-        </h1>
         <div className="flex items-center gap-3">
           <Link
-            href="/admin/products/archived"
-            className="flex items-center gap-1.5 border border-border bg-surface px-3 py-2 text-caption text-ink hover:border-brand/40"
+            href="/admin/products"
+            className="flex items-center gap-1 text-caption text-ink-muted hover:text-brand"
           >
-            <Archive size={14} />
-            Archived ({archivedCount})
+            <ArrowLeft size={16} />
+            Back to Products
           </Link>
-          <Link href="/admin/products/new" className="btn-primary">
-            Add a product
-          </Link>
+          <h1 className="font-heading text-section text-ink">
+            Archived Products <span className="price text-body text-ink-muted">{total}</span>
+          </h1>
         </div>
+        <Link href="/admin/products/new" className="btn-primary">
+          Add a product
+        </Link>
       </div>
 
       <div className="mt-6 flex border-b border-border">
         <Link
           href="/admin/products"
-          className="border-b-2 border-brand px-4 py-2 text-caption font-medium text-brand"
+          className="px-4 py-2 text-caption font-medium text-ink-muted hover:text-ink"
         >
-          Active Products ({total})
+          Active Products ({activeCount})
         </Link>
         <Link
           href="/admin/products/archived"
-          className="px-4 py-2 text-caption font-medium text-ink-muted hover:text-ink"
+          className="border-b-2 border-brand px-4 py-2 text-caption font-medium text-brand"
         >
-          Archived Products ({archivedCount})
+          Archived Products ({total})
         </Link>
+      </div>
+
+      <div className="mt-4 border border-amber-300/60 bg-amber-500/10 p-3 text-caption text-amber-900 dark:text-amber-200">
+        <p className="flex items-center gap-2">
+          <ArchiveRestore size={16} className="shrink-0" />
+          <span>
+            <strong>Archived products are hidden from the storefront catalog.</strong> You can un-archive a product to make it visible on the store again, or permanently delete it (which deletes it from Database and Cloudinary image storage).
+          </span>
+        </p>
       </div>
 
       <div className="mt-6">
@@ -122,15 +131,15 @@ export default async function AdminProductsPage({ searchParams }: Props) {
       {products.length === 0 ? (
         <p className="mt-8 border border-border bg-surface px-6 py-12 text-center text-body text-ink-muted">
           {query || category || stock
-            ? "No active products match those filters."
-            : "No active products. Add one to get started."}
+            ? "No archived products match those filters."
+            : "No archived products right now."}
         </p>
       ) : (
         <div className="mt-6 overflow-x-auto border border-border bg-surface">
           <table className="w-full min-w-[720px] text-left">
             <thead className="border-b border-border">
               <tr className="text-caption uppercase tracking-wide text-ink-muted">
-                <th className="px-4 py-3 font-medium">Product</th>
+                <th className="px-4 py-3 font-medium">Archived Product</th>
                 <th className="px-4 py-3 font-medium">Category</th>
                 <th className="px-4 py-3 text-right font-medium">Price</th>
                 <th className="px-4 py-3 font-medium">Status</th>
@@ -139,7 +148,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id} className="border-b border-border last:border-0">
+                <tr key={product.id} className="border-b border-border last:border-0 bg-amber-500/5">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="relative flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-background">
@@ -148,7 +157,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                             src={product.imageUrl}
                             alt=""
                             fill
-                            className="object-contain p-0.5"
+                            className="object-contain p-0.5 opacity-75"
                             sizes="40px"
                           />
                         ) : (
@@ -156,7 +165,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-body text-ink">{product.name}</p>
+                        <p className="text-body text-ink font-medium">{product.name}</p>
                         <p className="text-caption text-ink-muted">
                           {[product.brand?.name, product.variant, product.sku]
                             .filter(Boolean)
@@ -179,37 +188,21 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                     )}
                   </td>
                   <td className="px-4 py-3 text-caption">
-                    {product.inStock ? (
-                      <span className="text-ink-muted">In stock</span>
-                    ) : (
-                      <span className="text-accent">Out of stock</span>
-                    )}
-                    {product.isFeatured && (
-                      <span className="block text-ink-muted">On homepage</span>
-                    )}
+                    <span className="inline-block rounded bg-amber-200/60 px-2 py-0.5 text-xs text-amber-900 font-medium dark:bg-amber-900/60 dark:text-amber-200">
+                      Archived
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end items-center gap-3">
-                      <Link
-                        href={`/product/${product.slug}`}
-                        target="_blank"
-                        className="text-caption text-ink-muted underline underline-offset-2 hover:text-ink"
-                      >
-                        View
-                      </Link>
-                      <Link
-                        href={`/admin/products/${product.id}/edit`}
-                        className="text-caption text-brand underline underline-offset-2"
-                      >
-                        Edit
-                      </Link>
                       <ArchiveButton
                         productId={product.id}
-                        isArchived={false}
+                        isArchived={true}
                       />
                       <ConfirmButton
                         endpoint={`/api/products/${product.id}`}
-                        successMessage={`"${product.name}" deleted from DB & CDN`}
+                        label="Delete permanently"
+                        confirmLabel="Delete permanently"
+                        successMessage={`"${product.name}" deleted permanently from DB & Cloudinary`}
                       />
                     </div>
                   </td>
@@ -223,7 +216,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
       <Pagination
         page={page}
         totalPages={totalPages}
-        basePath="/admin/products"
+        basePath="/admin/products/archived"
         params={{ q: query || undefined, category, stock }}
       />
     </>

@@ -19,9 +19,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       where: { isActive: true, products: { some: {} } },
       select: { slug: true, updatedAt: true },
     }),
-    prisma.product.findMany({ select: { slug: true, updatedAt: true } }),
     prisma.product.findMany({
-      where: { brandId: { not: null } },
+      where: { isArchived: false },
+      select: { slug: true, updatedAt: true },
+      take: 1000,
+    }),
+    prisma.product.findMany({
+      where: { brandId: { not: null }, isArchived: false },
       distinct: ["brandId", "categoryId"],
       select: {
         brand: { select: { slug: true } },

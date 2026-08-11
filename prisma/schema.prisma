@@ -61,6 +61,7 @@ model Product {
   imageUrl    String?
   inStock     Boolean @default(true)
 
+  isArchived    Boolean @default(false)
   isFeatured    Boolean @default(false)
   featuredOrder Int     @default(0)
 
@@ -79,6 +80,7 @@ model Product {
   @@index([brandId])
   @@index([brandId, categoryId])
   @@index([isFeatured, featuredOrder])
+  @@index([isArchived])
   @@index([name])
 }
 

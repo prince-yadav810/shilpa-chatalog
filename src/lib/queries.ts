@@ -25,15 +25,19 @@ export function parsePage(value: string | undefined): number {
  * first so an out-of-stock run never pushes orderable products off page one.
  */
 export async function listProducts(where: Prisma.ProductWhereInput, page: number) {
+  const combinedWhere: Prisma.ProductWhereInput = {
+    isArchived: false,
+    ...where,
+  };
   const [products, total] = await Promise.all([
     prisma.product.findMany({
-      where,
+      where: combinedWhere,
       select: productCardSelect,
       orderBy: [{ inStock: "desc" }, { name: "asc" }],
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
     }),
-    prisma.product.count({ where }),
+    prisma.product.count({ where: combinedWhere }),
   ]);
 
   return {
@@ -54,7 +58,7 @@ export function underCategory(categoryId: string, childIds: string[]): Prisma.Pr
 export async function brandsInCategories(categoryIds: string[]) {
   const grouped = await prisma.product.groupBy({
     by: ["brandId"],
-    where: { categoryId: { in: categoryIds }, brandId: { not: null } },
+    where: { categoryId: { in: categoryIds }, brandId: { not: null }, isArchived: false },
     _count: { _all: true },
   });
 

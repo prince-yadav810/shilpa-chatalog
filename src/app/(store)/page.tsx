@@ -28,7 +28,7 @@ export default async function HomePage() {
       },
     }),
     prisma.product.findMany({
-      where: { isFeatured: true },
+      where: { isFeatured: true, isArchived: false },
       select: productCardSelect,
       orderBy: [{ featuredOrder: "asc" }, { name: "asc" }],
       take: 8,
