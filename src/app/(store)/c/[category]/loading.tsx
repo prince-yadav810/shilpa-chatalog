@@ -1,8 +1,8 @@
 export default function CategoryLoading() {
   return (
-    <div className="flex min-h-[calc(100vh-8.5rem)] w-full">
+    <div className="flex min-h-[calc(100vh-10.5rem)] w-full">
       {/* Left Sidebar Skeleton */}
-      <aside className="sticky top-[135px] sm:top-[125px] z-20 flex h-[calc(100vh-8.5rem)] w-20 shrink-0 flex-col border-r border-border/80 bg-surface/95 p-2 sm:w-24 md:w-56">
+      <aside className="sticky top-[165px] sm:top-[155px] z-20 flex h-[calc(100vh-10.5rem)] w-24 shrink-0 flex-col border-r border-border/80 bg-surface/95 p-2 sm:w-28 md:w-60">
         <div className="hidden border-b border-border/60 pb-3 md:block">
           <div className="h-4 w-32 rounded bg-border/60" />
           <div className="mt-1 h-3 w-16 rounded bg-border/40" />
