@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Award } from "lucide-react";
 
 export type CategoryBarItem = {
   id: string;

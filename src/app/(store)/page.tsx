@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { productCardSelect } from "@/lib/queries";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
-import { CategoryBar } from "@/components/CategoryBar";
 
 export const revalidate = 300;
 
