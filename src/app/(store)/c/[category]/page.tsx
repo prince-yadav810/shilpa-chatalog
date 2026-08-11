@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { brandsInCategories, listProducts, parsePage } from "@/lib/queries";
@@ -72,7 +72,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   // Redirect subcategory if accessed via single segment URL
   if (category.parentId && category.parent) {
-    const { redirect } = await import("next/navigation");
     redirect(`/c/${category.parent.slug}/${category.slug}`);
   }
 
