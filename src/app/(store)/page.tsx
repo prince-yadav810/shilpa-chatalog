@@ -90,13 +90,13 @@ export default async function HomePage() {
                 href={`/c/${category.slug}`}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-surface p-3 shadow-xs transition-all hover:border-brand/40 hover:shadow-md"
               >
-                <div className="relative flex aspect-square w-full items-center justify-center rounded-xl bg-background/50 p-2">
+                <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl bg-background/50 p-1">
                   {category.imageUrl ? (
                     <Image
                       src={category.imageUrl}
                       alt={category.name}
                       fill
-                      className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                      className="object-contain p-1 scale-115 transition-transform duration-300 group-hover:scale-125"
                       sizes="(max-width: 640px) 45vw, 25vw"
                     />
                   ) : (
