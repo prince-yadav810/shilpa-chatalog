@@ -93,22 +93,22 @@ export default async function HomePage() {
       )}
 
       {categories.length > 0 && (
-        <section className="mt-12">
-          <h2 className="mb-4 font-heading text-section text-ink">Shop by category</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <section className="mt-10 sm:mt-12">
+          <h2 className="mb-4 font-heading text-lg sm:text-xl font-bold text-ink">Shop by category</h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/c/${category.slug}`}
-                className="flex flex-col border border-border bg-surface transition-colors hover:border-brand/40"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-surface shadow-xs transition-all hover:border-brand/40 hover:shadow-md"
               >
-                <div className="relative flex aspect-[4/3] items-center justify-center bg-background">
+                <div className="relative flex aspect-[4/3] items-center justify-center bg-background/60 p-3">
                   {category.imageUrl ? (
                     <Image
                       src={category.imageUrl}
-                      alt=""
+                      alt={category.name}
                       fill
-                      className="object-contain p-4"
+                      className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 640px) 50vw, 25vw"
                     />
                   ) : (
@@ -116,9 +116,9 @@ export default async function HomePage() {
                   )}
                 </div>
                 <div className="p-3">
-                  <h3 className="text-body font-medium text-ink">{category.name}</h3>
+                  <h3 className="text-xs font-semibold text-ink sm:text-sm">{category.name}</h3>
                   {category.children.length > 0 && (
-                    <p className="mt-1 line-clamp-2 text-caption text-ink-muted">
+                    <p className="mt-0.5 line-clamp-2 text-[11px] text-ink-muted">
                       {category.children.map((c) => c.name).join(" · ")}
                     </p>
                   )}

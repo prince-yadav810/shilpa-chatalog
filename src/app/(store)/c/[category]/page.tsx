@@ -8,6 +8,7 @@ import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 import { Pagination } from "@/components/Pagination";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { BrandFilterPills } from "@/components/BrandFilterPills";
+import { CategorySidebar } from "@/components/CategorySidebar";
 
 export const revalidate = 300;
 
@@ -23,12 +24,19 @@ async function loadCategory(slug: string) {
       id: true,
       name: true,
       slug: true,
+      imageUrl: true,
       parentId: true,
       parent: { select: { name: true, slug: true } },
       children: {
         where: { isActive: true },
         orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-        select: { id: true, name: true, slug: true, _count: { select: { products: true } } },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          imageUrl: true,
+          _count: { select: { products: true } },
+        },
       },
     },
   });
@@ -62,8 +70,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const category = await loadCategory(slug);
   if (!category) notFound();
 
-  // A subcategory reached at /c/<slug> belongs under its parent — send it to
-  // the canonical two-segment URL rather than serving the same page twice.
+  // Redirect subcategory if accessed via single segment URL
   if (category.parentId && category.parent) {
     const { redirect } = await import("next/navigation");
     redirect(`/c/${category.parent.slug}/${category.slug}`);
@@ -80,55 +87,60 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   ]);
 
   return (
-    <>
-      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: category.name }]} />
-
-      <header className="mb-6">
-        <h1 className="font-heading text-section text-ink">{category.name}</h1>
-        <p className="mt-1 text-caption text-ink-muted">
-          {total} {total === 1 ? "product" : "products"}
-        </p>
-      </header>
-
+    <div className="flex min-h-[calc(100vh-4rem)]">
+      {/* Quick-Commerce Left Vertical Sidebar for Subcategories */}
       {category.children.length > 0 && (
-        <nav aria-label="Subcategories" className="mb-6">
-          <ul className="flex flex-wrap gap-2">
-            {category.children.map((child) => (
-              <li key={child.id}>
-                <Link
-                  href={`/c/${category.slug}/${child.slug}`}
-                  className="block border border-border bg-surface px-3 py-1.5 text-caption text-ink hover:border-brand/40 hover:text-brand"
-                >
-                  {child.name}{" "}
-                  <span className="price text-ink-muted">{child._count.products}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <CategorySidebar
+          parentCategory={{
+            name: category.name,
+            slug: category.slug,
+            imageUrl: category.imageUrl,
+          }}
+          subcategories={category.children.map((child) => ({
+            id: child.id,
+            name: child.name,
+            slug: child.slug,
+            imageUrl: child.imageUrl,
+            productCount: child._count.products,
+          }))}
+        />
       )}
 
-      <BrandFilterPills brands={brands} categorySlug={category.slug} />
+      {/* Main Right Content Section */}
+      <main className="flex-1 p-3 sm:p-5 min-w-0">
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: category.name }]} />
 
-      {products.length === 0 ? (
-        <EmptyState
-          title={`Nothing in ${category.name} yet.`}
-          hint="This section is still being stocked. Try another category, or message the shop to ask."
-        >
-          <Link href="/" className="btn-secondary">
-            Back to all categories
-          </Link>
-        </EmptyState>
-      ) : (
-        <>
-          <ProductGrid
-            products={products}
-            whatsappNumber={settings.whatsappNumber}
-            storeName={settings.storeName}
-          />
-          <Pagination page={page} totalPages={totalPages} basePath={`/c/${category.slug}`} />
-        </>
-      )}
-    </>
+        <header className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+          <div>
+            <h1 className="font-heading text-lg font-bold text-ink sm:text-2xl">{category.name}</h1>
+            <p className="mt-0.5 text-xs text-ink-muted">
+              {total} {total === 1 ? "item" : "items"} in {category.name}
+            </p>
+          </div>
+        </header>
+
+        <BrandFilterPills brands={brands} categorySlug={category.slug} />
+
+        {products.length === 0 ? (
+          <EmptyState
+            title={`Nothing in ${category.name} yet.`}
+            hint="This section is still being stocked. Try another category, or message the shop to ask."
+          >
+            <Link href="/" className="btn-secondary">
+              Back to all categories
+            </Link>
+          </EmptyState>
+        ) : (
+          <>
+            <ProductGrid
+              products={products}
+              whatsappNumber={settings.whatsappNumber}
+              storeName={settings.storeName}
+            />
+            <Pagination page={page} totalPages={totalPages} basePath={`/c/${category.slug}`} />
+          </>
+        )}
+      </main>
+    </div>
   );
 }
