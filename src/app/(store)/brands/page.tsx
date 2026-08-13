@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { EmptyState } from "@/components/ProductGrid";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
