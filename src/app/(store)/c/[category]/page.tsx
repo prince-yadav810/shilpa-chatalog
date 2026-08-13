@@ -43,11 +43,7 @@ async function loadCategory(slug: string) {
 }
 
 export async function generateStaticParams() {
-  const categories = await prisma.category.findMany({
-    where: { parentId: null, isActive: true },
-    select: { slug: true },
-  });
-  return categories.map((c) => ({ category: c.slug }));
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -46,35 +46,7 @@ async function load(brandSlug: string, categorySlug: string) {
  * brand × every category would emit a page, most of them empty.
  */
 export async function generateStaticParams() {
-  const pairs = await prisma.product.findMany({
-    where: { brandId: { not: null } },
-    distinct: ["brandId", "categoryId"],
-    select: {
-      brand: { select: { slug: true } },
-      category: {
-        select: { slug: true, parent: { select: { slug: true } } },
-      },
-    },
-    take: 50,
-  });
-
-  const seen = new Set<string>();
-  const params: { brand: string; category: string }[] = [];
-
-  for (const pair of pairs) {
-    if (!pair.brand) continue;
-    // Register both the leaf and its parent — /brand/amul/ice-cream should
-    // work as well as /brand/amul/tubs.
-    for (const slug of [pair.category.slug, pair.category.parent?.slug]) {
-      if (!slug) continue;
-      const key = `${pair.brand.slug}/${slug}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      params.push({ brand: pair.brand.slug, category: slug });
-    }
-  }
-
-  return params;
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

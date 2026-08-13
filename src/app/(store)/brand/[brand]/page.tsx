@@ -20,12 +20,7 @@ async function loadBrand(slug: string) {
 }
 
 export async function generateStaticParams() {
-  const brands = await prisma.brand.findMany({
-    where: { isActive: true, products: { some: {} } },
-    select: { slug: true },
-    take: 25,
-  });
-  return brands.map((b) => ({ brand: b.slug }));
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -56,14 +56,7 @@ async function loadSubcategory(parentSlug: string, slug: string) {
 }
 
 export async function generateStaticParams() {
-  const children = await prisma.category.findMany({
-    where: { isActive: true, parent: { isNot: null } },
-    select: { slug: true, parent: { select: { slug: true } } },
-    take: 50,
-  });
-  return children
-    .filter((c) => c.parent)
-    .map((c) => ({ category: c.parent!.slug, subcategory: c.slug }));
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

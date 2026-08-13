@@ -46,12 +46,7 @@ async function loadProduct(slug: string) {
 }
 
 export async function generateStaticParams() {
-  const products = await prisma.product.findMany({
-    where: { isArchived: false },
-    select: { slug: true },
-    take: 30,
-  });
-  return products.map((p) => ({ slug: p.slug }));
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
