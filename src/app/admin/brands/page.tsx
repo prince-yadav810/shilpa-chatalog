@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { ConfirmButton } from "@/components/admin/ConfirmButton";
+import { DeleteBrandModal } from "@/components/admin/DeleteBrandModal";
 import { AddBrandForm } from "@/components/admin/AddBrandForm";
 
 export const dynamic = "force-dynamic";
@@ -85,10 +85,7 @@ export default async function AdminBrandsPage() {
                       >
                         Edit
                       </Link>
-                      <ConfirmButton
-                        endpoint={`/api/brands/${brand.id}`}
-                        successMessage={`"${brand.name}" deleted`}
-                      />
+                      <DeleteBrandModal brand={brand} />
                     </div>
                   </td>
                 </tr>
