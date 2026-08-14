@@ -147,13 +147,12 @@ export function CategoryContinuousFeed({
 
       {/* Main Right Scrollable Continuous Stream */}
       <div className="flex-1 min-w-0 px-2.5 py-3 sm:px-5 sm:py-5">
-        {/* Category Header Area */}
-        <Breadcrumbs
-          items={[{ label: "Home", href: "/" }, { label: parentCategory.name }]}
-        />
-
-        <div className="mb-4">
-          <h1 className="font-heading text-lg sm:text-2xl font-bold text-ink">
+        {/* Category Header Area (Desktop only, mobile has top bar) */}
+        <div className="hidden sm:block mb-4">
+          <Breadcrumbs
+            items={[{ label: "Home", href: "/" }, { label: parentCategory.name }]}
+          />
+          <h1 className="font-heading text-xl sm:text-2xl font-bold text-ink">
             {parentCategory.name}
           </h1>
           <p className="mt-0.5 text-xs text-ink-muted">
