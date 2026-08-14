@@ -8,6 +8,7 @@ import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 import { Pagination } from "@/components/Pagination";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = {
@@ -39,14 +40,6 @@ async function load(brandSlug: string, categorySlug: string) {
     category.children.length > 0 ? category.children.map((c) => c.id) : [category.id];
 
   return { brand, category, categoryIds };
-}
-
-/**
- * Only pairs that actually have products get pre-rendered — otherwise every
- * brand × every category would emit a page, most of them empty.
- */
-export async function generateStaticParams() {
-  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

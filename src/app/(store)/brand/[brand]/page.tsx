@@ -8,6 +8,7 @@ import { productCardSelect } from "@/lib/queries";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = { params: Promise<{ brand: string }> };
@@ -17,10 +18,6 @@ async function loadBrand(slug: string) {
     where: { slug, isActive: true },
     select: { id: true, name: true, slug: true, logoUrl: true },
   });
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

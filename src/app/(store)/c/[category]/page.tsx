@@ -10,6 +10,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { BrandFilterPills } from "@/components/BrandFilterPills";
 import { CategorySidebar } from "@/components/CategorySidebar";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = {
@@ -40,10 +41,6 @@ async function loadCategory(slug: string) {
       },
     },
   });
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

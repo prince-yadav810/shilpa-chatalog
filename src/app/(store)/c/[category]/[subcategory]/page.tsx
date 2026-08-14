@@ -10,6 +10,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { BrandFilterPills } from "@/components/BrandFilterPills";
 import { CategorySidebar } from "@/components/CategorySidebar";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = {
@@ -53,10 +54,6 @@ async function loadSubcategory(parentSlug: string, slug: string) {
 
   if (!current || !parent) return null;
   return { current, parent };
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

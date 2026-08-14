@@ -14,6 +14,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { AddToOrderButton } from "@/components/AddToOrderButton";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = { params: Promise<{ slug: string }> };
@@ -43,10 +44,6 @@ async function loadProduct(slug: string) {
       },
     },
   });
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
