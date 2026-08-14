@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
-import { badRequest, conflict, notFound, parseBody } from "@/lib/api";
+import { badRequest, notFound, parseBody } from "@/lib/api";
 import { brandInputSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
@@ -34,7 +34,7 @@ export async function PUT(req: Request, { params }: Params) {
   return NextResponse.json(brand);
 }
 
-export async function DELETE(_req: Request, { params }: Params) {
+export async function DELETE(req: Request, { params }: Params) {
   const denied = await requireAdmin();
   if (denied) return denied;
 
@@ -45,12 +45,16 @@ export async function DELETE(_req: Request, { params }: Params) {
   });
   if (!existing) return notFound("Brand not found");
 
-  if (existing._count.products > 0) {
-    return conflict(
-      `"${existing.name}" is used by ${existing._count.products} product${
-        existing._count.products === 1 ? "" : "s"
-      }. Change their brand first.`,
-    );
+  const url = new URL(req.url);
+  const cascade = url.searchParams.get("cascade") === "true";
+
+  if (cascade) {
+    await prisma.product.deleteMany({ where: { brandId: id } });
+  } else {
+    await prisma.product.updateMany({
+      where: { brandId: id },
+      data: { brandId: null },
+    });
   }
 
   await prisma.brand.delete({ where: { id } });
