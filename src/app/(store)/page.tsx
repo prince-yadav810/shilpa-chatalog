@@ -4,6 +4,7 @@ import { Package } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { productCardSelect } from "@/lib/queries";
+import { CategoryBar } from "@/components/CategoryBar";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 
 export const dynamic = "force-dynamic";
@@ -46,6 +47,13 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* Top Quick Categories Bar (Home Page Only) */}
+      {categories.length > 0 && (
+        <div className="-mx-2 -mt-3 mb-4 sm:-mx-4 sm:-mt-8">
+          <CategoryBar categories={categories} />
+        </div>
+      )}
+
       {settings.promoBannerText && (
         <div className="mb-4 border border-accent/40 bg-accent/5 px-4 py-2.5 text-center text-caption text-ink rounded-xl">
           {settings.promoBannerLink ? (

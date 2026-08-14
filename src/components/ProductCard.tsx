@@ -5,8 +5,6 @@ import Link from "next/link";
 import { Package, Minus, Plus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/pricing";
-import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-import { buildProductOrderLink } from "@/lib/whatsapp";
 
 export type ProductCardData = {
   id: string;
@@ -22,12 +20,10 @@ export type ProductCardData = {
 
 export function ProductCard({
   product,
-  whatsappNumber,
-  storeName,
 }: {
   product: ProductCardData;
-  whatsappNumber: string;
-  storeName: string;
+  whatsappNumber?: string;
+  storeName?: string;
 }) {
   const { addItem, updateQuantity, items, openCart } = useCart();
   const inCart = items.find((i) => i.id === product.id);
@@ -110,21 +106,21 @@ export function ProductCard({
             )}
           </div>
 
-          {/* Add to Order / Quantity Button (Blinkit Quick-Commerce Style) */}
+          {/* Add to Order / Quantity Button */}
           {product.inStock ? (
-            <div className="mt-2.5 flex items-center gap-1.5">
+            <div className="mt-2.5">
               {inCart ? (
-                <div className="flex h-8 flex-1 items-center justify-between rounded-lg border border-brand bg-brand/5">
+                <div className="flex h-8.5 w-full items-center justify-between rounded-lg border border-brand bg-brand/5 shadow-2xs">
                   <button
                     onClick={() => updateQuantity(product.id, inCart.quantity - 1)}
                     aria-label={`Remove one ${product.name}`}
-                    className="flex h-8 w-8 items-center justify-center text-brand hover:bg-brand/10 active:scale-95"
+                    className="flex h-8.5 w-9 items-center justify-center text-brand hover:bg-brand/10 active:scale-90 transition-transform"
                   >
-                    <Minus size={13} />
+                    <Minus size={14} className="stroke-[2.5]" />
                   </button>
                   <button
                     onClick={openCart}
-                    className="price text-center text-xs font-bold text-brand"
+                    className="price flex-1 text-center text-xs font-bold text-brand"
                     aria-label={`${inCart.quantity} in order`}
                   >
                     {inCart.quantity}
@@ -132,9 +128,9 @@ export function ProductCard({
                   <button
                     onClick={() => updateQuantity(product.id, inCart.quantity + 1)}
                     aria-label={`Add one more ${product.name}`}
-                    className="flex h-8 w-8 items-center justify-center text-brand hover:bg-brand/10 active:scale-95"
+                    className="flex h-8.5 w-9 items-center justify-center text-brand hover:bg-brand/10 active:scale-90 transition-transform"
                   >
-                    <Plus size={13} />
+                    <Plus size={14} className="stroke-[2.5]" />
                   </button>
                 </div>
               ) : (
@@ -149,26 +145,15 @@ export function ProductCard({
                       imageUrl: product.imageUrl,
                     })
                   }
-                  className="flex h-8 flex-1 items-center justify-center gap-1 rounded-lg border border-emerald-600 bg-emerald-600/5 text-xs font-bold text-emerald-700 transition-all hover:bg-emerald-600 hover:text-white active:scale-95 dark:border-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white"
+                  className="flex h-8.5 w-full items-center justify-center gap-1.5 rounded-lg border border-emerald-600/80 bg-emerald-50 text-xs font-bold tracking-wide text-emerald-700 shadow-2xs transition-all hover:bg-emerald-600 hover:text-white active:scale-98"
                 >
-                  <Plus size={14} />
+                  <Plus size={15} className="stroke-[2.5]" />
                   ADD
                 </button>
               )}
-
-              {/* Direct WhatsApp Quick Order Button */}
-              <a
-                href={buildProductOrderLink(product, whatsappNumber, storeName)}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Order ${product.name} on WhatsApp`}
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white transition-all hover:bg-emerald-700 active:scale-95"
-              >
-                <WhatsAppIcon className="h-4 w-4 fill-current" />
-              </a>
             </div>
           ) : (
-            <div className="mt-2.5 flex h-8 items-center justify-center rounded-lg border border-border bg-background text-[11px] font-medium text-ink-muted">
+            <div className="mt-2.5 flex h-8.5 w-full items-center justify-center rounded-lg border border-border bg-background text-[11px] font-medium text-ink-muted">
               Out of stock
             </div>
           )}

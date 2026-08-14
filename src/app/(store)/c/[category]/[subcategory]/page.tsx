@@ -1,34 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
-import { brandsInCategories, listProducts, parsePage } from "@/lib/queries";
-import { ProductGrid, EmptyState } from "@/components/ProductGrid";
-import { Pagination } from "@/components/Pagination";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { BrandFilterPills } from "@/components/BrandFilterPills";
-import { CategorySidebar } from "@/components/CategorySidebar";
+import { brandsInCategories, productCardSelect } from "@/lib/queries";
+import { CategoryContinuousFeed } from "@/components/CategoryContinuousFeed";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = {
   params: Promise<{ category: string; subcategory: string }>;
-  searchParams: Promise<{ page?: string }>;
 };
 
-async function loadSubcategory(parentSlug: string, slug: string) {
+async function loadCategoryHierarchy(parentSlug: string, subSlug: string) {
   const [current, parent] = await Promise.all([
     prisma.category.findFirst({
-      where: { slug, isActive: true, parent: { slug: parentSlug, isActive: true } },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        imageUrl: true,
-        parent: { select: { id: true, name: true, slug: true, imageUrl: true } },
-      },
+      where: { slug: subSlug, isActive: true, parent: { slug: parentSlug, isActive: true } },
+      select: { id: true, name: true, slug: true },
     }),
     prisma.category.findFirst({
       where: { slug: parentSlug, isActive: true },
@@ -45,7 +33,11 @@ async function loadSubcategory(parentSlug: string, slug: string) {
             name: true,
             slug: true,
             imageUrl: true,
-            _count: { select: { products: true } },
+            products: {
+              where: { isArchived: false },
+              select: productCardSelect,
+              orderBy: [{ inStock: "desc" }, { name: "asc" }],
+            },
           },
         },
       },
@@ -58,7 +50,7 @@ async function loadSubcategory(parentSlug: string, slug: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, subcategory } = await params;
-  const found = await loadSubcategory(category, subcategory);
+  const found = await loadCategoryHierarchy(category, subcategory);
   if (!found) return {};
 
   return {
@@ -68,82 +60,42 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function SubcategoryPage({ params, searchParams }: Props) {
+export default async function SubcategoryPage({ params }: Props) {
   const { category: parentSlug, subcategory: slug } = await params;
-  const { page: pageParam } = await searchParams;
-  const page = parsePage(pageParam);
 
-  const found = await loadSubcategory(parentSlug, slug);
+  const found = await loadCategoryHierarchy(parentSlug, slug);
   if (!found) notFound();
 
   const { current, parent } = found;
   const settings = await getSettings();
 
-  const [{ products, total, totalPages }, brands] = await Promise.all([
-    listProducts({ categoryId: current.id }, page),
-    brandsInCategories([current.id]),
-  ]);
+  const childIds = parent.children.map((c) => c.id);
+  const brands = await brandsInCategories(childIds);
 
-  const basePath = `/c/${parent.slug}/${current.slug}`;
+  const totalProducts = parent.children.reduce(
+    (sum, child) => sum + child.products.length,
+    0
+  );
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)]">
-      {/* Quick-Commerce Left Vertical Sidebar */}
-      <CategorySidebar
-        parentCategory={{
-          name: parent.name,
-          slug: parent.slug,
-          imageUrl: parent.imageUrl,
-        }}
-        subcategories={parent.children.map((child) => ({
-          id: child.id,
-          name: child.name,
-          slug: child.slug,
-          imageUrl: child.imageUrl,
-          productCount: child._count.products,
-        }))}
-        activeSubcategorySlug={current.slug}
-      />
-
-      {/* Main Right Content Section */}
-      <main className="flex-1 p-3 sm:p-5 min-w-0">
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: parent.name, href: `/c/${parent.slug}` },
-            { label: current.name },
-          ]}
-        />
-
-        <header className="mb-4">
-          <h1 className="font-heading text-lg font-bold text-ink sm:text-2xl">{current.name}</h1>
-          <p className="mt-0.5 text-xs text-ink-muted">
-            {total} {total === 1 ? "item" : "items"} in {current.name}
-          </p>
-        </header>
-
-        <BrandFilterPills brands={brands} categorySlug={current.slug} />
-
-        {products.length === 0 ? (
-          <EmptyState
-            title={`Nothing in ${current.name} yet.`}
-            hint="Try the rest of the category, or message the shop to ask what's in stock."
-          >
-            <Link href={`/c/${parent.slug}`} className="btn-secondary">
-              All {parent.name}
-            </Link>
-          </EmptyState>
-        ) : (
-          <>
-            <ProductGrid
-              products={products}
-              whatsappNumber={settings.whatsappNumber}
-              storeName={settings.storeName}
-            />
-            <Pagination page={page} totalPages={totalPages} basePath={basePath} />
-          </>
-        )}
-      </main>
-    </div>
+    <CategoryContinuousFeed
+      parentCategory={{
+        name: parent.name,
+        slug: parent.slug,
+        imageUrl: parent.imageUrl,
+        totalProducts,
+      }}
+      subcategories={parent.children.map((child) => ({
+        id: child.id,
+        name: child.name,
+        slug: child.slug,
+        imageUrl: child.imageUrl,
+        products: child.products,
+      }))}
+      brands={brands}
+      initialSubcategorySlug={current.slug}
+      whatsappNumber={settings.whatsappNumber}
+      storeName={settings.storeName}
+    />
   );
 }
