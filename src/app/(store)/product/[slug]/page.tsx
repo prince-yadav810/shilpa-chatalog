@@ -82,11 +82,11 @@ export default async function ProductPage({ params }: Props) {
 
   const settings = await getSettings();
 
+  // Load ALL products in this subcategory
   const related = await prisma.product.findMany({
     where: { categoryId: product.category.id, NOT: { id: product.id }, isArchived: false },
     select: productCardSelect,
     orderBy: [{ inStock: "desc" }, { name: "asc" }],
-    take: 4,
   });
 
   const parent = product.category.parent;
@@ -101,7 +101,6 @@ export default async function ProductPage({ params }: Props) {
     ...(product.description ? { description: product.description } : {}),
     ...(product.imageUrl ? { image: product.imageUrl } : {}),
     ...(product.brand ? { brand: { "@type": "Brand", name: product.brand.name } } : {}),
-    ...(product.sku ? { sku: product.sku } : {}),
     offers: {
       "@type": "Offer",
       price: product.price.toFixed(2),
@@ -139,6 +138,7 @@ export default async function ProductPage({ params }: Props) {
               className="object-contain p-4 sm:p-6"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
+              unoptimized
             />
           ) : (
             <Package size={54} className="text-border" aria-hidden="true" />
@@ -259,21 +259,18 @@ export default async function ProductPage({ params }: Props) {
                 </dd>
               </div>
             )}
-            {product.sku && (
-              <div className="flex justify-between border-b border-border/50 py-2">
-                <dt className="text-ink-muted">SKU / Code</dt>
-                <dd className="price text-ink">{product.sku}</dd>
-              </div>
-            )}
           </dl>
         </div>
       </div>
 
       {related.length > 0 && (
         <section className="mt-12 sm:mt-16">
-          <h2 className="mb-4 font-heading text-base sm:text-xl font-bold text-ink">
-            More in {product.category.name}
-          </h2>
+          <div className="mb-4 flex items-baseline justify-between">
+            <h2 className="font-heading text-base sm:text-xl font-bold text-ink">
+              More in {product.category.name}
+            </h2>
+            <span className="text-xs text-ink-muted">{related.length} items</span>
+          </div>
           <ProductGrid
             products={related}
             whatsappNumber={settings.whatsappNumber}
