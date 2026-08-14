@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Package } from "lucide-react";
+import { Package, ShieldCheck, Truck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { productCardSelect } from "@/lib/queries";
@@ -19,9 +19,15 @@ export const revalidate = 300;
 
 type Props = { params: Promise<{ slug: string }> };
 
-async function loadProduct(slug: string) {
+async function loadProduct(rawSlug: string) {
+  const slug = rawSlug.trim();
+  const decoded = decodeURIComponent(slug);
+
   return prisma.product.findFirst({
-    where: { slug, isArchived: false },
+    where: {
+      OR: [{ slug }, { slug: decoded }],
+      isArchived: false,
+    },
     select: {
       id: true,
       name: true,
@@ -111,66 +117,83 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          ...(parent ? [{ label: parent.name, href: `/c/${parent.slug}` }] : []),
-          { label: product.category.name, href: categoryHref },
-          { label: product.name },
-        ]}
-      />
+      <div className="hidden sm:block">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            ...(parent ? [{ label: parent.name, href: `/c/${parent.slug}` }] : []),
+            { label: product.category.name, href: categoryHref },
+            { label: product.name },
+          ]}
+        />
+      </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
-        <div className="relative flex aspect-square items-center justify-center border border-border bg-surface">
+      <div className="grid gap-5 sm:gap-8 md:grid-cols-2 mt-2 sm:mt-0">
+        {/* Product Image Frame */}
+        <div className="relative flex aspect-square w-full items-center justify-center rounded-2xl border border-border/80 bg-surface shadow-xs p-4 sm:p-8 overflow-hidden">
           {product.imageUrl ? (
             <Image
               src={product.imageUrl}
               alt={product.name}
               fill
-              className="object-contain p-8"
+              className="object-contain p-4 sm:p-6"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
             />
           ) : (
-            <Package size={48} className="text-border" aria-hidden="true" />
+            <Package size={54} className="text-border" aria-hidden="true" />
+          )}
+
+          {!product.inStock && (
+            <div className="absolute inset-0 flex items-center justify-center bg-surface/80 backdrop-blur-xs">
+              <span className="rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-bold text-ink-muted">
+                Out of stock
+              </span>
+            </div>
           )}
         </div>
 
-        <div>
+        {/* Product Info & Actions */}
+        <div className="flex flex-col justify-start">
           {product.brand && (
             <Link
               href={`/brand/${product.brand.slug}`}
-              className="text-caption uppercase tracking-wide text-ink-muted hover:text-brand"
+              className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-ink-muted hover:text-brand"
             >
               {product.brand.name}
             </Link>
           )}
 
-          <h1 className="mt-1 font-heading text-section text-ink">{product.name}</h1>
+          <h1 className="mt-1 font-heading text-lg sm:text-2xl font-bold text-ink leading-tight">
+            {product.name}
+          </h1>
 
           {product.variant && (
-            <p className="mt-1 text-body text-ink-muted">{product.variant}</p>
+            <div className="mt-2 inline-block rounded-md border border-border/80 bg-background px-2 py-1 text-xs font-medium text-ink-muted w-fit">
+              {product.variant}
+            </div>
           )}
 
-          <div className="mt-5 border-y border-border py-4">
+          <div className="mt-4 border-y border-border/70 py-3.5">
             <Price price={product.price} mrp={product.mrp} size="lg" align="left" />
-            {product.mrp != null && product.mrp > product.price && (
-              <p className="mt-1 text-caption text-ink-muted">Inclusive of all taxes</p>
-            )}
+            <p className="mt-1 text-[11px] text-ink-muted">Inclusive of all taxes</p>
           </div>
 
+          {/* Quick Badges */}
+          <div className="mt-3 flex items-center gap-4 text-xs text-ink-muted">
+            <div className="flex items-center gap-1.5">
+              <Truck size={15} className="text-emerald-600" />
+              <span>Express Delivery</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck size={15} className="text-emerald-600" />
+              <span>100% Genuine</span>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
           {product.inStock ? (
             <div className="mt-5 flex flex-col gap-3">
-              <a
-                href={buildProductOrderLink(product, settings.whatsappNumber, settings.storeName)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-whatsapp w-full py-3"
-              >
-                <WhatsAppIcon />
-                Order on WhatsApp
-              </a>
-
               <AddToOrderButton
                 product={{
                   id: product.id,
@@ -182,46 +205,54 @@ export default async function ProductPage({ params }: Props) {
                 }}
               />
 
-              <p className="text-caption text-ink-muted">
-                Ordering opens WhatsApp with this item filled in. The shop confirms
-                availability and the final total before anything is sent out.
+              <a
+                href={buildProductOrderLink(product, settings.whatsappNumber, settings.storeName)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-whatsapp w-full py-3 rounded-xl shadow-xs"
+              >
+                <WhatsAppIcon />
+                Order on WhatsApp
+              </a>
+
+              <p className="text-[11px] text-ink-muted text-center">
+                Add to your order or message the shop directly on WhatsApp to confirm delivery.
               </p>
             </div>
           ) : (
-            <div className="mt-5 border border-border bg-background px-4 py-3">
-              <p className="text-body text-ink">Out of stock right now.</p>
-              <p className="mt-1 text-caption text-ink-muted">
-                Message the shop to ask when it&rsquo;s back, or whether they can
-                order it in.
+            <div className="mt-5 rounded-xl border border-border bg-background p-4 text-center">
+              <p className="text-sm font-semibold text-ink">Out of stock right now.</p>
+              <p className="mt-1 text-xs text-ink-muted">
+                Message the shop to ask when it will be back in stock.
               </p>
             </div>
           )}
 
           {product.description && (
-            <div className="mt-8">
-              <h2 className="mb-2 font-heading text-body text-ink">About this product</h2>
-              <p className="whitespace-pre-line text-body text-ink-muted">
+            <div className="mt-6 border-t border-border/70 pt-4">
+              <h2 className="mb-1.5 font-heading text-sm font-bold text-ink">About this product</h2>
+              <p className="whitespace-pre-line text-xs sm:text-sm text-ink-muted leading-relaxed">
                 {product.description}
               </p>
             </div>
           )}
 
-          <dl className="mt-8 border-t border-border pt-4 text-caption">
-            <div className="flex justify-between border-b border-border py-2">
+          <dl className="mt-6 border-t border-border/70 pt-3 text-xs">
+            <div className="flex justify-between border-b border-border/50 py-2">
               <dt className="text-ink-muted">Category</dt>
               <dd>
-                <Link href={categoryHref} className="text-ink hover:text-brand">
+                <Link href={categoryHref} className="text-ink hover:text-brand font-medium">
                   {product.category.name}
                 </Link>
               </dd>
             </div>
             {product.brand && (
-              <div className="flex justify-between border-b border-border py-2">
+              <div className="flex justify-between border-b border-border/50 py-2">
                 <dt className="text-ink-muted">Brand</dt>
                 <dd>
                   <Link
                     href={`/brand/${product.brand.slug}`}
-                    className="text-ink hover:text-brand"
+                    className="text-ink hover:text-brand font-medium"
                   >
                     {product.brand.name}
                   </Link>
@@ -229,8 +260,8 @@ export default async function ProductPage({ params }: Props) {
               </div>
             )}
             {product.sku && (
-              <div className="flex justify-between border-b border-border py-2">
-                <dt className="text-ink-muted">Code</dt>
+              <div className="flex justify-between border-b border-border/50 py-2">
+                <dt className="text-ink-muted">SKU / Code</dt>
                 <dd className="price text-ink">{product.sku}</dd>
               </div>
             )}
@@ -239,8 +270,8 @@ export default async function ProductPage({ params }: Props) {
       </div>
 
       {related.length > 0 && (
-        <section className="mt-16">
-          <h2 className="mb-4 font-heading text-section text-ink">
+        <section className="mt-12 sm:mt-16">
+          <h2 className="mb-4 font-heading text-base sm:text-xl font-bold text-ink">
             More in {product.category.name}
           </h2>
           <ProductGrid

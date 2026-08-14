@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Public_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -28,6 +28,13 @@ const plexMono = IBM_Plex_Mono({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -51,7 +58,7 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${publicSans.variable} ${plexMono.variable}`}
     >
-      <body>{children}</body>
+      <body className="overflow-x-hidden antialiased">{children}</body>
     </html>
   );
 }

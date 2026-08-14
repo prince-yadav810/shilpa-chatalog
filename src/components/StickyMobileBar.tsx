@@ -44,9 +44,9 @@ export function StickyMobileBar() {
           </button>
         </div>
       ) : (
-        <div className="border-t border-emerald-500/20 bg-emerald-50 px-3 py-1 text-center backdrop-blur">
-          <p className="text-[10px] font-bold tracking-tight text-emerald-800">
-            FREE DELIVERY on orders above ₹99
+        <div className="border-t border-emerald-500/20 bg-emerald-50 px-3 py-1.5 text-center backdrop-blur">
+          <p className="text-[11px] font-bold tracking-tight text-emerald-800">
+            ⚡ Home Delivery Available · Express Direct from Shop
           </p>
         </div>
       )}

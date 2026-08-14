@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Search, X, ArrowLeft } from "lucide-react";
 import { CategoryBar, type CategoryBarItem } from "@/components/CategoryBar";
 
@@ -28,7 +28,6 @@ export function StoreHeader({
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const isHome = pathname === "/";
 
@@ -57,19 +56,16 @@ export function StoreHeader({
   const getContextTitle = () => {
     if (pathname.startsWith("/c/")) {
       const parts = pathname.split("/").filter(Boolean);
-      // If at parent category, use first segment; if subcategory, use that or parent
-      const parentSlug = parts[1];
+      // e.g. /c/ice-cream-frozen-desserts -> parts[1]
+      const parentSlug = parts[1] || "";
       return formatSlugToTitle(parentSlug);
     }
     if (pathname.startsWith("/brand/")) {
       const parts = pathname.split("/").filter(Boolean);
-      return formatSlugToTitle(parts[1]);
+      return formatSlugToTitle(parts[1] || "");
     }
     if (pathname === "/brands") return "All Brands";
-    if (pathname === "/search") {
-      const q = searchParams.get("q");
-      return q ? `Results for “${q}”` : "Search Products";
-    }
+    if (pathname === "/search") return "Search Products";
     if (pathname.startsWith("/product/")) return "Product Details";
     return storeName;
   };
@@ -112,7 +108,7 @@ export function StoreHeader({
               name="q"
               placeholder="Search products, brands, or essentials..."
               aria-label="Search products"
-              className="field w-full rounded-xl py-2 pl-9 pr-3 text-xs sm:text-sm bg-background/80 border-border/80 shadow-2xs focus:bg-surface focus:border-brand"
+              className="field w-full rounded-xl py-2 pl-9 pr-3 text-[16px] sm:text-sm bg-background/80 border-border/80 shadow-2xs focus:bg-surface focus:border-brand"
             />
           </form>
         </div>
@@ -178,7 +174,7 @@ export function StoreHeader({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products, brands..."
                 aria-label="Search products"
-                className="field w-full rounded-xl py-1.5 pl-9 pr-8 text-xs sm:text-sm bg-background border-border"
+                className="field w-full rounded-xl py-1.5 pl-9 pr-8 text-[16px] sm:text-sm bg-background border-border"
               />
               {searchQuery && (
                 <button

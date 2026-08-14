@@ -74,7 +74,7 @@ export function ProductCard({
         {product.inStock && (
           <div className="absolute bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 z-10">
             {inCart ? (
-              <div className="flex h-7 sm:h-7.5 items-center rounded-lg border border-emerald-600 bg-surface shadow-sm ring-1 ring-emerald-600/20">
+              <div className="flex h-8 sm:h-8.5 min-w-[80px] sm:min-w-[90px] items-center justify-between rounded-lg border-2 border-emerald-600 bg-surface shadow-md ring-2 ring-emerald-600/15">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -83,9 +83,9 @@ export function ProductCard({
                     updateQuantity(product.id, inCart.quantity - 1);
                   }}
                   aria-label={`Remove one ${product.name}`}
-                  className="flex h-7 w-6.5 sm:h-7.5 sm:w-7 items-center justify-center text-emerald-700 hover:bg-emerald-50 active:scale-90 transition-transform"
+                  className="flex h-8 w-7.5 sm:h-8.5 sm:w-8 items-center justify-center text-emerald-700 hover:bg-emerald-50 active:scale-85 transition-transform"
                 >
-                  <Minus size={13} className="stroke-[2.5]" />
+                  <Minus size={14} className="stroke-[3]" />
                 </button>
                 <button
                   type="button"
@@ -94,7 +94,7 @@ export function ProductCard({
                     e.stopPropagation();
                     openCart();
                   }}
-                  className="price px-1 text-center text-[11px] sm:text-xs font-bold text-emerald-800"
+                  className="price flex-1 px-1 text-center text-xs sm:text-sm font-extrabold text-emerald-800 select-none"
                   aria-label={`${inCart.quantity} in order`}
                 >
                   {inCart.quantity}
@@ -107,9 +107,9 @@ export function ProductCard({
                     updateQuantity(product.id, inCart.quantity + 1);
                   }}
                   aria-label={`Add one more ${product.name}`}
-                  className="flex h-7 w-6.5 sm:h-7.5 sm:w-7 items-center justify-center text-emerald-700 hover:bg-emerald-50 active:scale-90 transition-transform"
+                  className="flex h-8 w-7.5 sm:h-8.5 sm:w-8 items-center justify-center text-emerald-700 hover:bg-emerald-50 active:scale-85 transition-transform"
                 >
-                  <Plus size={13} className="stroke-[2.5]" />
+                  <Plus size={14} className="stroke-[3]" />
                 </button>
               </div>
             ) : (
@@ -128,9 +128,9 @@ export function ProductCard({
                   });
                 }}
                 aria-label={`Add ${product.name}`}
-                className="flex h-7 w-7 sm:h-7.5 sm:w-7.5 items-center justify-center rounded-lg border border-emerald-600 bg-surface text-emerald-600 shadow-sm transition-all hover:bg-emerald-600 hover:text-white active:scale-90"
+                className="flex h-7.5 w-7.5 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-emerald-600 bg-surface text-emerald-600 shadow-sm transition-all hover:bg-emerald-600 hover:text-white active:scale-90"
               >
-                <Plus size={16} className="stroke-[2.5]" />
+                <Plus size={17} className="stroke-[2.5]" />
               </button>
             )}
           </div>

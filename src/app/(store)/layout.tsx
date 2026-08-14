@@ -20,7 +20,9 @@ export default async function StoreLayout({
         <NavigationProgress />
       </Suspense>
       <div className="flex min-h-screen flex-col pb-20 sm:pb-0">
-        <Header />
+        <Suspense fallback={<div className="h-12 border-b border-border bg-surface" />}>
+          <Header />
+        </Suspense>
         <main className="mx-auto w-full max-w-6xl flex-1 px-2 sm:px-4 py-3 sm:py-8">
           {children}
         </main>
