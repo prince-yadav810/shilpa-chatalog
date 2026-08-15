@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Prisma } from "@prisma/client";
@@ -111,12 +112,14 @@ export default async function AdminProductsPage({ searchParams }: Props) {
       </div>
 
       <div className="mt-6">
-        <AdminProductFilters
-          categories={categories.map((c) => ({
-            id: c.id,
-            label: c.parent ? `${c.parent.name} › ${c.name}` : c.name,
-          }))}
-        />
+        <Suspense fallback={<div className="h-10 border border-border bg-surface" />}>
+          <AdminProductFilters
+            categories={categories.map((c) => ({
+              id: c.id,
+              label: c.parent ? `${c.parent.name} › ${c.name}` : c.name,
+            }))}
+          />
+        </Suspense>
       </div>
 
       {products.length === 0 ? (
@@ -167,9 +170,9 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-caption text-ink-muted">
-                    {product.category.parent
+                    {product.category?.parent
                       ? `${product.category.parent.name} › ${product.category.name}`
-                      : product.category.name}
+                      : product.category?.name || "General"}
                   </td>
                   <td className="price px-4 py-3 text-body text-ink">
                     {formatPrice(product.price)}
