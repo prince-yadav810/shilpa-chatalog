@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
-import { badRequest, notFound, parseBody } from "@/lib/api";
+import { badRequest, notFound } from "@/lib/api";
 import { productInputSchema } from "@/lib/validation";
 import { deleteCloudinaryImage } from "@/lib/cloudinary";
 
@@ -18,8 +18,28 @@ export async function PUT(req: Request, { params }: Params) {
   const existing = await prisma.product.findUnique({ where: { id } });
   if (!existing) return notFound("Product not found");
 
-  const parsed = await parseBody(req, productInputSchema);
-  if (!parsed.ok) return parsed.response;
+  const rawJson = await req.json().catch(() => null);
+  if (!rawJson) return badRequest("Invalid JSON body");
+
+  // Allow simple archive toggle via PUT as well
+  if (Object.keys(rawJson).length === 1 && typeof rawJson.isArchived === "boolean") {
+    const product = await prisma.product.update({
+      where: { id },
+      data: { isArchived: rawJson.isArchived },
+    });
+    return NextResponse.json(product);
+  }
+
+  const parsed = productInputSchema.safeParse(rawJson);
+  if (!parsed.success) {
+    const fields: Record<string, string> = {};
+    for (const issue of parsed.error.issues) {
+      const key = issue.path.join(".");
+      if (key && !fields[key]) fields[key] = issue.message;
+    }
+    return NextResponse.json({ error: "Validation failed", fields }, { status: 400 });
+  }
+
   const input = parsed.data;
 
   const category = await prisma.category.findUnique({

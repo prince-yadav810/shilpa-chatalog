@@ -17,6 +17,9 @@ export function hasOffer(price: number, mrp?: number | null): boolean {
 }
 
 /** Display form for the signature monospace price treatment. */
-export function formatPrice(amount: number): string {
+export function formatPrice(amount: number | null | undefined): string {
+  if (amount == null || typeof amount !== "number" || isNaN(amount)) {
+    return "₹0.00";
+  }
   return `₹${amount.toFixed(2)}`;
 }

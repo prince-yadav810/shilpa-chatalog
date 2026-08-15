@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,6 +21,7 @@ export const revalidate = 300;
 type Props = { params: Promise<{ slug: string }> };
 
 async function loadProduct(rawSlug: string) {
+  if (!rawSlug) return null;
   const slug = rawSlug.trim();
   const decoded = decodeURIComponent(slug);
 
@@ -53,26 +55,30 @@ async function loadProduct(rawSlug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const product = await loadProduct(slug);
-  if (!product) return {};
+  try {
+    const { slug } = await params;
+    const product = await loadProduct(slug);
+    if (!product) return { title: "Product Not Found" };
 
-  const title = product.variant ? `${product.name} (${product.variant})` : product.name;
-  const description =
-    product.description ??
-    `${product.name} at ${formatPrice(product.price)}. Order from Shilpa on WhatsApp.`;
+    const title = product.variant ? `${product.name} (${product.variant})` : product.name;
+    const description =
+      product.description ??
+      `${product.name} at ${formatPrice(product.price)}. Order from Shilpa on WhatsApp.`;
 
-  return {
-    title,
-    description,
-    alternates: { canonical: `/product/${product.slug}` },
-    openGraph: {
+    return {
       title,
       description,
-      type: "website",
-      ...(product.imageUrl ? { images: [{ url: product.imageUrl }] } : {}),
-    },
-  };
+      alternates: { canonical: `/product/${product.slug}` },
+      openGraph: {
+        title,
+        description,
+        type: "website",
+        ...(product.imageUrl ? { images: [{ url: product.imageUrl }] } : {}),
+      },
+    };
+  } catch {
+    return { title: "Product" };
+  }
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -82,17 +88,24 @@ export default async function ProductPage({ params }: Props) {
 
   const settings = await getSettings();
 
-  // Load ALL products in this subcategory
-  const related = await prisma.product.findMany({
-    where: { categoryId: product.category.id, NOT: { id: product.id }, isArchived: false },
-    select: productCardSelect,
-    orderBy: [{ inStock: "desc" }, { name: "asc" }],
-  });
+  // Load products in this subcategory safely
+  const categoryId = product.category?.id;
+  const related = categoryId
+    ? await prisma.product.findMany({
+        where: { categoryId, NOT: { id: product.id }, isArchived: false },
+        select: productCardSelect,
+        orderBy: [{ inStock: "desc" }, { name: "asc" }],
+      })
+    : [];
 
-  const parent = product.category.parent;
+  const categoryName = product.category?.name || "General";
+  const categorySlug = product.category?.slug || "";
+  const parent = product.category?.parent;
   const categoryHref = parent
-    ? `/c/${parent.slug}/${product.category.slug}`
-    : `/c/${product.category.slug}`;
+    ? `/c/${parent.slug}/${categorySlug}`
+    : categorySlug
+    ? `/c/${categorySlug}`
+    : "/";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -103,7 +116,7 @@ export default async function ProductPage({ params }: Props) {
     ...(product.brand ? { brand: { "@type": "Brand", name: product.brand.name } } : {}),
     offers: {
       "@type": "Offer",
-      price: product.price.toFixed(2),
+      price: (product.price ?? 0).toFixed(2),
       priceCurrency: "INR",
       availability: product.inStock
         ? "https://schema.org/InStock"
@@ -121,7 +134,7 @@ export default async function ProductPage({ params }: Props) {
           items={[
             { label: "Home", href: "/" },
             ...(parent ? [{ label: parent.name, href: `/c/${parent.slug}` }] : []),
-            { label: product.category.name, href: categoryHref },
+            ...(product.category ? [{ label: categoryName, href: categoryHref }] : []),
             { label: product.name },
           ]}
         />
@@ -206,7 +219,11 @@ export default async function ProductPage({ params }: Props) {
               />
 
               <a
-                href={buildProductOrderLink(product, settings.whatsappNumber, settings.storeName)}
+                href={buildProductOrderLink(
+                  product,
+                  settings.whatsappNumber,
+                  settings.storeName
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-whatsapp w-full py-3 rounded-xl shadow-xs"
@@ -238,14 +255,16 @@ export default async function ProductPage({ params }: Props) {
           )}
 
           <dl className="mt-6 border-t border-border/70 pt-3 text-xs">
-            <div className="flex justify-between border-b border-border/50 py-2">
-              <dt className="text-ink-muted">Category</dt>
-              <dd>
-                <Link href={categoryHref} className="text-ink hover:text-brand font-medium">
-                  {product.category.name}
-                </Link>
-              </dd>
-            </div>
+            {product.category && (
+              <div className="flex justify-between border-b border-border/50 py-2">
+                <dt className="text-ink-muted">Category</dt>
+                <dd>
+                  <Link href={categoryHref} className="text-ink hover:text-brand font-medium">
+                    {categoryName}
+                  </Link>
+                </dd>
+              </div>
+            )}
             {product.brand && (
               <div className="flex justify-between border-b border-border/50 py-2">
                 <dt className="text-ink-muted">Brand</dt>
@@ -267,7 +286,7 @@ export default async function ProductPage({ params }: Props) {
         <section className="mt-12 sm:mt-16">
           <div className="mb-4 flex items-baseline justify-between">
             <h2 className="font-heading text-base sm:text-xl font-bold text-ink">
-              More in {product.category.name}
+              More in {categoryName}
             </h2>
             <span className="text-xs text-ink-muted">{related.length} items</span>
           </div>

@@ -124,7 +124,7 @@ export function BrandEditForm({
     setArchivingId(product.id);
     try {
       const res = await fetch(`/api/products/${product.id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isArchived: !product.isArchived }),
       });
@@ -296,6 +296,7 @@ export function BrandEditForm({
                           fill
                           sizes="96px"
                           className="object-contain"
+                          unoptimized
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-surface-subtle text-caption text-ink-muted">

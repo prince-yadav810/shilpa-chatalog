@@ -56,6 +56,7 @@ export function ProductCard({
               fill
               className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw"
+              unoptimized
             />
           ) : (
             <Package size={32} className="text-border" aria-hidden="true" />

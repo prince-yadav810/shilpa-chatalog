@@ -159,6 +159,7 @@ export default async function AdminArchivedProductsPage({ searchParams }: Props)
                             fill
                             className="object-contain p-0.5 opacity-75"
                             sizes="40px"
+                            unoptimized
                           />
                         ) : (
                           <Package size={14} className="text-border" aria-hidden="true" />
