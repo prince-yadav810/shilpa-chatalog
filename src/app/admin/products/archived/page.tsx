@@ -1,8 +1,7 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import type { Prisma } from "@prisma/client";
-import { Package, ArrowLeft, ArchiveRestore } from "lucide-react";
+import { ArrowLeft, ArchiveRestore } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { parsePage } from "@/lib/queries";
 import { formatPrice } from "@/lib/pricing";
@@ -10,6 +9,7 @@ import { Pagination, PAGE_SIZE } from "@/components/Pagination";
 import { ConfirmButton } from "@/components/admin/ConfirmButton";
 import { ArchiveButton } from "@/components/admin/ArchiveButton";
 import { AdminProductFilters } from "@/components/admin/AdminProductFilters";
+import { ProductThumbnail } from "@/components/admin/ProductThumbnail";
 
 export const dynamic = "force-dynamic";
 
@@ -155,18 +155,7 @@ export default async function AdminArchivedProductsPage({ searchParams }: Props)
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="relative flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-background">
-                        {product.imageUrl ? (
-                          <Image
-                            src={product.imageUrl}
-                            alt=""
-                            fill
-                            className="object-contain p-0.5 opacity-75"
-                            sizes="40px"
-                            unoptimized
-                          />
-                        ) : (
-                          <Package size={14} className="text-border" aria-hidden="true" />
-                        )}
+                        <ProductThumbnail src={product.imageUrl} size={40} className="opacity-75" />
                       </div>
                       <div className="min-w-0">
                         <p className="text-body text-ink font-medium">{product.name}</p>

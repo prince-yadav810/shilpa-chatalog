@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Package, Minus, Plus } from "lucide-react";
@@ -28,6 +29,8 @@ export function ProductCard({
   const { addItem, updateQuantity, items, openCart } = useCart();
   const inCart = items.find((i) => i.id === product.id);
 
+  const [imageError, setImageError] = useState(false);
+
   const hasDiscount = product.mrp != null && product.mrp > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.mrp! - product.price) / product.mrp!) * 100)
@@ -49,7 +52,7 @@ export function ProductCard({
           href={`/product/${product.slug}`}
           className="relative flex h-full w-full items-center justify-center p-2 sm:p-3.5"
         >
-          {product.imageUrl ? (
+          {product.imageUrl && !imageError ? (
             <Image
               src={product.imageUrl}
               alt={product.name}
@@ -57,6 +60,7 @@ export function ProductCard({
               className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw"
               unoptimized
+              onError={() => setImageError(true)}
             />
           ) : (
             <Package size={32} className="text-border" aria-hidden="true" />

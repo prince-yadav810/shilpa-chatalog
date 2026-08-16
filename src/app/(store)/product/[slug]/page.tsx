@@ -1,9 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Package, ShieldCheck, Truck } from "lucide-react";
+import { ShieldCheck, Truck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { productCardSelect } from "@/lib/queries";
@@ -14,6 +13,7 @@ import { ProductGrid } from "@/components/ProductGrid";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { AddToOrderButton } from "@/components/AddToOrderButton";
+import { ProductDetailImage } from "@/components/ProductDetailImage";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 300;
@@ -147,29 +147,11 @@ export default async function ProductPage({ params }: Props) {
 
       <div className="grid gap-5 sm:gap-8 md:grid-cols-2 mt-2 sm:mt-0">
         {/* Product Image Frame */}
-        <div className="relative flex aspect-square w-full items-center justify-center rounded-2xl border border-border/80 bg-surface shadow-xs p-4 sm:p-8 overflow-hidden">
-          {product.imageUrl ? (
-            <Image
-              src={product.imageUrl}
-              alt={product.name}
-              fill
-              className="object-contain p-4 sm:p-6"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-              unoptimized
-            />
-          ) : (
-            <Package size={54} className="text-border" aria-hidden="true" />
-          )}
-
-          {!product.inStock && (
-            <div className="absolute inset-0 flex items-center justify-center bg-surface/80 backdrop-blur-xs">
-              <span className="rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-bold text-ink-muted">
-                Out of stock
-              </span>
-            </div>
-          )}
-        </div>
+        <ProductDetailImage
+          imageUrl={product.imageUrl}
+          name={product.name}
+          inStock={product.inStock}
+        />
 
         {/* Product Info & Actions */}
         <div className="flex flex-col justify-start">

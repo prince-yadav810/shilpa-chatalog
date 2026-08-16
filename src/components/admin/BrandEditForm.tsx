@@ -21,6 +21,28 @@ export type ProductItem = {
   categoryName: string;
 };
 
+function ProductImageThumb({ src, alt }: { src?: string | null; alt: string }) {
+  const [error, setError] = useState(false);
+  if (!src || error) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-surface-subtle text-caption text-ink-muted">
+        No Image
+      </div>
+    );
+  }
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      sizes="96px"
+      className="object-contain"
+      unoptimized
+      onError={() => setError(true)}
+    />
+  );
+}
+
 export function BrandEditForm({
   brand,
   products = [],
@@ -289,20 +311,7 @@ export function BrandEditForm({
                   <div className="flex items-center gap-4 sm:gap-6">
                     {/* Large 96x96 Image Container */}
                     <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-border bg-surface p-1 shadow-xs">
-                      {p.imageUrl ? (
-                        <Image
-                          src={p.imageUrl}
-                          alt={p.name}
-                          fill
-                          sizes="96px"
-                          className="object-contain"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-surface-subtle text-caption text-ink-muted">
-                          No Image
-                        </div>
-                      )}
+                      <ProductImageThumb src={p.imageUrl} alt={p.name} />
                     </div>
 
                     {/* Product Details */}
