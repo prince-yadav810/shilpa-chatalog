@@ -6,7 +6,6 @@ import { getSettings } from "@/lib/settings";
 import { productCardSelect } from "@/lib/queries";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 
-export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 export default async function HomePage() {

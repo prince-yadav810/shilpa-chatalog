@@ -8,7 +8,6 @@ import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 import { Pagination } from "@/components/Pagination";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
-export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = {

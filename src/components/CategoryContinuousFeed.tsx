@@ -204,11 +204,23 @@ export function CategoryContinuousFeed({
                     No products currently in {subcat.name}
                   </div>
                 ) : (
-                  <ProductGrid
-                    products={subcat.products}
-                    whatsappNumber={whatsappNumber}
-                    storeName={storeName}
-                  />
+                  <>
+                    <ProductGrid
+                      products={subcat.products}
+                      whatsappNumber={whatsappNumber}
+                      storeName={storeName}
+                    />
+                    {subcat.products.length === 24 && (
+                      <div className="mt-6 flex justify-center">
+                        <Link 
+                          href={`/c/${parentCategory.slug}/${subcat.slug}`}
+                          className="btn-secondary text-xs"
+                        >
+                          View all {subcat.name} products →
+                        </Link>
+                      </div>
+                    )}
+                  </>
                 )}
               </section>
             ))}

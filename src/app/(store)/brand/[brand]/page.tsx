@@ -8,7 +8,6 @@ import { productCardSelect } from "@/lib/queries";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
-export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = { params: Promise<{ brand: string }> };

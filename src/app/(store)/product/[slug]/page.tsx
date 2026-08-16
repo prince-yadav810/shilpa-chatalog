@@ -15,7 +15,6 @@ import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { AddToOrderButton } from "@/components/AddToOrderButton";
 import { ProductDetailImage } from "@/components/ProductDetailImage";
 
-export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = { params: Promise<{ slug: string }> };

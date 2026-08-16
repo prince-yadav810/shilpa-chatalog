@@ -9,7 +9,6 @@ import { BrandFilterPills } from "@/components/BrandFilterPills";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 type Props = {
@@ -39,6 +38,7 @@ async function loadCategoryWithSubcategories(slug: string) {
             where: { isArchived: false },
             select: productCardSelect,
             orderBy: [{ inStock: "desc" }, { name: "asc" }],
+            take: 24,
           },
         },
       },
@@ -46,6 +46,7 @@ async function loadCategoryWithSubcategories(slug: string) {
         where: { isArchived: false },
         select: productCardSelect,
         orderBy: [{ inStock: "desc" }, { name: "asc" }],
+        take: 24,
       },
     },
   });
