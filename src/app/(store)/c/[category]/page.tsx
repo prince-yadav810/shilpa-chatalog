@@ -1,62 +1,49 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
-import { brandsInCategories, productCardSelect } from "@/lib/queries";
+import { brandsInCategories } from "@/lib/queries";
 import { CategoryContinuousFeed } from "@/components/CategoryContinuousFeed";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { BrandFilterPills } from "@/components/BrandFilterPills";
-import { ProductGrid, EmptyState } from "@/components/ProductGrid";
-import Link from "next/link";
+
+import { ClientProductSection } from "@/components/ClientProductSection";
+
 
 export const revalidate = 300;
 
 type Props = {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ brand?: string }>;
 };
 
-const loadCategoryWithSubcategories = (slug: string) =>
-  unstable_cache(
-    async () => {
-      return prisma.category.findFirst({
-        where: { slug, isActive: true },
+/**
+ * Lightweight category loader — fetches ONLY structure (no products).
+ * Products are loaded client-side by ClientProductSection for instant page load.
+ */
+async function loadCategoryStructure(slug: string) {
+  return prisma.category.findFirst({
+    where: { slug, isActive: true },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      imageUrl: true,
+      parentId: true,
+      parent: { select: { name: true, slug: true } },
+      children: {
+        where: { isActive: true },
+        orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
         select: {
           id: true,
           name: true,
           slug: true,
           imageUrl: true,
-          parentId: true,
-          parent: { select: { name: true, slug: true } },
-          children: {
-            where: { isActive: true },
-            orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-            select: {
-              id: true,
-              name: true,
-              slug: true,
-              imageUrl: true,
-              products: {
-                where: { isArchived: false },
-                select: productCardSelect,
-                orderBy: [{ inStock: "desc" }, { name: "asc" }],
-                take: 24,
-              },
-            },
-          },
-          products: {
-            where: { isArchived: false },
-            select: productCardSelect,
-            orderBy: [{ inStock: "desc" }, { name: "asc" }],
-            take: 24,
-          },
+          // No products here — loaded client-side
         },
-      });
+      },
     },
-    ['category-with-subs', slug],
-    { revalidate: 300, tags: ['categories'] }
-  )();
+  });
+}
 
 export async function generateStaticParams() {
   const categories = await prisma.category.findMany({
@@ -84,7 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CategoryPage({ params }: Props) {
   const { category: slug } = await params;
 
-  const category = await loadCategoryWithSubcategories(slug);
+  const category = await loadCategoryStructure(slug);
   if (!category) notFound();
 
   // Redirect subcategory if accessed via single segment URL
@@ -101,25 +88,18 @@ export default async function CategoryPage({ params }: Props) {
   const hasChildren = category.children.length > 0;
 
   if (hasChildren) {
-    const totalProducts = category.children.reduce(
-      (sum, child) => sum + child.products.length,
-      0
-    );
-
     return (
       <CategoryContinuousFeed
         parentCategory={{
           name: category.name,
           slug: category.slug,
           imageUrl: category.imageUrl,
-          totalProducts,
         }}
         subcategories={category.children.map((child) => ({
           id: child.id,
           name: child.name,
           slug: child.slug,
           imageUrl: child.imageUrl,
-          products: child.products,
         }))}
         brands={brands}
         whatsappNumber={settings.whatsappNumber}
@@ -128,37 +108,22 @@ export default async function CategoryPage({ params }: Props) {
     );
   }
 
-  // Fallback for standalone leaf category with direct products
+  // Fallback for standalone leaf category — also uses client-side product loading
   return (
     <div className="py-2">
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: category.name }]} />
 
       <header className="mb-4">
         <h1 className="font-heading text-lg font-bold text-ink sm:text-2xl">{category.name}</h1>
-        <p className="mt-0.5 text-xs text-ink-muted">
-          {category.products.length}{" "}
-          {category.products.length === 1 ? "item" : "items"} in {category.name}
-        </p>
       </header>
 
       <BrandFilterPills brands={brands} categorySlug={category.slug} />
 
-      {category.products.length === 0 ? (
-        <EmptyState
-          title={`Nothing in ${category.name} yet.`}
-          hint="This section is still being stocked. Try another category, or message the shop to ask."
-        >
-          <Link href="/" className="btn-secondary">
-            Back to all categories
-          </Link>
-        </EmptyState>
-      ) : (
-        <ProductGrid
-          products={category.products}
-          whatsappNumber={settings.whatsappNumber}
-          storeName={settings.storeName}
-        />
-      )}
+      <ClientProductSection
+        categoryId={category.id}
+        whatsappNumber={settings.whatsappNumber}
+        storeName={settings.storeName}
+      />
     </div>
   );
 }

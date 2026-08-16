@@ -3,17 +3,15 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { CategorySidebar, type SidebarCategoryItem } from "@/components/CategorySidebar";
-import { ProductGrid } from "@/components/ProductGrid";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { BrandFilterPills } from "@/components/BrandFilterPills";
-import type { ProductCardData } from "@/components/ProductCard";
+import { ClientProductSection } from "@/components/ClientProductSection";
 
 export type SubcategoryFeedSection = {
   id: string;
   name: string;
   slug: string;
   imageUrl?: string | null;
-  products: ProductCardData[];
 };
 
 export function CategoryContinuousFeed({
@@ -28,7 +26,6 @@ export function CategoryContinuousFeed({
     name: string;
     slug: string;
     imageUrl?: string | null;
-    totalProducts: number;
   };
   subcategories: SubcategoryFeedSection[];
   brands: { name: string; slug: string; count: number }[];
@@ -39,8 +36,14 @@ export function CategoryContinuousFeed({
   const [activeSlug, setActiveSlug] = useState<string>(
     initialSubcategorySlug ?? (subcategories[0]?.slug || "all")
   );
+  // Track loaded product counts per subcategory for sidebar badge
+  const [productCounts, setProductCounts] = useState<Record<string, number>>({});
   const isUserScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleProductLoaded = useCallback((subcatId: string, count: number) => {
+    setProductCounts((prev) => ({ ...prev, [subcatId]: count }));
+  }, []);
 
   // Scroll to a specific subcategory section
   const scrollToSubcategory = useCallback((slug: string) => {
@@ -52,7 +55,6 @@ export function CategoryContinuousFeed({
     } else {
       const targetElement = document.getElementById(slug);
       if (targetElement) {
-        // Calculate offset to ensure sticky header does not cover section title
         const yOffset = -70;
         const y =
           targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -60,7 +62,6 @@ export function CategoryContinuousFeed({
       }
     }
 
-    // Reset user scroll lock after smooth scrolling completes
     if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     scrollTimeoutRef.current = setTimeout(() => {
       isUserScrollingRef.current = false;
@@ -89,10 +90,8 @@ export function CategoryContinuousFeed({
       (entries) => {
         if (isUserScrollingRef.current) return;
 
-        // Find the visible section that is closest to top/active
         const visibleEntries = entries.filter((entry) => entry.isIntersecting);
         if (visibleEntries.length > 0) {
-          // Sort by bounding client top to pick the one closest to top
           visibleEntries.sort(
             (a, b) =>
               Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top)
@@ -124,10 +123,10 @@ export function CategoryContinuousFeed({
     name: subcat.name,
     slug: subcat.slug,
     imageUrl: subcat.imageUrl,
-    productCount: subcat.products.length,
+    productCount: productCounts[subcat.id] ?? 0,
   }));
 
-  const totalItemsCount = parentCategory.totalProducts;
+  const totalItemsCount = Object.values(productCounts).reduce((a, b) => a + b, 0);
 
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)] -mx-2 -mt-3 sm:-mx-4 sm:-mt-8">
@@ -155,16 +154,18 @@ export function CategoryContinuousFeed({
           <h1 className="font-heading text-xl sm:text-2xl font-bold text-ink">
             {parentCategory.name}
           </h1>
-          <p className="mt-0.5 text-xs text-ink-muted">
-            {totalItemsCount} {totalItemsCount === 1 ? "item" : "items"} in {parentCategory.name}
-          </p>
+          {totalItemsCount > 0 && (
+            <p className="mt-0.5 text-xs text-ink-muted">
+              {totalItemsCount} {totalItemsCount === 1 ? "item" : "items"} in {parentCategory.name}
+            </p>
+          )}
         </div>
 
         {/* Brand Filter Pills */}
         <BrandFilterPills brands={brands} categorySlug={parentCategory.slug} />
 
         {/* Continuous Subcategory Stream Sections */}
-        {subcategories.length === 0 || totalItemsCount === 0 ? (
+        {subcategories.length === 0 ? (
           <div className="rounded-2xl border border-border bg-surface p-8 text-center sm:p-12">
             <p className="font-heading text-base font-semibold text-ink">
               Nothing in {parentCategory.name} yet.
@@ -191,36 +192,33 @@ export function CategoryContinuousFeed({
                     <h2 className="font-heading text-sm sm:text-base font-bold text-ink">
                       {subcat.name}
                     </h2>
-                    <span className="text-[11px] font-medium text-ink-muted">
-                      {subcat.products.length}{" "}
-                      {subcat.products.length === 1 ? "item" : "items"}
-                    </span>
+                    {(productCounts[subcat.id] ?? 0) > 0 && (
+                      <span className="text-[11px] font-medium text-ink-muted">
+                        {productCounts[subcat.id]}{" "}
+                        {productCounts[subcat.id] === 1 ? "item" : "items"}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                {/* Subcategory Product Grid */}
-                {subcat.products.length === 0 ? (
-                  <div className="rounded-xl border border-dashed border-border/80 bg-background/50 p-5 text-center text-xs text-ink-muted">
-                    No products currently in {subcat.name}
+                {/* Subcategory Product Grid — loaded client-side */}
+                <ClientProductSection
+                  categoryId={subcat.id}
+                  whatsappNumber={whatsappNumber}
+                  storeName={storeName}
+                  onLoaded={(count) => handleProductLoaded(subcat.id, count)}
+                />
+
+                {/* "View all" link if there are more than 24 products */}
+                {(productCounts[subcat.id] ?? 0) >= 24 && (
+                  <div className="mt-6 flex justify-center">
+                    <Link
+                      href={`/c/${parentCategory.slug}/${subcat.slug}`}
+                      className="btn-secondary text-xs"
+                    >
+                      View all {subcat.name} products →
+                    </Link>
                   </div>
-                ) : (
-                  <>
-                    <ProductGrid
-                      products={subcat.products}
-                      whatsappNumber={whatsappNumber}
-                      storeName={storeName}
-                    />
-                    {subcat.products.length === 24 && (
-                      <div className="mt-6 flex justify-center">
-                        <Link 
-                          href={`/c/${parentCategory.slug}/${subcat.slug}`}
-                          className="btn-secondary text-xs"
-                        >
-                          View all {subcat.name} products →
-                        </Link>
-                      </div>
-                    )}
-                  </>
                 )}
               </section>
             ))}
