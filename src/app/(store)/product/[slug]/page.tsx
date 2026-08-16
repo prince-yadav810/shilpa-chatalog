@@ -83,19 +83,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = await loadProduct(slug);
+
+  // Run product lookup and settings fetch in parallel — saves one round-trip.
+  const [product, settings] = await Promise.all([
+    loadProduct(slug).catch(() => null),
+    getSettings(),
+  ]);
   if (!product) notFound();
 
-  const settings = await getSettings();
-
-  // Load products in this subcategory safely
+  // Load related products in this subcategory (non-critical — empty on error).
   const categoryId = product.category?.id;
   const related = categoryId
-    ? await prisma.product.findMany({
-        where: { categoryId, NOT: { id: product.id }, isArchived: false },
-        select: productCardSelect,
-        orderBy: [{ inStock: "desc" }, { name: "asc" }],
-      })
+    ? await prisma.product
+        .findMany({
+          where: { categoryId, NOT: { id: product.id }, isArchived: false },
+          select: productCardSelect,
+          orderBy: [{ inStock: "desc" }, { name: "asc" }],
+        })
+        .catch(() => [])
     : [];
 
   const categoryName = product.category?.name || "General";
