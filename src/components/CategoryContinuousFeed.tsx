@@ -209,17 +209,7 @@ export function CategoryContinuousFeed({
                   onLoaded={(count) => handleProductLoaded(subcat.id, count)}
                 />
 
-                {/* "View all" link if there are more than 24 products */}
-                {(productCounts[subcat.id] ?? 0) >= 24 && (
-                  <div className="mt-6 flex justify-center">
-                    <Link
-                      href={`/c/${parentCategory.slug}/${subcat.slug}`}
-                      className="btn-secondary text-xs"
-                    >
-                      View all {subcat.name} products →
-                    </Link>
-                  </div>
-                )}
+
               </section>
             ))}
           </div>

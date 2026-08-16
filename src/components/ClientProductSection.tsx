@@ -5,7 +5,10 @@ import { ProductGrid } from "@/components/ProductGrid";
 import type { ProductCardData } from "@/components/ProductCard";
 
 /* ── In-memory cache so back-navigation is instant ── */
-const cache = new Map<string, { products: ProductCardData[]; total: number }>();
+const cache = new Map<
+  string,
+  { products: ProductCardData[]; total: number; page: number; totalPages: number }
+>();
 
 function cacheKey(categoryId: string) {
   return `cat-${categoryId}`;
@@ -37,7 +40,7 @@ function ProductSkeleton() {
 /**
  * Client component that fetches products for a single category
  * and renders them in a ProductGrid. Uses an in-memory cache so
- * navigating back shows data instantly.
+ * navigating back shows data instantly. Includes "Load More" functionality.
  */
 export function ClientProductSection({
   categoryId,
@@ -48,38 +51,68 @@ export function ClientProductSection({
   categoryId: string;
   whatsappNumber: string;
   storeName: string;
-  /** Called with the product count once data is loaded */
-  onLoaded?: (count: number) => void;
+  /** Called with the true total product count once data is loaded */
+  onLoaded?: (totalCount: number) => void;
 }) {
+  const cached = cache.get(cacheKey(categoryId));
   const [products, setProducts] = useState<ProductCardData[] | null>(
-    cache.get(cacheKey(categoryId))?.products ?? null
+    cached?.products ?? null
   );
-  const [loading, setLoading] = useState(!cache.has(cacheKey(categoryId)));
+  const [loading, setLoading] = useState(!cached);
 
-  const fetchProducts = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/store/products?categoryId=${categoryId}`);
-      if (!res.ok) return;
-      const data = await res.json();
-      cache.set(cacheKey(categoryId), data);
-      setProducts(data.products);
-      onLoaded?.(data.products.length);
-    } catch {
-      // Silently fail — skeleton stays
-    } finally {
-      setLoading(false);
-    }
-  }, [categoryId, onLoaded]);
+  const [page, setPage] = useState(cached?.page ?? 1);
+  const [totalPages, setTotalPages] = useState(cached?.totalPages ?? 1);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const fetchProducts = useCallback(
+    async (targetPage: number, append = false) => {
+      try {
+        if (!append) setLoading(true);
+        else setLoadingMore(true);
+
+        const res = await fetch(
+          `/api/store/products?categoryId=${categoryId}&page=${targetPage}`
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+
+        setProducts((prev) => {
+          const nextProducts = append
+            ? [...(prev ?? []), ...data.products]
+            : data.products;
+          
+          cache.set(cacheKey(categoryId), {
+            products: nextProducts,
+            total: data.total,
+            page: targetPage,
+            totalPages: data.totalPages,
+          });
+          
+          if (!append) onLoaded?.(data.total);
+          
+          return nextProducts;
+        });
+        
+        setPage(targetPage);
+        setTotalPages(data.totalPages);
+      } catch {
+        // Silently fail — skeleton stays
+      } finally {
+        setLoading(false);
+        setLoadingMore(false);
+      }
+    },
+    [categoryId, onLoaded]
+  );
 
   useEffect(() => {
-    if (cache.has(cacheKey(categoryId))) {
-      const cached = cache.get(cacheKey(categoryId))!;
-      setProducts(cached.products);
-      setLoading(false);
-      onLoaded?.(cached.products.length);
-      return;
+    if (!cache.has(cacheKey(categoryId))) {
+      fetchProducts(1, false);
+    } else {
+      // If we already have it in cache, just let the parent know the total count
+      const cachedData = cache.get(cacheKey(categoryId))!;
+      onLoaded?.(cachedData.total);
     }
-    fetchProducts();
   }, [categoryId, fetchProducts, onLoaded]);
 
   if (loading || products === null) {
@@ -94,11 +127,26 @@ export function ClientProductSection({
     );
   }
 
+  const hasMore = page < totalPages;
+
   return (
-    <ProductGrid
-      products={products}
-      whatsappNumber={whatsappNumber}
-      storeName={storeName}
-    />
+    <div>
+      <ProductGrid
+        products={products}
+        whatsappNumber={whatsappNumber}
+        storeName={storeName}
+      />
+      {hasMore && (
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={() => fetchProducts(page + 1, true)}
+            disabled={loadingMore}
+            className="btn-secondary text-xs"
+          >
+            {loadingMore ? "Loading..." : "Load more products"}
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
