@@ -19,6 +19,14 @@ async function loadBrand(slug: string) {
   });
 }
 
+export async function generateStaticParams() {
+  const brands = await prisma.brand.findMany({
+    where: { isActive: true },
+    select: { slug: true },
+  });
+  return brands.map((b) => ({ brand: b.slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { brand: slug } = await params;
   const brand = await loadBrand(slug);
@@ -44,6 +52,7 @@ export default async function BrandPage({ params }: Props) {
 
   const products = await prisma.product.findMany({
     where: { brandId: brand.id, isArchived: false },
+    take: 48,
     select: {
       ...productCardSelect,
       category: {

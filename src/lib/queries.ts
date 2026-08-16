@@ -1,4 +1,5 @@
 import type { Prisma } from "@prisma/client";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { PAGE_SIZE } from "@/components/Pagination";
 
@@ -25,26 +26,32 @@ export function parsePage(value: string | undefined): number {
  * first so an out-of-stock run never pushes orderable products off page one.
  */
 export async function listProducts(where: Prisma.ProductWhereInput, page: number) {
-  const combinedWhere: Prisma.ProductWhereInput = {
-    isArchived: false,
-    ...where,
-  };
-  const [products, total] = await Promise.all([
-    prisma.product.findMany({
-      where: combinedWhere,
-      select: productCardSelect,
-      orderBy: [{ inStock: "desc" }, { name: "asc" }],
-      skip: (page - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
-    }),
-    prisma.product.count({ where: combinedWhere }),
-  ]);
+  return unstable_cache(
+    async () => {
+      const combinedWhere: Prisma.ProductWhereInput = {
+        isArchived: false,
+        ...where,
+      };
+      const [products, total] = await Promise.all([
+        prisma.product.findMany({
+          where: combinedWhere,
+          select: productCardSelect,
+          orderBy: [{ inStock: "desc" }, { name: "asc" }],
+          skip: (page - 1) * PAGE_SIZE,
+          take: PAGE_SIZE,
+        }),
+        prisma.product.count({ where: combinedWhere }),
+      ]);
 
-  return {
-    products,
-    total,
-    totalPages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
-  };
+      return {
+        products,
+        total,
+        totalPages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
+      };
+    },
+    ['list-products', JSON.stringify(where), String(page)],
+    { revalidate: 300, tags: ['products'] }
+  )();
 }
 
 /** Products anywhere beneath a top-level category. */
@@ -56,21 +63,27 @@ export function underCategory(categoryId: string, childIds: string[]): Prisma.Pr
 
 /** Brands that actually have products in a given set of categories. */
 export async function brandsInCategories(categoryIds: string[]) {
-  const grouped = await prisma.product.groupBy({
-    by: ["brandId"],
-    where: { categoryId: { in: categoryIds }, brandId: { not: null }, isArchived: false },
-    _count: { _all: true },
-  });
+  return unstable_cache(
+    async () => {
+      const grouped = await prisma.product.groupBy({
+        by: ["brandId"],
+        where: { categoryId: { in: categoryIds }, brandId: { not: null }, isArchived: false },
+        _count: { _all: true },
+      });
 
-  const ids = grouped.map((g) => g.brandId!).filter(Boolean);
-  if (ids.length === 0) return [];
+      const ids = grouped.map((g) => g.brandId!).filter(Boolean);
+      if (ids.length === 0) return [];
 
-  const brands = await prisma.brand.findMany({
-    where: { id: { in: ids }, isActive: true },
-    select: { id: true, name: true, slug: true },
-    orderBy: { name: "asc" },
-  });
+      const brands = await prisma.brand.findMany({
+        where: { id: { in: ids }, isActive: true },
+        select: { id: true, name: true, slug: true },
+        orderBy: { name: "asc" },
+      });
 
-  const counts = new Map(grouped.map((g) => [g.brandId, g._count._all]));
-  return brands.map((b) => ({ ...b, count: counts.get(b.id) ?? 0 }));
+      const counts = new Map(grouped.map((g) => [g.brandId, g._count._all]));
+      return brands.map((b) => ({ ...b, count: counts.get(b.id) ?? 0 }));
+    },
+    ['brands-in-categories', ...categoryIds],
+    { revalidate: 300, tags: ['brands'] }
+  )();
 }

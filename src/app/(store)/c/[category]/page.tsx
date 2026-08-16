@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { brandsInCategories, productCardSelect } from "@/lib/queries";
@@ -16,24 +17,34 @@ type Props = {
   searchParams: Promise<{ brand?: string }>;
 };
 
-async function loadCategoryWithSubcategories(slug: string) {
-  return prisma.category.findFirst({
-    where: { slug, isActive: true },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      imageUrl: true,
-      parentId: true,
-      parent: { select: { name: true, slug: true } },
-      children: {
-        where: { isActive: true },
-        orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+const loadCategoryWithSubcategories = (slug: string) =>
+  unstable_cache(
+    async () => {
+      return prisma.category.findFirst({
+        where: { slug, isActive: true },
         select: {
           id: true,
           name: true,
           slug: true,
           imageUrl: true,
+          parentId: true,
+          parent: { select: { name: true, slug: true } },
+          children: {
+            where: { isActive: true },
+            orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              imageUrl: true,
+              products: {
+                where: { isArchived: false },
+                select: productCardSelect,
+                orderBy: [{ inStock: "desc" }, { name: "asc" }],
+                take: 24,
+              },
+            },
+          },
           products: {
             where: { isArchived: false },
             select: productCardSelect,
@@ -41,15 +52,18 @@ async function loadCategoryWithSubcategories(slug: string) {
             take: 24,
           },
         },
-      },
-      products: {
-        where: { isArchived: false },
-        select: productCardSelect,
-        orderBy: [{ inStock: "desc" }, { name: "asc" }],
-        take: 24,
-      },
+      });
     },
+    ['category-with-subs', slug],
+    { revalidate: 300, tags: ['categories'] }
+  )();
+
+export async function generateStaticParams() {
+  const categories = await prisma.category.findMany({
+    where: { parentId: null, isActive: true },
+    select: { slug: true },
   });
+  return categories.map((c) => ({ category: c.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
