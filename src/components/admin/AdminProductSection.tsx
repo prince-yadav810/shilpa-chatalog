@@ -140,6 +140,7 @@ export function AdminProductSection({
           <AdminProductCard
             key={product.id}
             product={product}
+            categoryId={categoryId}
             categories={categories}
             onRemoved={removeProduct}
           />

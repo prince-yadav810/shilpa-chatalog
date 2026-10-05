@@ -2,11 +2,31 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { badRequest, conflict, notFound, parseBody } from "@/lib/api";
-import { categoryInputSchema } from "@/lib/validation";
+import { categoryImagePatchSchema, categoryInputSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
 
 type Params = { params: Promise<{ id: string }> };
+
+/** Quickly make a product's image the visual for the subcategory shelf. */
+export async function PATCH(req: Request, { params }: Params) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
+  const { id } = await params;
+  const parsed = await parseBody(req, categoryImagePatchSchema);
+  if (!parsed.ok) return parsed.response;
+
+  const existing = await prisma.category.findUnique({ where: { id } });
+  if (!existing) return notFound("Category not found");
+
+  const category = await prisma.category.update({
+    where: { id },
+    data: { imageUrl: parsed.data.imageUrl },
+  });
+
+  return NextResponse.json(category);
+}
 
 export async function PUT(req: Request, { params }: Params) {
   const denied = await requireAdmin();

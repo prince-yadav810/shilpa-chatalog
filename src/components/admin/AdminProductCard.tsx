@@ -9,6 +9,7 @@ import {
   ArchiveRestore,
   ChevronDown,
   FolderInput,
+  ImageIcon,
   MoreHorizontal,
   Package,
   Pencil,
@@ -24,10 +25,13 @@ export type AdminProductCardData = ProductCardData & { isArchived: boolean };
 
 export function AdminProductCard({
   product,
+  categoryId,
   categories,
   onRemoved,
 }: {
   product: AdminProductCardData;
+  /** The subcategory shelf this card currently belongs to. */
+  categoryId: string;
   categories: CategoryOption[];
   /** Remove the card from its current shelf after archive, restore, move, or delete. */
   onRemoved?: (productId: string) => void;
@@ -36,7 +40,7 @@ export function AdminProductCard({
   const [menuOpen, setMenuOpen] = useState(false);
   const [moveOpen, setMoveOpen] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
-  const [busy, setBusy] = useState<"archive" | "delete" | null>(null);
+  const [busy, setBusy] = useState<"archive" | "delete" | "category-image" | null>(null);
   const router = useRouter();
   const { show } = useToast();
 
@@ -93,6 +97,32 @@ export function AdminProductCard({
     } finally {
       setBusy(null);
       setConfirmingDelete(false);
+      setMenuOpen(false);
+    }
+  }
+
+  async function setCategoryImage() {
+    if (!product.imageUrl) return;
+
+    setBusy("category-image");
+    try {
+      const res = await fetch(`/api/categories/${categoryId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageUrl: product.imageUrl }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        show(body.error ?? "Couldn't set the subcategory image.", "error");
+        return;
+      }
+
+      show(`“${product.name}” is now this subcategory's image`);
+      router.refresh();
+    } catch {
+      show("Network problem — try again.", "error");
+    } finally {
+      setBusy(null);
       setMenuOpen(false);
     }
   }
@@ -196,6 +226,20 @@ export function AdminProductCard({
                     <Pencil size={14} className="text-brand" />
                     Edit product
                   </Link>
+                  <button
+                    type="button"
+                    onClick={setCategoryImage}
+                    disabled={!product.imageUrl || busy === "category-image"}
+                    title={
+                      product.imageUrl
+                        ? "Use this product image for the current subcategory"
+                        : "This product has no image to use"
+                    }
+                    className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-medium text-ink hover:bg-background disabled:cursor-not-allowed disabled:opacity-45"
+                  >
+                    <ImageIcon size={14} className="text-brand" />
+                    {busy === "category-image" ? "Setting image…" : "Set as subcategory image"}
+                  </button>
                   <button
                     type="button"
                     onClick={() => setMoveOpen(true)}

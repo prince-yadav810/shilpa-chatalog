@@ -73,6 +73,11 @@ export const categoryInputSchema = z.object({
 
 export type CategoryInput = z.infer<typeof categoryInputSchema>;
 
+/** A focused update used when an admin selects a product image for a category shelf. */
+export const categoryImagePatchSchema = z.object({
+  imageUrl: trimmed.max(500).url("Must be a valid URL"),
+});
+
 export const brandInputSchema = z.object({
   name: trimmed.min(1, "Name is required").max(100),
   logoUrl: imageUrl,
