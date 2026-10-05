@@ -12,7 +12,7 @@ async function countArchivedOffers() {
       AND "price" < "mrp"
   `;
 
-  return Number(rows[0]?.count ?? 0n);
+  return Number(rows[0]?.count ?? BigInt(0));
 }
 
 async function main() {
