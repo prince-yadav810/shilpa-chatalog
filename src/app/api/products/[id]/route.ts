@@ -92,7 +92,31 @@ export async function PATCH(req: Request, { params }: Params) {
   if (!existing) return notFound("Product not found");
 
   const body = await req.json().catch(() => ({}));
-  const isArchived = typeof body.isArchived === "boolean" ? body.isArchived : !existing.isArchived;
+
+  // The catalog browser can move a product without opening the full editor.
+  // Keep the same leaf-category guard as the full product form so a product
+  // never disappears into a parent category.
+  if (typeof body.categoryId === "string") {
+    const category = await prisma.category.findUnique({
+      where: { id: body.categoryId },
+      include: { _count: { select: { children: true } } },
+    });
+
+    if (!category) return badRequest("That category no longer exists");
+    if (category._count.children > 0) {
+      return badRequest("Choose a subcategory, not a top-level category");
+    }
+
+    const product = await prisma.product.update({
+      where: { id },
+      data: { categoryId: category.id },
+    });
+
+    return NextResponse.json({ ok: true, product });
+  }
+
+  const isArchived =
+    typeof body.isArchived === "boolean" ? body.isArchived : !existing.isArchived;
 
   const product = await prisma.product.update({
     where: { id },

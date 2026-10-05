@@ -18,11 +18,16 @@ export default async function EditProductPage({ params }: Props) {
 
   if (!product) notFound();
 
+  const returnPath = product.isArchived
+    ? "/admin/products/archived"
+    : "/admin/products";
+  const collectionLabel = product.isArchived ? "Archived products" : "Products";
+
   return (
     <>
       <nav className="mb-4 text-caption text-ink-muted">
-        <Link href="/admin/products" className="hover:text-brand">
-          Products
+        <Link href={returnPath} className="hover:text-brand">
+          {collectionLabel}
         </Link>{" "}
         › Edit
       </nav>
@@ -55,6 +60,7 @@ export default async function EditProductPage({ params }: Props) {
         }}
         categories={options.categories}
         brands={options.brands}
+        returnPath={returnPath}
       />
     </>
   );

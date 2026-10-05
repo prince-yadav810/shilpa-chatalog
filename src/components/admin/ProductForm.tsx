@@ -48,10 +48,13 @@ export function ProductForm({
   initial,
   categories,
   brands,
+  returnPath = "/admin/products",
 }: {
   initial: ProductFormValues;
   categories: CategoryOption[];
   brands: BrandOption[];
+  /** Where to return after saving or cancelling (archived products stay archived). */
+  returnPath?: string;
 }) {
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -116,7 +119,7 @@ export function ProductForm({
       }
 
       show(isEdit ? "Product saved" : "Product added");
-      router.push("/admin/products");
+      router.push(returnPath);
       router.refresh();
     } catch {
       show("Network problem — try again.", "error");
@@ -319,7 +322,7 @@ export function ProductForm({
         <button type="submit" disabled={busy} className="btn-primary">
           {busy ? "Saving…" : isEdit ? "Save changes" : "Add product"}
         </button>
-        <Link href="/admin/products" className="btn-secondary">
+        <Link href={returnPath} className="btn-secondary">
           Cancel
         </Link>
       </div>

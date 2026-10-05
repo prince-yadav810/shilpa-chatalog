@@ -1,11 +1,50 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { badRequest, parseBody } from "@/lib/api";
 import { productInputSchema } from "@/lib/validation";
 import { uniqueSlug } from "@/lib/slug";
+import { productCardSelect } from "@/lib/queries";
 
 export const runtime = "nodejs";
+
+const ADMIN_PAGE_SIZE = 24;
+
+/**
+ * Private product feed used by the catalog-style admin browser. Keeping this
+ * separate from the storefront feed means archived stock is never exposed to
+ * a public request.
+ */
+export async function GET(req: NextRequest) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
+  const { searchParams } = req.nextUrl;
+  const categoryId = searchParams.get("categoryId");
+  const archived = searchParams.get("archived") === "true";
+  const page = Math.max(1, Number.parseInt(searchParams.get("page") ?? "1", 10) || 1);
+
+  const where = {
+    isArchived: archived,
+    ...(categoryId ? { categoryId } : {}),
+  };
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      select: productCardSelect,
+      orderBy: [{ inStock: "desc" }, { name: "asc" }],
+      skip: (page - 1) * ADMIN_PAGE_SIZE,
+      take: ADMIN_PAGE_SIZE,
+    }),
+    prisma.product.count({ where }),
+  ]);
+
+  return NextResponse.json(
+    { products, total, totalPages: Math.max(1, Math.ceil(total / ADMIN_PAGE_SIZE)) },
+    { headers: { "Cache-Control": "private, no-store" } },
+  );
+}
 
 export async function POST(req: Request) {
   const denied = await requireAdmin();
