@@ -7,6 +7,11 @@ import { NavigationProgress } from "@/components/NavigationProgress";
 import { getSettings } from "@/lib/settings";
 import { Suspense } from "react";
 
+// The catalog reads directly from the database. Rendering these pages when a
+// customer requests them prevents Vercel's build workers from exhausting the
+// single build-time database connection while pre-rendering the entire store.
+export const dynamic = "force-dynamic";
+
 export default async function StoreLayout({
   children,
 }: {
