@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { badRequest, conflict, notFound, parseBody } from "@/lib/api";
 import { categoryImagePatchSchema, categoryInputSchema } from "@/lib/validation";
+import { syncSearchProductsForCategory } from "@/lib/catalog-search";
 
 export const runtime = "nodejs";
 
@@ -95,6 +96,8 @@ export async function PUT(req: Request, { params }: Params) {
       isActive: input.isActive,
     },
   });
+
+  await syncSearchProductsForCategory(category.id);
 
   return NextResponse.json(category);
 }

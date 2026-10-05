@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSettings } from "@/lib/settings";
-import { listProducts, parsePage } from "@/lib/queries";
+import { parsePage } from "@/lib/queries";
+import { searchCatalog } from "@/lib/catalog-search";
 import { ProductGrid, EmptyState } from "@/components/ProductGrid";
 import { Pagination } from "@/components/Pagination";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -34,22 +35,7 @@ export default async function SearchPage({ searchParams }: Props) {
     );
   }
 
-  /*
-   * `mode: "insensitive"` is a real Postgres ILIKE. The demo ran this on
-   * SQLite, where `contains` is case-sensitive for anything non-ASCII.
-   */
-  const { products, total, totalPages } = await listProducts(
-    {
-      OR: [
-        { name: { contains: query, mode: "insensitive" } },
-        { variant: { contains: query, mode: "insensitive" } },
-        { description: { contains: query, mode: "insensitive" } },
-        { brand: { name: { contains: query, mode: "insensitive" } } },
-        { category: { name: { contains: query, mode: "insensitive" } } },
-      ],
-    },
-    page,
-  );
+  const { products, total, totalPages } = await searchCatalog(query, page);
 
   return (
     <>

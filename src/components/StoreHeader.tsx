@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Search, X, ArrowLeft } from "lucide-react";
 import { CategoryBar, type CategoryBarItem } from "@/components/CategoryBar";
+import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 
 function formatSlugToTitle(slug: string): string {
   if (!slug) return "";
@@ -24,8 +25,6 @@ export function StoreHeader({
   categories?: CategoryBarItem[];
 }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -35,22 +34,6 @@ export function StoreHeader({
   useEffect(() => {
     setIsSearchOpen(false);
   }, [pathname]);
-
-  // Auto-focus input when search opens
-  useEffect(() => {
-    if (isSearchOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isSearchOpen]);
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const q = searchQuery.trim();
-    if (q) {
-      router.push(`/search?q=${encodeURIComponent(q)}`);
-      setIsSearchOpen(false);
-    }
-  };
 
   // Determine contextual page title for non-home pages
   const getContextTitle = () => {
@@ -88,29 +71,12 @@ export function StoreHeader({
           </Link>
 
           {/* Full Width Search Bar */}
-          <form
-            role="search"
-            className="relative flex-1"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const target = e.currentTarget.elements.namedItem("q") as HTMLInputElement;
-              const q = target?.value?.trim();
-              if (q) router.push(`/search?q=${encodeURIComponent(q)}`);
-            }}
-          >
-            <Search
-              size={16}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted"
-              aria-hidden="true"
-            />
-            <input
-              type="search"
-              name="q"
+          <div className="flex-1">
+            <SearchAutocomplete
               placeholder="Search products, brands, or essentials..."
-              aria-label="Search products"
-              className="field w-full rounded-xl py-2 pl-9 pr-3 text-[16px] sm:text-sm bg-background/80 border-border/80 shadow-2xs focus:bg-surface focus:border-brand"
+              inputClassName="field w-full rounded-xl border-border/80 bg-background/80 py-2 pl-9 pr-3 text-[16px] shadow-2xs focus:border-brand focus:bg-surface sm:text-sm"
             />
-          </form>
+          </div>
         </div>
       ) : (
         /* Listing / Category Header (Instamart style: [← Back] [Category Title] [🔍 Search]) */
@@ -156,45 +122,12 @@ export function StoreHeader({
       {/* Expandable Search Bar on Category/Listing pages when Search icon clicked */}
       {isSearchOpen && (
         <div className="border-t border-border/70 bg-surface px-3 py-2 shadow-inner">
-          <form
-            role="search"
-            onSubmit={handleSearchSubmit}
-            className="flex items-center gap-2"
-          >
-            <div className="relative flex-1">
-              <Search
-                size={16}
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <input
-                ref={inputRef}
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products, brands..."
-                aria-label="Search products"
-                className="field w-full rounded-xl py-1.5 pl-9 pr-8 text-[16px] sm:text-sm bg-background border-border"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink p-0.5"
-                  aria-label="Clear query"
-                >
-                  <X size={14} />
-                </button>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              className="btn-primary h-8 px-3 text-xs font-bold rounded-lg shrink-0"
-            >
-              Search
-            </button>
-          </form>
+          <SearchAutocomplete
+            autoFocus
+            onNavigate={() => setIsSearchOpen(false)}
+            placeholder="Search products, brands..."
+            inputClassName="field w-full rounded-xl border-border bg-background py-1.5 pl-9 pr-3 text-[16px] sm:text-sm"
+          />
         </div>
       )}
 

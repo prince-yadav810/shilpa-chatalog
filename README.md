@@ -34,6 +34,8 @@ npm run dev
 | `DIRECT_URL` | Postgres direct connection (port 5432). Prisma migrates through this. |
 | `AUTH_SECRET` | Signing key for the admin session. `openssl rand -base64 32` |
 | `CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET` | Product image hosting. |
+| `ALGOLIA_APP_ID` / `ALGOLIA_SEARCH_API_KEY` / `ALGOLIA_ADMIN_API_KEY` | Optional hosted product search. The admin key is server-only and must never be exposed in browser code. |
+| `ALGOLIA_INDEX_NAME` | Optional index name; defaults to `shilpa_products`. |
 | `NEXT_PUBLIC_SITE_URL` | Canonical origin, used for sitemap/canonical/OG URLs. |
 
 The shop's WhatsApp number is **not** an env var — it lives in the database and is
@@ -75,6 +77,8 @@ OCR pipeline in production to maintain. The flow:
 6. `npm run import-catalog -- data/catalog/<supplier>.json --dry-run`
    Prints exactly what would be created and changed, with a per-field diff.
 7. Drop `--dry-run` to apply.
+8. If Algolia search is enabled, run `npm run sync-search-index` after the import
+   so the search index receives the bulk changes in one safe replacement.
 
 [`data/catalog/STATUS.md`](data/catalog/STATUS.md) tracks which PDFs are done, who
 owns each one, and the naming conventions every new file has to match.
@@ -100,6 +104,7 @@ to make a discount badge appear.
 | `npm run create-admin` | Create or reset an admin login (prompts for the password) |
 | `npm run import-catalog` | Import a catalog JSON file |
 | `npm run upload-images` | Move sourced images onto Cloudinary |
+| `npm run sync-search-index` | Configure and atomically rebuild the Algolia product index |
 
 ## Security notes
 

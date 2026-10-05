@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { badRequest, notFound, parseBody } from "@/lib/api";
 import { brandInputSchema } from "@/lib/validation";
+import { removeSearchProducts, syncSearchProductsForBrand } from "@/lib/catalog-search";
 
 export const runtime = "nodejs";
 
@@ -61,6 +62,7 @@ export async function PUT(req: Request, { params }: Params) {
 
   // slug stays put — /brand/<slug> pages are linked and indexed.
   const brand = await prisma.brand.update({ where: { id }, data: input });
+  await syncSearchProductsForBrand(brand.id);
   return NextResponse.json(brand);
 }
 
@@ -94,6 +96,7 @@ export async function DELETE(_req: Request, { params }: Params) {
 
   // 4. Delete brand record
   await prisma.brand.delete({ where: { id } });
+  await removeSearchProducts(existing.products.map((product) => product.id));
 
   return NextResponse.json({ ok: true });
 }

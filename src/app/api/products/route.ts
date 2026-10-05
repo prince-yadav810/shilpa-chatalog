@@ -5,6 +5,7 @@ import { badRequest, parseBody } from "@/lib/api";
 import { productInputSchema } from "@/lib/validation";
 import { uniqueSlug } from "@/lib/slug";
 import { productCardSelect } from "@/lib/queries";
+import { syncSearchProduct } from "@/lib/catalog-search";
 
 export const runtime = "nodejs";
 
@@ -92,6 +93,8 @@ export async function POST(req: Request) {
       slug: await uniqueSlug("product", input.name),
     },
   });
+
+  await syncSearchProduct(product.id);
 
   return NextResponse.json(product, { status: 201 });
 }
