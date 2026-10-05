@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Public_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Public_Sans, IBM_Plex_Mono, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 
 /*
@@ -23,6 +23,14 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-mono",
+  display: "swap",
+});
+
+// Marathi only appears in short, intentional moments. This keeps every
+// Devanagari line crisp without changing the catalog's English-first reading flow.
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  variable: "--font-marathi",
   display: "swap",
 });
 
@@ -56,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${publicSans.variable} ${plexMono.variable}`}
+      className={`${fraunces.variable} ${publicSans.variable} ${plexMono.variable} ${notoSansDevanagari.variable}`}
     >
       <body className="overflow-x-hidden antialiased">{children}</body>
     </html>

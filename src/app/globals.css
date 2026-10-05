@@ -25,6 +25,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.font-marathi {
+  font-family: var(--font-marathi), var(--font-sans), sans-serif;
+}
+
 @layer base {
   h1,
   h2,
