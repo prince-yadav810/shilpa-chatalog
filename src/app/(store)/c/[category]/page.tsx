@@ -5,9 +5,7 @@ import { getSettings } from "@/lib/settings";
 import { brandsInCategories } from "@/lib/queries";
 import { CategoryContinuousFeed } from "@/components/CategoryContinuousFeed";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { BrandFilterPills } from "@/components/BrandFilterPills";
-
-import { ClientProductSection } from "@/components/ClientProductSection";
+import { FilteredProductSection } from "@/components/FilteredProductSection";
 
 
 export const revalidate = 300;
@@ -117,10 +115,9 @@ export default async function CategoryPage({ params }: Props) {
         <h1 className="font-heading text-lg font-bold text-ink sm:text-2xl">{category.name}</h1>
       </header>
 
-      <BrandFilterPills brands={brands} categorySlug={category.slug} />
-
-      <ClientProductSection
+      <FilteredProductSection
         categoryId={category.id}
+        brands={brands}
         whatsappNumber={settings.whatsappNumber}
         storeName={settings.storeName}
       />

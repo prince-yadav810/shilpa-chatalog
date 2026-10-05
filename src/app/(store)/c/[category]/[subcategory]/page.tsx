@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
+import { brandsInCategories } from "@/lib/queries";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ClientProductSection } from "@/components/ClientProductSection";
+import { FilteredProductSection } from "@/components/FilteredProductSection";
 
 export const revalidate = 300;
 
@@ -42,6 +43,7 @@ export default async function SubcategoryPage({ params }: Props) {
   if (!category || !category.parent) notFound();
 
   const settings = await getSettings();
+  const brands = await brandsInCategories([category.id]);
 
   return (
     <div className="py-2">
@@ -57,8 +59,9 @@ export default async function SubcategoryPage({ params }: Props) {
         <h1 className="font-heading text-lg font-bold text-ink sm:text-2xl">{category.name}</h1>
       </header>
 
-      <ClientProductSection
+      <FilteredProductSection
         categoryId={category.id}
+        brands={brands}
         whatsappNumber={settings.whatsappNumber}
         storeName={settings.storeName}
       />

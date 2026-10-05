@@ -4,7 +4,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { CategorySidebar, type SidebarCategoryItem } from "@/components/CategorySidebar";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { BrandFilterPills } from "@/components/BrandFilterPills";
+import {
+  CatalogFilters,
+  defaultCatalogFilters,
+  type CatalogBrandOption,
+  type CatalogFilterValue,
+} from "@/components/CatalogFilters";
 import { ClientProductSection } from "@/components/ClientProductSection";
 
 export type SubcategoryFeedSection = {
@@ -28,7 +33,7 @@ export function CategoryContinuousFeed({
     imageUrl?: string | null;
   };
   subcategories: SubcategoryFeedSection[];
-  brands: { name: string; slug: string; count: number }[];
+  brands: CatalogBrandOption[];
   initialSubcategorySlug?: string;
   whatsappNumber: string;
   storeName: string;
@@ -36,6 +41,7 @@ export function CategoryContinuousFeed({
   const [activeSlug, setActiveSlug] = useState<string>(
     initialSubcategorySlug ?? (subcategories[0]?.slug || "all")
   );
+  const [filters, setFilters] = useState<CatalogFilterValue>(defaultCatalogFilters);
   // Track loaded product counts per subcategory for sidebar badge
   const [productCounts, setProductCounts] = useState<Record<string, number>>({});
   const isUserScrollingRef = useRef(false);
@@ -128,6 +134,10 @@ export function CategoryContinuousFeed({
 
   const totalItemsCount = Object.values(productCounts).reduce((a, b) => a + b, 0);
 
+  useEffect(() => {
+    setProductCounts({});
+  }, [filters]);
+
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)] -mx-2 -mt-3 sm:-mx-4 sm:-mt-8">
       {/* Quick-Commerce Left Vertical Subcategory Sidebar */}
@@ -161,8 +171,7 @@ export function CategoryContinuousFeed({
           )}
         </div>
 
-        {/* Brand Filter Pills */}
-        <BrandFilterPills brands={brands} categorySlug={parentCategory.slug} />
+        <CatalogFilters brands={brands} value={filters} onChange={setFilters} />
 
         {/* Continuous Subcategory Stream Sections */}
         {subcategories.length === 0 ? (
@@ -204,6 +213,9 @@ export function CategoryContinuousFeed({
                 {/* Subcategory Product Grid — loaded client-side */}
                 <ClientProductSection
                   categoryId={subcat.id}
+                  brandId={filters.brandId ?? undefined}
+                  inStockOnly={filters.inStockOnly}
+                  sort={filters.sort}
                   whatsappNumber={whatsappNumber}
                   storeName={storeName}
                   onLoaded={(count) => handleProductLoaded(subcat.id, count)}

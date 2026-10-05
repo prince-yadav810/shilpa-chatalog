@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ProductGrid } from "@/components/ProductGrid";
 import type { ProductCardData } from "@/components/ProductCard";
+import type { ProductSort } from "@/components/CatalogFilters";
 
 /* ── In-memory cache so back-navigation is instant ── */
 const cache = new Map<
@@ -10,8 +11,13 @@ const cache = new Map<
   { products: ProductCardData[]; total: number; page: number; totalPages: number }
 >();
 
-function cacheKey(categoryId: string) {
-  return `cat-${categoryId}`;
+function cacheKey(
+  categoryId: string,
+  brandId: string | undefined,
+  inStockOnly: boolean,
+  sort: ProductSort,
+) {
+  return `cat-${categoryId}-brand-${brandId ?? "all"}-stock-${inStockOnly}-sort-${sort}`;
 }
 
 /* ── Skeleton shimmer while loading ── */
@@ -44,17 +50,25 @@ function ProductSkeleton() {
  */
 export function ClientProductSection({
   categoryId,
+  brandId,
+  inStockOnly = false,
+  sort = "recommended",
   whatsappNumber,
   storeName,
   onLoaded,
 }: {
   categoryId: string;
+  brandId?: string;
+  inStockOnly?: boolean;
+  sort?: ProductSort;
   whatsappNumber: string;
   storeName: string;
   /** Called with the true total product count once data is loaded */
   onLoaded?: (totalCount: number) => void;
 }) {
-  const cached = cache.get(cacheKey(categoryId));
+  const key = cacheKey(categoryId, brandId, inStockOnly, sort);
+  const cached = cache.get(key);
+  const onLoadedRef = useRef(onLoaded);
   const [products, setProducts] = useState<ProductCardData[] | null>(
     cached?.products ?? null
   );
@@ -64,34 +78,48 @@ export function ClientProductSection({
   const [totalPages, setTotalPages] = useState(cached?.totalPages ?? 1);
   const [loadingMore, setLoadingMore] = useState(false);
 
+  // The parent passes a per-section callback. Keep its latest version without
+  // making the fetch effect restart whenever product counts re-render the feed.
+  useEffect(() => {
+    onLoadedRef.current = onLoaded;
+  }, [onLoaded]);
+
   const fetchProducts = useCallback(
     async (targetPage: number, append = false) => {
       try {
         if (!append) setLoading(true);
         else setLoadingMore(true);
 
-        const res = await fetch(
-          `/api/store/products?categoryId=${categoryId}&page=${targetPage}`
-        );
+        const params = new URLSearchParams({ categoryId, page: String(targetPage), sort });
+        if (brandId) params.set("brandId", brandId);
+        if (inStockOnly) params.set("inStock", "true");
+        const res = await fetch(`/api/store/products?${params.toString()}`);
         if (!res.ok) return;
         const data = await res.json();
 
-        setProducts((prev) => {
-          const nextProducts = append
-            ? [...(prev ?? []), ...data.products]
-            : data.products;
-          
-          cache.set(cacheKey(categoryId), {
-            products: nextProducts,
+        if (append) {
+          setProducts((previousProducts) => {
+            const nextProducts = [...(previousProducts ?? []), ...data.products];
+            cache.set(key, {
+              products: nextProducts,
+              total: data.total,
+              page: targetPage,
+              totalPages: data.totalPages,
+            });
+            return nextProducts;
+          });
+        } else {
+          cache.set(key, {
+            products: data.products,
             total: data.total,
             page: targetPage,
             totalPages: data.totalPages,
           });
-          
-          if (!append) onLoaded?.(data.total);
-          
-          return nextProducts;
-        });
+          setProducts(data.products);
+          // This notification updates the parent's sidebar count. It must stay
+          // outside a React state updater, which React can evaluate during render.
+          onLoadedRef.current?.(data.total);
+        }
         
         setPage(targetPage);
         setTotalPages(data.totalPages);
@@ -102,18 +130,24 @@ export function ClientProductSection({
         setLoadingMore(false);
       }
     },
-    [categoryId, onLoaded]
+    [brandId, categoryId, inStockOnly, key, sort]
   );
 
   useEffect(() => {
-    if (!cache.has(cacheKey(categoryId))) {
+    const cachedData = cache.get(key);
+    if (!cachedData) {
+      setProducts(null);
+      setPage(1);
+      setTotalPages(1);
       fetchProducts(1, false);
     } else {
-      // If we already have it in cache, just let the parent know the total count
-      const cachedData = cache.get(cacheKey(categoryId))!;
-      onLoaded?.(cachedData.total);
+      setProducts(cachedData.products);
+      setPage(cachedData.page);
+      setTotalPages(cachedData.totalPages);
+      setLoading(false);
+      onLoadedRef.current?.(cachedData.total);
     }
-  }, [categoryId, fetchProducts, onLoaded]);
+  }, [fetchProducts, key]);
 
   if (loading || products === null) {
     return <ProductSkeleton />;
