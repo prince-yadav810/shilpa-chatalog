@@ -10,7 +10,7 @@ type Props = { params: Promise<{ id: string }> };
 export default async function EditCategoryPage({ params }: Props) {
   const { id } = await params;
 
-  const [category, parents] = await Promise.all([
+  const [category, parents, productImages] = await Promise.all([
     prisma.category.findUnique({
       where: { id },
       include: { _count: { select: { children: true } } },
@@ -19,6 +19,27 @@ export default async function EditCategoryPage({ params }: Props) {
       where: { parentId: null, products: { none: {} } },
       select: { id: true, name: true },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    }),
+    prisma.product.findMany({
+      where: {
+        categoryId: id,
+        isArchived: false,
+        imageUrl: { not: null },
+        NOT: { imageUrl: "" },
+      },
+      select: {
+        id: true,
+        name: true,
+        imageUrl: true,
+        brand: { select: { name: true } },
+      },
+      orderBy: [
+        { isFeatured: "desc" },
+        { inStock: "desc" },
+        { featuredOrder: "asc" },
+        { name: "asc" },
+      ],
+      take: 100,
     }),
   ]);
 
@@ -47,6 +68,18 @@ export default async function EditCategoryPage({ params }: Props) {
         }}
         // A category can't be its own parent.
         parents={parents.filter((p) => p.id !== category.id)}
+        productImages={productImages.flatMap((product) =>
+          product.imageUrl
+            ? [
+                {
+                  id: product.id,
+                  name: product.name,
+                  imageUrl: product.imageUrl,
+                  brandName: product.brand?.name ?? null,
+                },
+              ]
+            : [],
+        )}
       />
     </>
   );

@@ -5,10 +5,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/admin/Toast";
 import { ImageField } from "@/components/admin/ImageField";
+import {
+  ProductImagePicker,
+  type ProductImageOption,
+} from "@/components/admin/ProductImagePicker";
 
 export function CategoryEditForm({
   category,
   parents,
+  productImages,
 }: {
   category: {
     id: string;
@@ -20,6 +25,7 @@ export function CategoryEditForm({
     hasChildren: boolean;
   };
   parents: { id: string; name: string }[];
+  productImages: ProductImageOption[];
 }) {
   const [name, setName] = useState(category.name);
   const [parentId, setParentId] = useState(category.parentId ?? "");
@@ -117,7 +123,16 @@ export function CategoryEditForm({
       <ImageField
         value={imageUrl}
         onChange={setImageUrl}
-        label="Tile image (shown on the homepage)"
+        label="Category image"
+      />
+      <p className="-mt-3 text-caption text-ink-muted">
+        Used in category tiles and subcategory navigation.
+      </p>
+      <ProductImagePicker
+        products={productImages}
+        categoryName={category.name}
+        selectedUrl={imageUrl}
+        onSelect={setImageUrl}
       />
 
       <label className="flex items-center gap-2 border-t border-border pt-4 text-body">
