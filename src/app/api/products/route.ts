@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { badRequest, parseBody } from "@/lib/api";
@@ -95,6 +96,9 @@ export async function POST(req: Request) {
   });
 
   await syncSearchProduct(product.id);
+  // The home shelves and offers page are statically revalidated for speed.
+  // Invalidate them now so an admin's change appears right away.
+  revalidatePath("/", "layout");
 
   return NextResponse.json(product, { status: 201 });
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { badRequest, notFound } from "@/lib/api";
@@ -29,6 +30,7 @@ export async function PUT(req: Request, { params }: Params) {
       data: { isArchived: rawJson.isArchived },
     });
     await syncSearchProduct(product.id);
+    revalidatePath("/", "layout");
     return NextResponse.json(product);
   }
 
@@ -82,6 +84,7 @@ export async function PUT(req: Request, { params }: Params) {
   });
 
   await syncSearchProduct(product.id);
+  revalidatePath("/", "layout");
 
   return NextResponse.json(product);
 }
@@ -117,6 +120,7 @@ export async function PATCH(req: Request, { params }: Params) {
     });
 
     await syncSearchProduct(product.id);
+    revalidatePath("/", "layout");
 
     return NextResponse.json({ ok: true, product });
   }
@@ -129,6 +133,7 @@ export async function PATCH(req: Request, { params }: Params) {
     data: { isArchived },
   });
   await syncSearchProduct(product.id);
+  revalidatePath("/", "layout");
 
   return NextResponse.json({ ok: true, product });
 }
@@ -156,6 +161,7 @@ export async function DELETE(_req: Request, { params }: Params) {
   // 2. Delete product record from PostgreSQL database
   await prisma.product.delete({ where: { id } });
   await removeSearchProducts([id]);
+  revalidatePath("/", "layout");
 
   return NextResponse.json({ ok: true, deletedFromCloudinary });
 }

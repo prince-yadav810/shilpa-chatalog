@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { syncSearchProducts } from "@/lib/catalog-search";
 
 export const runtime = "nodejs";
 
@@ -33,7 +35,8 @@ export async function POST(
   }
 
   const products = await prisma.product.findMany({
-    where: { brandId: id },
+    // Archived products intentionally keep their historic data untouched.
+    where: { brandId: id, isArchived: false },
     select: { id: true, price: true, mrp: true }
   });
 
@@ -55,6 +58,9 @@ export async function POST(
     });
     updatedCount++;
   }
+
+  await syncSearchProducts(products.map((product) => product.id));
+  revalidatePath("/", "layout");
 
   return NextResponse.json({
     ok: true,

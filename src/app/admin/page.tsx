@@ -6,21 +6,31 @@ import { formatDisplayNumber } from "@/lib/whatsapp";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const [products, categories, brands, outOfStock, featured, settings] =
+  const [products, categories, brands, outOfStock, featured, offerRows, settings] =
     await Promise.all([
       prisma.product.count(),
       prisma.category.count(),
       prisma.brand.count(),
       prisma.product.count({ where: { inStock: false } }),
       prisma.product.count({ where: { isFeatured: true } }),
+      prisma.$queryRaw<{ count: bigint }[]>`
+        SELECT COUNT(*) AS count
+        FROM "Product"
+        WHERE "isArchived" = false
+          AND "inStock" = true
+          AND "mrp" IS NOT NULL
+          AND "mrp" > "price"
+      `,
       getSettings(),
     ]);
+  const offers = Number(offerRows[0]?.count ?? 0);
 
   const stats = [
     { label: "Products", value: products, href: "/admin/products" },
     { label: "Categories", value: categories, href: "/admin/categories" },
     { label: "Brands", value: brands, href: "/admin/brands" },
     { label: "Out of stock", value: outOfStock, href: "/admin/products?stock=out" },
+    { label: "Active offers", value: offers, href: "/admin/offers" },
     { label: "On the homepage", value: featured, href: "/admin/featured" },
   ];
 
@@ -28,7 +38,7 @@ export default async function AdminHome() {
     <>
       <h1 className="font-heading text-section text-ink">Overview</h1>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {stats.map((stat) => (
           <Link
             key={stat.label}

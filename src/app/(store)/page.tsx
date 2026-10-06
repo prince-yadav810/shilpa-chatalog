@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  BadgeCheck,
-  HeartPulse,
   Package,
   ShieldCheck,
   Sparkles,
@@ -15,6 +13,8 @@ import { productCardSelect } from "@/lib/queries";
 import { buildContactLink } from "@/lib/whatsapp";
 import { EmptyState } from "@/components/ProductGrid";
 import { HomeProductRail } from "@/components/home/HomeProductRail";
+import { HomeBannerCarousel } from "@/components/home/HomeBannerCarousel";
+import { getTopOffers } from "@/lib/offers";
 
 export const revalidate = 300;
 
@@ -31,7 +31,7 @@ function findDepartment(categories: HomeCategory[], terms: string[]) {
 }
 
 export default async function HomePage() {
-  const [settings, categories, featured, discountCandidates, fallbackProducts, brands] = await Promise.all([
+  const [settings, categories, featured, fallbackProducts, brands, topOffers] = await Promise.all([
     getSettings(),
     prisma.category.findMany({
       where: { parentId: null, isActive: true },
@@ -56,12 +56,6 @@ export default async function HomePage() {
       take: 12,
     }),
     prisma.product.findMany({
-      where: { isArchived: false, inStock: true, mrp: { not: null } },
-      select: productCardSelect,
-      orderBy: [{ updatedAt: "desc" }, { name: "asc" }],
-      take: 64,
-    }),
-    prisma.product.findMany({
       where: { isArchived: false, inStock: true },
       select: productCardSelect,
       orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
@@ -73,16 +67,10 @@ export default async function HomePage() {
       orderBy: { products: { _count: "desc" } },
       take: 12,
     }),
+    getTopOffers(12),
   ]);
 
-  const deals = discountCandidates
-    .filter((product) => product.mrp != null && product.mrp > product.price)
-    .sort((first, second) => {
-      const firstDiscount = (first.mrp! - first.price) / first.mrp!;
-      const secondDiscount = (second.mrp! - second.price) / second.mrp!;
-      return secondDiscount - firstDiscount;
-    })
-    .slice(0, 12);
+  const deals = topOffers.products;
   const hasCuratedPopularProducts = featured.length > 0;
   const popularProducts = hasCuratedPopularProducts
     ? featured
@@ -100,6 +88,9 @@ export default async function HomePage() {
     .slice(0, 12);
   const careDepartment = findDepartment(categories, ["medicine", "medical", "ayurveda"]);
   const dailyDepartment = findDepartment(categories, ["pantry", "household", "home-and-kitchen"]);
+  const wellnessDepartment = findDepartment(categories, ["wellness", "medicine", "medical", "ayurveda"]);
+  const homeCareDepartment = findDepartment(categories, ["household", "home-and-kitchen", "clean"]);
+  const personalCareDepartment = findDepartment(categories, ["personal", "beauty", "groom"]);
   const isEmpty = categories.length === 0 && popularProducts.length === 0;
 
   return (
@@ -115,91 +106,14 @@ export default async function HomePage() {
       )}
 
       {categories.length > 0 && (
-        <section aria-label="Shilpa highlights" className="-mx-2 overflow-hidden sm:mx-0">
-          <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-2 pb-2 scrollbar-none sm:px-0">
-            <Link
-              href={careDepartment ? `/c/${careDepartment.slug}` : "/"}
-              className="relative min-h-[176px] w-[88%] shrink-0 snap-start overflow-hidden rounded-[1.5rem] bg-[#fff0df] p-5 shadow-[0_12px_28px_rgba(239,87,31,0.13)] sm:w-[410px]"
-            >
-              <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-[#f57f17]/25" />
-              <div className="absolute -bottom-10 right-4 h-32 w-32 rounded-full bg-[#e9252b]/12" />
-              <div className="relative z-10 max-w-[64%]">
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#e9252b] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-white">
-                  <Truck size={12} strokeWidth={2.8} />
-                  Free home delivery
-                </span>
-                <h1 className="mt-3 font-heading text-[1.72rem] font-semibold leading-[1.02] tracking-tight text-[#34201b] sm:text-3xl">
-                  Care & essentials, close to home.
-                </h1>
-                <p className="font-marathi mt-2 text-sm font-semibold text-[#b72b23]">
-                  आम्ही घेऊ तुमच्या आरोग्याची काळजी
-                </p>
-                <span className="mt-3 inline-flex items-center gap-1 text-xs font-extrabold text-[#9f2d22]">
-                  Shop now <ArrowRight size={14} strokeWidth={2.8} />
-                </span>
-              </div>
-              <Image
-                src="/brand/shilpa-chemists-trust-seal.png"
-                alt="Shilpa Chemist — genuine and authentic medicines"
-                width={1254}
-                height={1254}
-                className="absolute bottom-3 right-3 h-24 w-24 rotate-6 object-contain drop-shadow-[0_8px_12px_rgba(127,28,22,0.24)] sm:h-28 sm:w-28"
-                priority
-              />
-            </Link>
-
-            <Link
-              href={dailyDepartment ? `/c/${dailyDepartment.slug}` : "/"}
-              className="relative min-h-[176px] w-[88%] shrink-0 snap-start overflow-hidden rounded-[1.5rem] bg-[#dff4e5] p-5 shadow-[0_12px_28px_rgba(5,128,72,0.13)] sm:w-[410px]"
-            >
-              <div className="relative z-10 max-w-[62%]">
-                <span className="font-marathi text-xs font-bold text-[#087a42]">घरबसल्या ऑर्डर करा</span>
-                <h2 className="mt-2 font-heading text-[1.65rem] font-semibold leading-[1.04] tracking-tight text-[#183c2a] sm:text-3xl">
-                  Your everyday list, sorted.
-                </h2>
-                <p className="mt-2 text-xs font-medium leading-relaxed text-[#40705a]">
-                  Pantry, personal care and home essentials in one place.
-                </p>
-                <span className="mt-3 inline-flex items-center gap-1 text-xs font-extrabold text-[#087a42]">
-                  Explore essentials <ArrowRight size={14} strokeWidth={2.8} />
-                </span>
-              </div>
-              {dailyDepartment?.imageUrl ? (
-                <Image
-                  src={dailyDepartment.imageUrl}
-                  alt=""
-                  fill
-                  unoptimized
-                  className="object-contain object-right-bottom p-2 pl-[44%] mix-blend-multiply"
-                  sizes="(max-width: 640px) 88vw, 410px"
-                />
-              ) : (
-                <HeartPulse className="absolute bottom-5 right-5 h-24 w-24 text-[#087a42]/20" />
-              )}
-            </Link>
-
-            <a
-              href={buildContactLink(settings.whatsappNumber, settings.storeName)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative min-h-[176px] w-[88%] shrink-0 snap-start overflow-hidden rounded-[1.5rem] bg-[#ee2b2f] p-5 text-white shadow-[0_12px_28px_rgba(198,36,38,0.2)] sm:w-[410px]"
-            >
-              <BadgeCheck className="absolute -right-5 -top-5 h-32 w-32 text-white/15" strokeWidth={1} />
-              <div className="relative z-10 max-w-[78%]">
-                <span className="inline-flex rounded-full bg-white/18 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em]">
-                  Shilpa promise
-                </span>
-                <h2 className="mt-3 font-heading text-[1.65rem] font-semibold leading-[1.04] tracking-tight">
-                  Genuine products. Helpful people.
-                </h2>
-                <p className="mt-2 text-xs leading-relaxed text-white/80">Message us anytime and we&apos;ll help you find what you need.</p>
-                <span className="mt-3 inline-flex items-center gap-1 text-xs font-extrabold">
-                  Chat on WhatsApp <ArrowRight size={14} strokeWidth={2.8} />
-                </span>
-              </div>
-            </a>
-          </div>
-        </section>
+        <HomeBannerCarousel
+          careHref={careDepartment ? `/c/${careDepartment.slug}` : "/"}
+          dailyHref={dailyDepartment ? `/c/${dailyDepartment.slug}` : "/"}
+          wellnessHref={wellnessDepartment ? `/c/${wellnessDepartment.slug}` : "/"}
+          homeCareHref={homeCareDepartment ? `/c/${homeCareDepartment.slug}` : "/"}
+          personalCareHref={personalCareDepartment ? `/c/${personalCareDepartment.slug}` : "/"}
+          highestPercentOff={topOffers.highestPercentOff}
+        />
       )}
 
       {isEmpty && (
@@ -302,9 +216,11 @@ export default async function HomePage() {
 
       <HomeProductRail
         id="offers"
-        title="Real savings, every day"
-        description="Products with a genuine offer price."
+        title="Top offers at Shilpa"
+        description="The biggest current savings, ranked by percentage off."
         products={deals}
+        href="/offers"
+        linkLabel="See all offers"
       />
 
       {brands.length > 0 && (

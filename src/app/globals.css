@@ -87,6 +87,30 @@ body {
   .label {
     @apply mb-1.5 block text-caption font-medium text-ink;
   }
+
+  .home-banner-care {
+    background: #fff0df;
+  }
+
+  .home-banner-mint {
+    background: #dff4e5;
+  }
+
+  .home-banner-offer {
+    background: #ffe2d7;
+  }
+
+  .home-banner-wellness {
+    background: #f5f3e8;
+  }
+
+  .home-banner-home {
+    background: #fff3c7;
+  }
+
+  .home-banner-personal {
+    background: #efe5fa;
+  }
 }
 
 @layer utilities {

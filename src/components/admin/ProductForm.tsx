@@ -57,6 +57,12 @@ export function ProductForm({
   returnPath?: string;
 }) {
   const [values, setValues] = useState(initial);
+  const [offerPercent, setOfferPercent] = useState(() => {
+    const initialPrice = Number.parseFloat(initial.price);
+    const initialMrp = Number.parseFloat(initial.mrp);
+    const initialOff = discountPercent(initialPrice, Number.isFinite(initialMrp) ? initialMrp : null);
+    return initialOff == null ? "" : String(initialOff);
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const router = useRouter();
@@ -85,6 +91,17 @@ export function ProductForm({
   const priceNum = Number.parseFloat(values.price);
   const mrpNum = Number.parseFloat(values.mrp);
   const off = discountPercent(priceNum, Number.isFinite(mrpNum) ? mrpNum : null);
+
+  function setOffer(value: string) {
+    setOfferPercent(value);
+    const percentage = Number.parseFloat(value);
+    if (!Number.isFinite(percentage) || percentage < 0 || percentage > 99 || !Number.isFinite(mrpNum)) {
+      return;
+    }
+
+    const calculatedPrice = Math.max(0.01, Math.round(mrpNum * (1 - percentage / 100) * 100) / 100);
+    set("price", String(calculatedPrice));
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -211,7 +228,7 @@ export function ProductForm({
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-4">
         <div>
           <label htmlFor="price" className="label">
             Selling price (₹)
@@ -222,7 +239,10 @@ export function ProductForm({
             step="0.01"
             min="0.01"
             value={values.price}
-            onChange={(e) => set("price", e.target.value)}
+            onChange={(e) => {
+              setOfferPercent("");
+              set("price", e.target.value);
+            }}
             className="field price text-left"
             required
           />
@@ -239,7 +259,10 @@ export function ProductForm({
             step="0.01"
             min="0"
             value={values.mrp}
-            onChange={(e) => set("mrp", e.target.value)}
+            onChange={(e) => {
+              setOfferPercent("");
+              set("mrp", e.target.value);
+            }}
             className="field price text-left"
           />
           <FieldError message={errors.mrp} />
@@ -247,6 +270,29 @@ export function ProductForm({
             {off !== null
               ? `Shows as ${off}% off.`
               : "Only fill this in if the pack has a higher printed MRP."}
+          </p>
+        </div>
+
+        <div>
+          <label htmlFor="offerPercent" className="label">
+            Offer discount (%) <span className="text-ink-muted">(optional)</span>
+          </label>
+          <input
+            id="offerPercent"
+            type="number"
+            inputMode="decimal"
+            step="1"
+            min="0"
+            max="99"
+            value={offerPercent}
+            onChange={(e) => setOffer(e.target.value)}
+            placeholder="e.g. 10"
+            className="field price text-left"
+          />
+          <p className="mt-1 text-caption text-ink-muted">
+            {Number.isFinite(mrpNum)
+              ? "Sets the selling price from the MRP. Use 0% to remove an offer."
+              : "Enter the genuine printed MRP first, then add the offer percentage."}
           </p>
         </div>
 
