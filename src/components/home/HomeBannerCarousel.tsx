@@ -12,7 +12,7 @@ type BannerSlide = {
   cta: string;
   href: string;
   image?: string;
-  theme: "care" | "mint" | "offer" | "wellness" | "home" | "personal";
+  theme: "care" | "delivery" | "mint" | "offer" | "wellness" | "home" | "personal";
   marathi?: string;
 };
 
@@ -49,6 +49,16 @@ export function HomeBannerCarousel({
       marathi: "आम्ही घेऊ तुमच्या आरोग्याची काळजी",
     },
     {
+      eyebrow: "Free delivery, every order",
+      title: "Free delivery, right to your door.",
+      description: "Every order comes home with no delivery fee.",
+      cta: "Start shopping",
+      href: "/categories",
+      image: "/home/free-home-delivery-banner.png",
+      theme: "delivery",
+      marathi: "तुमच्या दारात, अगदी मोफत.",
+    },
+    {
       eyebrow: "Everyday essentials",
       title: "Your everyday list, sorted.",
       description: "Pantry, personal care and home essentials in one place.",
@@ -68,6 +78,7 @@ export function HomeBannerCarousel({
       href: "/offers",
       image: "/home/offer-banner.png",
       theme: "offer",
+      marathi: "बचत करा, अधिक खरेदी करा.",
     },
     {
       eyebrow: "Wellness at home",
@@ -77,6 +88,7 @@ export function HomeBannerCarousel({
       href: wellnessHref,
       image: "/home/wellness-banner.png",
       theme: "wellness",
+      marathi: "आरोग्याची काळजी, घरबसल्या.",
     },
     {
       eyebrow: "For a fresher home",
@@ -86,6 +98,7 @@ export function HomeBannerCarousel({
       href: homeCareHref,
       image: "/home/home-care-banner.png",
       theme: "home",
+      marathi: "घरासाठी आवश्यक सर्व काही.",
     },
     {
       eyebrow: "A little everyday care",
@@ -95,6 +108,7 @@ export function HomeBannerCarousel({
       href: personalCareHref,
       image: "/home/personal-care-banner.png",
       theme: "personal",
+      marathi: "दररोजची काळजी, सहज.",
     },
   ];
 
@@ -103,9 +117,17 @@ export function HomeBannerCarousel({
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
+  function scrollToSlide(index: number) {
+    const track = trackRef.current;
+    const target = track?.querySelector<HTMLElement>(`[data-slide-index="${index}"]`);
+    if (!track || !target) return;
+
+    // Scrolling the track directly keeps the customer's page position intact.
+    track.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
+  }
+
   function goTo(index: number) {
-    const target = trackRef.current?.querySelector<HTMLElement>(`[data-slide-index="${index}"]`);
-    target?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+    scrollToSlide(index);
     setActiveIndex(index);
   }
 
@@ -121,8 +143,7 @@ export function HomeBannerCarousel({
     const timer = window.setInterval(() => {
       setActiveIndex((current) => {
         const next = (current + 1) % slides.length;
-        const target = trackRef.current?.querySelector<HTMLElement>(`[data-slide-index="${next}"]`);
-        target?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+        scrollToSlide(next);
         return next;
       });
     }, 5000);
@@ -166,7 +187,7 @@ export function HomeBannerCarousel({
             href={slide.href}
             data-slide-index={index}
             aria-label={`${slide.title}. ${slide.cta}`}
-            className={`home-banner-${slide.theme} group relative min-h-[188px] w-[88%] shrink-0 snap-start overflow-hidden rounded-[1.5rem] p-5 shadow-[0_12px_28px_rgba(89,58,38,0.15)] sm:w-[470px]`}
+            className={`home-banner-${slide.theme} group relative min-h-[204px] w-[88%] shrink-0 snap-start overflow-hidden rounded-[1.5rem] p-5 shadow-[0_12px_28px_rgba(89,58,38,0.15)] sm:w-[470px]`}
           >
             {slide.image && (
               <Image
@@ -207,11 +228,8 @@ export function HomeBannerCarousel({
                   {slide.title}
                 </h2>
               )}
-              {slide.marathi ? (
-                <p className="font-marathi mt-2 text-sm font-semibold text-[#b72b23]">{slide.marathi}</p>
-              ) : (
-                <p className="mt-2 text-xs font-medium leading-relaxed text-[#62463b]">{slide.description}</p>
-              )}
+              <p className="mt-2 text-xs font-medium leading-relaxed text-[#62463b]">{slide.description}</p>
+              {slide.marathi && <p className="font-marathi mt-1 text-[12px] font-semibold text-[#b72b23]">{slide.marathi}</p>}
               <span className="mt-3 inline-flex items-center gap-1 text-xs font-extrabold text-[#9f2d22]">
                 {slide.cta} <ArrowRight size={14} strokeWidth={2.8} />
               </span>
