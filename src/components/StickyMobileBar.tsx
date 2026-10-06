@@ -8,10 +8,10 @@ import { Home, LayoutGrid, ShoppingBag, ArrowRight } from "lucide-react";
 
 export function StickyMobileBar() {
   const pathname = usePathname();
-  const { totalItems, totalPrice, openCart, isReady } = useCart();
+  const { totalItems, totalPrice, openCart, isReady, isOpen } = useCart();
 
   const isHome = pathname === "/";
-  const isCategories = pathname.startsWith("/c/") || pathname === "/brands" || pathname.startsWith("/brand/");
+  const isCategories = pathname === "/categories" || pathname.startsWith("/c/");
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden">
@@ -74,7 +74,7 @@ export function StickyMobileBar() {
 
         {/* Tab 2: Categories */}
         <Link
-          href="/brands"
+          href="/categories"
           className={`flex flex-1 flex-col items-center justify-center py-1 transition-colors ${
             isCategories ? "text-ink font-bold" : "text-ink-muted hover:text-ink"
           }`}
@@ -92,10 +92,13 @@ export function StickyMobileBar() {
         <button
           type="button"
           onClick={openCart}
-          className="flex flex-1 flex-col items-center justify-center py-1 text-ink-muted hover:text-ink transition-colors"
+          aria-label={totalItems > 0 ? `Open cart with ${totalItems} items` : "Open cart"}
+          className={`flex flex-1 flex-col items-center justify-center py-1 transition-colors ${
+            isOpen ? "font-bold text-ink" : "text-ink-muted hover:text-ink"
+          }`}
         >
           <div className="relative">
-            <ShoppingBag size={20} className="text-ink-muted" />
+            <ShoppingBag size={20} className={isOpen ? "stroke-[2.5] text-ink" : "text-ink-muted"} />
             {isReady && totalItems > 0 && (
               <span className="price absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-600 px-1 text-[9px] font-bold text-white shadow-xs">
                 {totalItems}

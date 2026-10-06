@@ -48,6 +48,7 @@ export function StoreHeader({
       return formatSlugToTitle(parts[1] || "");
     }
     if (pathname === "/brands") return "All Brands";
+    if (pathname === "/categories") return "Categories";
     if (pathname === "/search") return "Search Products";
     if (pathname.startsWith("/product/")) return "Product Details";
     return storeName;
