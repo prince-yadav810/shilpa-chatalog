@@ -51,6 +51,11 @@ export function CategoryContinuousFeed({
     setProductCounts((prev) => ({ ...prev, [subcatId]: count }));
   }, []);
 
+  const handleFiltersChange = useCallback((nextFilters: CatalogFilterValue) => {
+    setProductCounts({});
+    setFilters(nextFilters);
+  }, []);
+
   // Scroll to a specific subcategory section
   const scrollToSubcategory = useCallback((slug: string) => {
     isUserScrollingRef.current = true;
@@ -133,10 +138,7 @@ export function CategoryContinuousFeed({
   }));
 
   const totalItemsCount = Object.values(productCounts).reduce((a, b) => a + b, 0);
-
-  useEffect(() => {
-    setProductCounts({});
-  }, [filters]);
+  const allSectionCountsLoaded = Object.keys(productCounts).length === subcategories.length;
 
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)] -mx-2 -mt-3 sm:-mx-4 sm:-mt-8">
@@ -164,14 +166,14 @@ export function CategoryContinuousFeed({
           <h1 className="font-heading text-xl sm:text-2xl font-bold text-ink">
             {parentCategory.name}
           </h1>
-          {totalItemsCount > 0 && (
+          {allSectionCountsLoaded && totalItemsCount > 0 && (
             <p className="mt-0.5 text-xs text-ink-muted">
               {totalItemsCount} {totalItemsCount === 1 ? "item" : "items"} in {parentCategory.name}
             </p>
           )}
         </div>
 
-        <CatalogFilters brands={brands} value={filters} onChange={setFilters} />
+        <CatalogFilters brands={brands} value={filters} onChange={handleFiltersChange} />
 
         {/* Continuous Subcategory Stream Sections */}
         {subcategories.length === 0 ? (
@@ -188,7 +190,7 @@ export function CategoryContinuousFeed({
           </div>
         ) : (
           <div className="space-y-6 sm:space-y-8">
-            {subcategories.map((subcat) => (
+            {subcategories.map((subcat, index) => (
               <section
                 key={subcat.id}
                 id={subcat.slug}
@@ -216,6 +218,7 @@ export function CategoryContinuousFeed({
                   brandId={filters.brandId ?? undefined}
                   inStockOnly={filters.inStockOnly}
                   sort={filters.sort}
+                  loadWhenVisible={index > 0 && subcat.slug !== initialSubcategorySlug}
                   whatsappNumber={whatsappNumber}
                   storeName={storeName}
                   onLoaded={(count) => handleProductLoaded(subcat.id, count)}
