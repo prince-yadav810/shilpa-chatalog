@@ -6,13 +6,13 @@ import { formatDisplayNumber } from "@/lib/whatsapp";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const [products, categories, brands, outOfStock, featured, offerRows, settings] =
+  const [products, categories, brands, outOfStock, homepageItems, offerRows, settings] =
     await Promise.all([
       prisma.product.count(),
       prisma.category.count(),
       prisma.brand.count(),
       prisma.product.count({ where: { inStock: false } }),
-      prisma.product.count({ where: { isFeatured: true } }),
+      prisma.homepageItem.count(),
       prisma.$queryRaw<{ count: bigint }[]>`
         SELECT COUNT(*) AS count
         FROM "Product"
@@ -31,7 +31,7 @@ export default async function AdminHome() {
     { label: "Brands", value: brands, href: "/admin/brands" },
     { label: "Out of stock", value: outOfStock, href: "/admin/products?stock=out" },
     { label: "Active offers", value: offers, href: "/admin/offers" },
-    { label: "On the homepage", value: featured, href: "/admin/featured" },
+    { label: "Homepage picks", value: homepageItems, href: "/admin/featured" },
   ];
 
   return (

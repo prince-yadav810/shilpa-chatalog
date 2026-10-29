@@ -360,8 +360,11 @@ export function ProductForm({
             checked={values.isFeatured}
             onChange={(e) => set("isFeatured", e.target.checked)}
           />
-          Show on the homepage
+          Include in the automatic homepage selection
         </label>
+        <p className="text-caption text-ink-muted">
+          For an exact homepage position, use the <Link href="/admin/featured" className="underline">Homepage controls</Link> after saving.
+        </p>
       </fieldset>
 
       <div className="flex gap-3 border-t border-border pt-5">

@@ -15,6 +15,7 @@ import { EmptyState } from "@/components/ProductGrid";
 import { HomeProductRail } from "@/components/home/HomeProductRail";
 import { HomeBannerCarousel } from "@/components/home/HomeBannerCarousel";
 import { getTopOffers } from "@/lib/offers";
+import { getHomepageSelections } from "@/lib/homepage";
 
 export const revalidate = 300;
 
@@ -31,7 +32,7 @@ function findDepartment(categories: HomeCategory[], terms: string[]) {
 }
 
 export default async function HomePage() {
-  const [settings, categories, featured, fallbackProducts, brands, topOffers] = await Promise.all([
+  const [settings, categories, featured, fallbackProducts, brands, topOffers, homepageSelections] = await Promise.all([
     getSettings(),
     prisma.category.findMany({
       where: { parentId: null, isActive: true },
@@ -68,16 +69,19 @@ export default async function HomePage() {
       take: 12,
     }),
     getTopOffers(12),
+    getHomepageSelections(),
   ]);
 
-  const deals = topOffers.products;
-  const hasCuratedPopularProducts = featured.length > 0;
-  const popularProducts = hasCuratedPopularProducts
-    ? featured
+  const deals = homepageSelections.topOffers.length > 0 ? homepageSelections.topOffers : topOffers.products;
+  const hasCuratedPopularProducts = homepageSelections.popularProducts.length > 0 || featured.length > 0;
+  const popularProducts = homepageSelections.popularProducts.length > 0
+    ? homepageSelections.popularProducts
+    : featured.length > 0
+      ? featured
     : deals.length > 0
       ? deals
       : fallbackProducts;
-  const popularSubcategories = categories
+  const automaticPopularSubcategories = categories
     .flatMap((parent) =>
       parent.children.slice(0, 2).map((child) => ({
         ...child,
@@ -86,6 +90,10 @@ export default async function HomePage() {
       })),
     )
     .slice(0, 12);
+  const popularSubcategories = homepageSelections.popularCategories.length > 0
+    ? homepageSelections.popularCategories
+    : automaticPopularSubcategories;
+  const homeBrands = homepageSelections.brands.length > 0 ? homepageSelections.brands : brands;
   const careDepartment = findDepartment(categories, ["medicine", "medical", "ayurveda"]);
   const dailyDepartment = findDepartment(categories, ["pantry", "household", "home-and-kitchen"]);
   const wellnessDepartment = findDepartment(categories, ["wellness", "medicine", "medical", "ayurveda"]);
@@ -223,7 +231,7 @@ export default async function HomePage() {
         linkLabel="See all offers"
       />
 
-      {brands.length > 0 && (
+      {homeBrands.length > 0 && (
         <section aria-labelledby="brands-title" className="mt-9 sm:mt-12">
           <div className="mb-3 flex items-end justify-between gap-4 px-1">
             <div>
@@ -237,7 +245,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
-            {brands.map((brand) => (
+            {homeBrands.map((brand) => (
               <Link
                 key={brand.id}
                 href={`/brand/${brand.slug}`}

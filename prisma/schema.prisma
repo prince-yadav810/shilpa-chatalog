@@ -22,6 +22,7 @@ model Category {
   parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: Restrict)
   children  Category[] @relation("CategoryTree")
   products  Product[]
+  homepageItems HomepageItem[] @relation("HomepageItemCategory")
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -39,6 +40,7 @@ model Brand {
   logoUrl   String?
   isActive  Boolean   @default(true)
   products  Product[]
+  homepageItems HomepageItem[] @relation("HomepageItemBrand")
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -72,6 +74,7 @@ model Product {
   /// Optional — loose general goods often have no brand.
   brandId String?
   brand   Brand?  @relation(fields: [brandId], references: [id], onDelete: Restrict)
+  homepageItems HomepageItem[] @relation("HomepageItemProduct")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,6 +85,39 @@ model Product {
   @@index([isFeatured, featuredOrder])
   @@index([isArchived])
   @@index([name])
+}
+
+/// A small, explicit set of items selected for a storefront homepage shelf.
+/// It deliberately lives apart from the catalog so an admin can curate a
+/// homepage without changing the regular category, offer, or brand ordering.
+model HomepageItem {
+  id        String          @id @default(cuid())
+  section   HomepageSection
+  sortOrder Int             @default(0)
+
+  categoryId String?
+  category   Category? @relation("HomepageItemCategory", fields: [categoryId], references: [id], onDelete: Cascade)
+
+  productId String?
+  product   Product? @relation("HomepageItemProduct", fields: [productId], references: [id], onDelete: Cascade)
+
+  brandId String?
+  brand   Brand? @relation("HomepageItemBrand", fields: [brandId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([section, sortOrder])
+  @@unique([section, categoryId])
+  @@unique([section, productId])
+  @@unique([section, brandId])
+}
+
+enum HomepageSection {
+  POPULAR_CATEGORIES
+  POPULAR_PRODUCTS
+  TOP_OFFERS
+  BRANDS
 }
 
 model Admin {
